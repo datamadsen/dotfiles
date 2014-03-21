@@ -1,5 +1,6 @@
 setopt prompt_subst
 autoload -U colors && colors
+autoload -U compinit && compinit
 
 source ~/.git-prompt.sh
 local gitval='%{$fg[green]%}$(__git_ps1 "(%s)")'
@@ -17,3 +18,6 @@ alias mkvenv='virtualenv venv'
 alias vim='mvim -v'
 alias ctags="`brew --prefix`/bin/ctags"
 alias ccat='pygmentize -O style=fruity,linenos=1 -f console256 -g'
+
+# More completions.
+fpath=({completions_src_dir} $fpath)
