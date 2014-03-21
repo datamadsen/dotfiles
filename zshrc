@@ -6,5 +6,7 @@ GIT_PS1_SHOWDIRTYSTATE="hey"
 GIT_PS1_SHOWUNTRACKEDFILES="hey"
 GIT_PS1_SHOWUPSTREAM="auto"
 
-prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~ %{$fg[green]%}$(__git_ps1)
+local gitval='%{$fg[green]%}$(__git_ps1 " (%s)")'
+
+prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~ ${gitval}
 %{$fg[red]%}$ %{$reset_color%}"
