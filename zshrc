@@ -13,8 +13,9 @@ prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~ ${gitval}
 
 # Aliases
 alias l='ls -lhoG'
-alias ll='ls -G'
 alias la='ls -laho'
+alias ls='ls -G'
+alias lsa='ls -Ga'
 alias s='cd ..'
 alias venv='source venv/bin/activate'
 alias mkvenv='virtualenv venv'
