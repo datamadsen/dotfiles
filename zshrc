@@ -15,9 +15,10 @@ alias la='ls -laho'
 alias s='cd ..'
 alias venv='source venv/bin/activate'
 alias mkvenv='virtualenv venv'
-alias vim='mvim -v'
-alias ctags="`brew --prefix`/bin/ctags"
 alias ccat='pygmentize -O style=fruity,linenos=1 -f console256 -g'
+alias im='vim'
+#alias vim='mvim -v'
+#alias ctags="`brew --prefix`/bin/ctags"
 
 # More completions.
 fpath=({completions_src_dir} $fpath)
