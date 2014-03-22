@@ -1,3 +1,6 @@
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 setopt prompt_subst
 autoload -U colors && colors
 autoload -U compinit && compinit
