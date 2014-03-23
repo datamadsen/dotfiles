@@ -1,0 +1,1 @@
+cd zsh && ./install.sh
