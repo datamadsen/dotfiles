@@ -1,6 +1,6 @@
 # Path to the directory of the zshrc file. This path is filled in install.sh
 # initially, and then by git filters.
-zsh_config_dir=/Users/tmadsen/projects/dotfiles/zsh
+zsh_config_dir=/home/ba9582/dotfiles/zsh
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -20,13 +20,26 @@ alias l='ls -lhoG'
 alias la='ls -laho'
 alias ls='ls -G'
 alias lsa='ls -Ga'
+
+if [[ $(uname) == *CYGWIN* ]]
+then
+    alias l='ls --color -lho'
+    alias la='ls --color -laho'
+    alias ls='ls --color -G'
+    alias lsa='ls --color -Ga'
+fi
+
 alias s='cd ..'
 alias venv='source venv/bin/activate'
 alias mkvenv='virtualenv venv'
 alias ccat='pygmentize -O style=fruity,linenos=1 -f console256 -g'
 alias im='vim'
-alias vim='mvim -v'
-alias ctags="`brew --prefix`/bin/ctags"
+
+if [[ $(uname) == *Darwin* ]] # Mac OS X
+then
+    alias vim='mvim -v'
+    alias ctags="`brew --prefix`/bin/ctags"
+fi
 
 # More completions.
 fpath=($zsh_config_dir/zsh-completions/src $fpath)
