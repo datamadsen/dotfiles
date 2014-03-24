@@ -1,6 +1,6 @@
 # Path to the directory of the zshrc file. This path is filled in install.sh
 # initially, and then by git filters.
-zsh_config_dir=/home/ba9582/dotfiles/zsh
+zsh_config_dir=/Users/tmadsen/projects/dotfiles/zsh
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -43,3 +43,26 @@ fi
 
 # More completions.
 fpath=($zsh_config_dir/zsh-completions/src $fpath)
+
+# case insensitive completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format 'No matches for: %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' completer _expand _complete _ignored
+
+# generate descriptions with magic.
+zstyle ':completion:*' auto-description 'specify: %d'
+
+# Don't prompt for a huge list, page it!
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+
+# Don't prompt for a huge list, menu it!
+zstyle ':completion:*:default' menu 'select=0'
+
+# Have the newer files last so I see them first
+zstyle ':completion:*' file-sort modification reverse
+
