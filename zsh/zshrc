@@ -1,6 +1,6 @@
 # Path to the directory of the zshrc file. This path is filled in install.sh
 # initially, and then by git filters.
-zsh_config_dir=/Users/tmadsen/projects/dotfiles/zsh
+zsh_config_dir=
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
