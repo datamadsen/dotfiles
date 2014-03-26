@@ -57,10 +57,10 @@ zstyle ':completion:*' completer _expand _complete _ignored
 # generate descriptions with magic.
 zstyle ':completion:*' auto-description 'specify: %d'
 
-# Don't prompt for a huge list, page it!
+# Don't prompt for a huge list, page it.
 zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 
-# Don't prompt for a huge list, menu it!
+# Don't prompt for a huge list, menu it.
 zstyle ':completion:*:default' menu 'select=0'
 
 # Have the newer files last so I see them first
