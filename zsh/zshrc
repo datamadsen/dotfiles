@@ -63,6 +63,22 @@ zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 # Don't prompt for a huge list, menu it.
 zstyle ':completion:*:default' menu 'select=0'
 
+# Shift-tab goes back in the menu.
+bindkey '^[[Z' reverse-menu-complete
+
 # Have the newer files last so I see them first
 zstyle ':completion:*' file-sort modification reverse
 
+# Better directory completion
+zstyle ':completion:*' special-dirs true
+
+# Experiment with vi mode
+function zle-line-init zle-keymap-select {
+    VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]%  %{$reset_color%}"
+    RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}"
+    zle reset-prompt
+}
+
+zle -N zle-line-init
+zle -N zle-keymap-select
+export KEYTIMEOUT=1
