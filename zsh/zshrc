@@ -20,6 +20,7 @@ alias l='ls -lhoG'
 alias la='ls -laho'
 alias ls='ls -G'
 alias lsa='ls -Ga'
+alias ta='tmux attach'
 
 if [[ $(uname) == *CYGWIN* ]]
 then
