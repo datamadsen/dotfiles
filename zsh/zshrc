@@ -12,13 +12,8 @@ autoload -U compinit && compinit
 source $zsh_config_dir/git-prompt.sh
 local gitval='$(__git_ps1 "(%s)")'
 
-#prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~
-#%{$fg[red]%}$ %{$reset_color%}"
-#prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~ ${gitval}
-#%{$fg[red]%}$ %{$reset_color%}"
 prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~ %{$fg[green]%}${gitval}
 %{$fg[red]%}$ %{$reset_color%}"
-
 
 gb() {
     if [ $1 = "on" ]; then
