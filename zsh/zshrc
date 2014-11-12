@@ -71,6 +71,9 @@ then
     alias ctags="`brew --prefix`/bin/ctags"
 fi
 
+alias portcheck="sudo portsnap fetch update && portmaster -L --index-only| egrep '(ew|ort) version|total install'"
+alias portupdate="portmaster -aBd --delete-build-only"
+
 # More completions.
 fpath=($zsh_config_dir/zsh-completions/src $fpath)
 
