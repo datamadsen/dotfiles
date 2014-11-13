@@ -26,14 +26,6 @@ alias ls='ls -G'
 alias lsa='ls -Ga'
 alias ta='tmux attach'
 
-if [[ $(uname) == *CYGWIN* ]]
-then
-    alias l='ls --color -lho'
-    alias la='ls --color -laho'
-    alias ls='ls --color -G'
-    alias lsa='ls --color -Ga'
-fi
-
 alias s='cd ..'
 alias venv='source venv/bin/activate'
 alias mkvenv='virtualenv venv'
