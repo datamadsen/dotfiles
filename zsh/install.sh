@@ -8,7 +8,7 @@ rm ~/.zshrc
 rm ~/.git-prompt.sh
 
 # Create symlink
-echo "[zsh] Create symlinks."
+echo "[zsh] Create symlinks"
 ln -s $(pwd)/zlogin ~/.zlogin
 ln -s $(pwd)/zshenv ~/.zshenv
 ln -s $(pwd)/zshrc ~/.zshrc

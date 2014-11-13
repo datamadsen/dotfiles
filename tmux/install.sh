@@ -1,9 +1,9 @@
 # Remove symlink
-echo " Remove symlink."
+echo "[tmux] Remove symlink"
 rm ~/.tmux.conf
 
 # Create symlink
-echo " Create symlink."
+echo "[tmux] Create symlink"
 ln -s $(pwd)/tmux.conf ~/.tmux.conf
 
-echo " Done with tmux - remember to source ~/.tmux.conf"
+echo "[tmux] Done - remember to source ~/.tmux.conf"
