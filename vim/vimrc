@@ -9,28 +9,29 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin                       'gmarik/vundle.git'
-Plugin                       'sjl/gundo.vim.git'  "Undo history.
-Plugin                 'scrooloose/nerdtree.git'  "File browser
-Plugin                 'groenewege/vim-less.git'  "Syntax, indent, completion
-Plugin                    'sirver/UltiSnips.git'  "Snippets.
-Plugin                      'jakar/vim-json.git'  "Syntax, indent for json
-Plugin                      'sukima/xmledit.git'  "Edit XML; includes tag completion and tag jumping
-Plugin              'Valloric/YouCompleteMe.git'  "Code completion engine
-Plugin                'marijnh/tern_for_vim.git'  "Code completion for JavaScript
-Plugin 'aaronj1335/underscore-templates.vim.git'  "Syntax highlighting for underscore.js templates
-Plugin             'pangloss/vim-javascript.git'  "Syntax and indent for javascript
-Plugin                      'kien/ctrlp.vim.git'  "Fuzzy finder
-Plugin               'heavenshell/vim-jsdoc.git'  "Generates JSDoc block comments based on a function signature
-Plugin             'junegunn/vim-easy-align.git'  "Easy alignment
-Plugin            'scrooloose/nerdcommenter.git'  "Comment/uncomment lines
-Plugin                   'majutsushi/tagbar.git'  "Class/member overview
-Plugin              'airblade/vim-gitgutter.git'  "Git diffs in gutter (SignColumn)
-Plugin                  'tpope/vim-fugitive.git'  "Git wrapper
-Plugin                'jiangmiao/auto-pairs.git'  "Insert or delete brackets, parens, quotes in pairs.
-Plugin                'scrooloose/syntastic.git'  "Syntax checking
-Plugin              'datamadsen/dm-snippets.git'  "The snippets I use for UltiSnips
-Plugin    'altercation/vim-colors-solarized.git'  "Solarized Colorscheme for Vim
-Plugin          'christoomey/vim-tmux-navigator'  "Navigate tmux panes and vim splits seamlessly
+Plugin                       'sjl/gundo.vim.git' "Undo history.
+Plugin                 'scrooloose/nerdtree.git' "File browser
+Plugin                 'groenewege/vim-less.git' "Syntax, indent, completion
+Plugin                    'sirver/UltiSnips.git' "Snippets.
+Plugin                      'jakar/vim-json.git' "Syntax, indent for json
+Plugin                      'sukima/xmledit.git' "Edit XML; includes tag completion and tag jumping
+Plugin              'Valloric/YouCompleteMe.git' "Code completion engine
+Plugin                'marijnh/tern_for_vim.git' "Code completion for JavaScript
+Plugin 'aaronj1335/underscore-templates.vim.git' "Syntax highlighting for underscore.js templates
+Plugin             'pangloss/vim-javascript.git' "Syntax and indent for javascript
+Plugin                      'kien/ctrlp.vim.git' "Fuzzy finder
+Plugin               'heavenshell/vim-jsdoc.git' "Generates JSDoc block comments based on a function signature
+Plugin             'junegunn/vim-easy-align.git' "Easy alignment
+Plugin            'scrooloose/nerdcommenter.git' "Comment/uncomment lines
+Plugin                   'majutsushi/tagbar.git' "Class/member overview
+Plugin              'airblade/vim-gitgutter.git' "Git diffs in gutter (SignColumn)
+Plugin                  'tpope/vim-fugitive.git' "Git wrapper
+Plugin                'jiangmiao/auto-pairs.git' "Insert or delete brackets, parens, quotes in pairs.
+Plugin                'scrooloose/syntastic.git' "Syntax checking
+Plugin              'datamadsen/dm-snippets.git' "The snippets I use for UltiSnips
+Plugin    'altercation/vim-colors-solarized.git' "Solarized Colorscheme for Vim
+Plugin          'christoomey/vim-tmux-navigator' "Navigate tmux panes and vim splits seamlessly
+Plugin                       'vim-ruby/vim-ruby' "Lots of very nice stuff for ruby
 
 call vundle#end()
 filetype plugin indent on
