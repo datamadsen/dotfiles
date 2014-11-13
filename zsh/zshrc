@@ -31,6 +31,7 @@ alias venv='source venv/bin/activate'
 alias mkvenv='virtualenv venv'
 alias ccat='pygmentize -O style=fruity,linenos=1 -f console256 -g'
 alias im='vim'
+alias st='git st'
 
 if [[ $(uname) == *Darwin* ]] # Mac OS X
 then
