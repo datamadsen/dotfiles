@@ -1,9 +1,9 @@
 # Remove symlink
-echo " Remove symlink."
+echo "[irssi] Remove symlink"
 rm ~/.irssi
 
 # Create symlink
-echo " Create symlink."
+echo "[irssi] Create symlink"
 ln -s $(pwd)/ ~/.irssi
 
-echo " Done with irssi"
+echo "[irssi] Done"
