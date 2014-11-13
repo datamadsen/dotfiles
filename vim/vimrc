@@ -1,0 +1,259 @@
+set nocompatible
+
+" use comma as leader.
+let mapleader = ","
+
+" General
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/vundle.git'
+Plugin 'sjl/gundo.vim.git' "Undo history.
+Plugin 'scrooloose/nerdtree.git' "File browser
+Plugin 'groenewege/vim-less.git' "Syntax, indent, completion
+Plugin 'sirver/UltiSnips.git' "Snippets.
+Plugin 'jakar/vim-json.git' "Syntax, indent
+Plugin 'sukima/xmledit.git' "Edit XML; includes tag completion and tag jumping
+Plugin 'Valloric/YouCompleteMe.git' "Code completion engine
+Plugin 'marijnh/tern_for_vim.git' "Code completion for JavaScript
+Plugin 'aaronj1335/underscore-templates.vim.git' "syntax highlighting for underscore.js templates
+Plugin 'pangloss/vim-javascript.git' "syntax and indent for javascript
+Plugin 'kien/ctrlp.vim.git' "fuzzy finder for files.
+Plugin 'heavenshell/vim-jsdoc.git' "Generates JSDoc block comments based on a function signature
+Plugin 'junegunn/vim-easy-align.git' "Easy alignment
+Plugin 'scrooloose/nerdcommenter.git' "Comment/uncomment lines
+Plugin 'majutsushi/tagbar.git' "Class/member overview
+Plugin 'airblade/vim-gitgutter.git' "Git diffs in gutter (SignColumn)
+Plugin 'tpope/vim-fugitive.git' "Git wrapper
+Plugin 'jiangmiao/auto-pairs.git' "Insert or delete brackets, parens, quotes in pairs.
+Plugin 'scrooloose/syntastic.git' "Syntax checking
+Plugin 'datamadsen/dm-snippets.git' "The snippets I use for UltiSnips
+Plugin 'altercation/vim-colors-solarized.git' "Solarized Colorscheme for Vim
+Bundle 'christoomey/vim-tmux-navigator'
+
+call vundle#end()
+filetype plugin indent on
+
+syntax on " syntax highlighting on
+
+set history=100
+set ffs=unix,dos,mac " support all three, in this order
+set viminfo+=! " make sure it can save viminfo
+
+" Theme/Colors
+colorscheme solarized
+set background=dark
+if has("gui_running")
+    set guioptions-=T " remove toolbar
+    set guioptions-=r " remove right-hand-side scrollbar
+    set guioptions-=L " remove left-hand-side scrollbar
+    set guioptions-=m " remove menu
+    set guifont=Consolas:h16
+else
+    set t_Co=256
+endif
+
+" Vim UI
+set scrolloff=99 " keep cursor in the middle when possible.
+set linespace=1
+set wildmenu
+set ruler
+set cmdheight=1
+set number
+set backspace=2
+set whichwrap+=<,>,h,l
+set shortmess=atI
+set report=0
+set noerrorbells
+set splitbelow
+
+" Visual Cues
+set showmatch " show matching '(' '{' '[' etc.
+set mat=2
+set incsearch
+set novisualbell
+set laststatus=2
+set hlsearch
+set statusline=
+set statusline=%F\ "full filepath
+set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
+set statusline+=%{&ff}] "file format
+set statusline+=%h      "help file flag
+set statusline+=%m      "modified flag
+set statusline+=%r      "read only flag
+set statusline+=%y      "filetype
+set statusline+=%=      "left/right separator
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file
+
+hi StatusLine ctermfg=64 ctermbg=240
+hi LineNr ctermbg=64 ctermfg=240
+
+au InsertEnter * hi StatusLine ctermfg=33 ctermbg=240 "blue statusline in insert
+au InsertEnter * hi LineNr ctermbg=33 ctermfg=240 "blue linenr in insert
+
+au InsertLeave * hi StatusLine ctermfg=64 ctermbg=240 "green statusline in normal
+au InsertLeave * hi LineNr ctermbg=64 ctermfg=240 "green statusline in normal
+
+" Rename tmux window to filename.
+"autocmd BufReadPost,BufEnter,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
+
+" Text Formatting/Layout
+set fo=tcrqn
+set autoindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set nowrap
+set textwidth=79
+
+" Misc.
+set ignorecase
+set foldmethod=syntax
+set completeopt=menuone
+
+" Should turn of esc-key delay:
+set noesckeys
+set ttimeout
+set ttimeoutlen=1
+
+" Commands
+command! W w
+command! Wq wq
+command! Q q
+command! Qa qa
+
+" DM misc. stuff
+" Run shell script being edited.
+autocmd FileType sh nmap <leader>r :!./%<CR> 
+
+" Save on <Esc>s
+map <Esc>s :w<CR>
+
+" Strip trailing whitespace on certain file types upon write.
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+autocmd FileType javascript,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+
+" UltiSnips
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsSnippetsDir="~/.vim/bundle/dm-snippets/UltiSnips"
+let g:UltiSnipsEditSplit="horizontal"
+
+" Better window movement
+noremap <silent> <C-k> :wincmd k<CR>
+noremap <silent> <C-j> :wincmd j<CR>
+noremap <silent> <C-h> :wincmd h<CR>
+noremap <silent> <C-l> :wincmd l<CR>
+
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
+map <leader>pt :TagbarOpen<CR>
+let g:tagbar_type_typescript = {
+    \ 'ctagstype' : 'typescript',
+    \ 'kinds'     : [
+        \ 'c:classes',
+        \ 'm:modules',
+        \ 'f:functions',
+        \ 'v:variables',
+        \ 'V:varlambdas',
+        \ 'm:members',
+        \ 'i:interfaces',
+        \ 'e:enums',
+    \ ]
+\ }
+
+" NERDTree
+"autocmd vimenter * NERDTree
+map <leader>pn :NERDTreeFocus<CR>
+map <leader>pN :NERDTreeClose<CR>
+
+" python-mode
+let g:pymode_lint_write = 1
+let g:pymode_lint_cwindow = 0
+let g:pymode_run_key = '<leader>pr'
+map <leader>pc :PyLint<CR>
+
+let g:pymode_rope_map_space=1
+let g:pymode_breakpoint=0
+map <leader>j :RopeGotoDefinition<CR>
+map <leader>r :RopeRename<CR>
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+
+" Rope
+let pymode_rope_extended_complete=1
+let g:pymode_rope_always_show_complete_menu=1
+let g:pymode_rope_local_prefix="<leader>r"
+
+map <leader>rg :RopeGotoDefinition<CR>
+map <leader>rr :RopeRename<CR>
+map <leader>rf :RopeFindOccurrences<CR>
+map <leader>rc :RopeShowCalltip<CR>
+
+" Yankstack
+"nmap <leader>o <Plug>yankstack_substitute_older_paste
+"nmap <leader>n <Plug>yankstack_substitute_newer_paste
+
+" XMlEdit
+let g:xmledit_enable_html=1
+
+" tern-for-vim, javascript mappings
+autocmd FileType javascript nmap <silent> <leader>d :TernDoc<CR>
+autocmd FileType javascript nmap <silent> <leader>b :TernDocBrowse<CR>
+autocmd FileType javascript nmap <silent> <leader>r :TernRename<CR>
+autocmd FileType javascript nmap <silent> <leader>u :TernRefs<CR>
+autocmd FileType javascript nmap <silent> <leader>t :TernType<CR>
+autocmd FileType javascript nmap <silent> <leader>g :TernDef<CR>
+"let g:tern_show_argument_hints='on_move'
+let g:tern_show_signature_in_pum=1
+
+" js-eol
+let g:jseol#trigger="<leader>e"
+
+" Use ag.
+if executable("ag")
+    set grepprg=ag\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+
+" easy-align.
+let g:easy_align_ignore_groups=[]
+
+"ctrlp
+map <Leader>p :CtrlPBuffer<CR>
+"map <C-[> :CtrlPTag<CR>
+"let g:ctrlp_working_path_mode='c'
+
+" delimit-mate
+let g:delimitMate_expand_cr = 1
+
+" typescript-tools
+autocmd FileType typescript map <buffer> <C-]>      :TSSdef<cr>
+autocmd FileType typescript map <buffer> <C-w>]     :TSSdefsplit<cr>
+autocmd FileType typescript map <buffer> <leader>?  :TSStype<cr>
+autocmd FileType typescript map <buffer> <leader>u  :TSSreload<cr>
+autocmd FileType typescript map <buffer> <leader>r  :TSSreferences<cr>
+
+" ycm
+let g:ycm_semantic_triggers = { 'typescript' : ['.'] }
+
+" Nicer pum color
+highlight Pmenu ctermbg=238
+
+" syntastic
+let g:syntastic_check_on_wq = 0
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+
+" jsdoc
+let g:jsdoc_default_mapping=0 " Don't map <C-l> automatically.
+
+" autopairs
+let g:AutoPairsShortcutFastWrap = '' " If this is not here, we can't write å.
