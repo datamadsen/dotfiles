@@ -25,13 +25,13 @@ alias la='ls -laho'
 alias ls='ls -G'
 alias lsa='ls -Ga'
 alias ta='tmux attach'
-
 alias s='cd ..'
 alias venv='source venv/bin/activate'
 alias mkvenv='virtualenv venv'
 alias ccat='pygmentize -O style=fruity,linenos=1 -f console256 -g'
 alias im='vim'
 alias st='git st'
+alias vimrc='vim ~/.vim/vimrc'
 
 if [[ $(uname) == *Darwin* ]] # Mac OS X
 then
