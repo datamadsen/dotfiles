@@ -1,0 +1,8 @@
+*.swp
+*.swo
+*.pyc
+venv
+.ropeproject
+.DS_Store
+.netrwhist
+
