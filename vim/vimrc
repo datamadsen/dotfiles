@@ -130,8 +130,9 @@ command! Qa qa
 " Run shell script being edited.
 autocmd FileType sh nmap <leader>r :!./%<CR> 
 
-" Save on <Esc>s
+" Use <Esc> a bit
 map <Esc>s :w<CR>
+map <Esc>h :nohl<CR>
 
 " Strip trailing whitespace on certain file types upon write.
 fun! <SID>StripTrailingWhitespaces()
