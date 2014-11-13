@@ -1,7 +1,3 @@
-# Path to the directory of the zshrc file. This path is filled in install.sh
-# initially, and then by git filters.
-zsh_config_dir=
-
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
@@ -9,7 +5,7 @@ setopt prompt_subst
 autoload -U colors && colors
 autoload -U compinit && compinit
 
-source $zsh_config_dir/git-prompt.sh
+source ~/.git-prompt.sh
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
