@@ -30,7 +30,7 @@ Plugin 'jiangmiao/auto-pairs.git' "Insert or delete brackets, parens, quotes in 
 Plugin 'scrooloose/syntastic.git' "Syntax checking
 Plugin 'datamadsen/dm-snippets.git' "The snippets I use for UltiSnips
 Plugin 'altercation/vim-colors-solarized.git' "Solarized Colorscheme for Vim
-Bundle 'christoomey/vim-tmux-navigator'
+Plugin 'christoomey/vim-tmux-navigator'
 
 call vundle#end()
 filetype plugin indent on
