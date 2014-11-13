@@ -6,4 +6,4 @@ rm ~/.vimrc
 echo "[vim] Create symlink"
 ln -s $(pwd)/vimrc ~/.vimrc
 
-echo "[vim] Done"
+echo "[vim] Done - install plugins with `vim +PluginInstall`"
