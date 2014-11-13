@@ -53,9 +53,6 @@ fi
 alias portcheck="sudo portsnap fetch update && portmaster -L --index-only| egrep '(ew|ort) version|total install'"
 alias portupdate="sudo portmaster -aBd --delete-build-only"
 
-# More completions.
-fpath=($zsh_config_dir/zsh-completions/src $fpath)
-
 # case insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
