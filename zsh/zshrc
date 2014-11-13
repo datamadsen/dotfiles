@@ -23,27 +23,6 @@ local gitval='$(__git_ps1 "(%s)")'
 prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~ %{$fg[green]%}${gitval}
 %{$fg[red]%}$ %{$reset_color%}"
 
-gb() {
-    if [ $1 = "on" ]; then
-        export GIT_PS1_SHOWDIRTYSTATE=
-        export GIT_PS1_SHOWSTASHSTATE=
-        export GIT_PS1_SHOWUNTRACKEDFILES=
-        export GIT_PS1_SHOWUPSTREAM=
-prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~ %{$fg[green]%}${gitval}
-%{$fg[red]%}$ %{$reset_color%}"
-    elif [ $1 = "off" ]; then
-prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~ 
-%{$fg[red]%}$ %{$reset_color%}"
-    elif [ $1 = "all" ]; then
-        export GIT_PS1_SHOWDIRTYSTATE=1
-        export GIT_PS1_SHOWSTASHSTATE=1
-        export GIT_PS1_SHOWUNTRACKEDFILES=1
-        export GIT_PS1_SHOWUPSTREAM="auto"
-prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~ %{$fg[green]%}${gitval}
-%{$fg[red]%}$ %{$reset_color%}"
-    fi;
-}
-
 # Aliases
 alias l='ls -lhoG'
 alias la='ls -laho'
