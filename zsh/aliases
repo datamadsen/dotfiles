@@ -1,0 +1,24 @@
+#!/bin/sh
+alias l='ls -lhoG'
+alias la='ls -laho'
+alias ls='ls -G'
+alias lsa='ls -Ga'
+alias ta='tmux attach'
+alias s='cd ..'
+alias venv='source venv/bin/activate'
+alias mkvenv='virtualenv venv'
+alias ccat='pygmentize -O style=fruity,linenos=1 -f console256 -g'
+alias im='vim'
+alias st='git st'
+alias vimrc='vim ~/.vim/vimrc'
+
+if [[ $(uname) == *Darwin* ]] # Mac OS X
+then
+    alias vim='mvim -v'
+    alias ctags="`brew --prefix`/bin/ctags"
+fi
+
+alias portcheck="sudo portsnap fetch update && portmaster -L --index-only| egrep '(ew|ort) version|total install'"
+alias portupdate="sudo portmaster -aBd --delete-build-only"
+
+alias rails42 = 'rails _4.2.0.beta4_'
