@@ -21,4 +21,4 @@ fi
 alias portcheck="sudo portsnap fetch update && portmaster -L --index-only| egrep '(ew|ort) version|total install'"
 alias portupdate="sudo portmaster -aBd --delete-build-only"
 
-alias rails42 = 'rails _4.2.0.beta4_'
+alias rails42='rails _4.2.0.beta4_'
