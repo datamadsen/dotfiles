@@ -122,15 +122,15 @@ set noesckeys
 set ttimeout
 set ttimeoutlen=1
 
-" Commands
+" DM misc. stuff
+" Run shell script being edited.
+autocmd FileType sh nmap <leader>r :!./%<CR> 
+
+" Remap commands that I mistype
 command! W w
 command! Wq wq
 command! Q q
 command! Qa qa
-
-" DM misc. stuff
-" Run shell script being edited.
-autocmd FileType sh nmap <leader>r :!./%<CR> 
 
 " Use <Esc> a bit
 map <Esc>w :w<CR>
