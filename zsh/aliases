@@ -1,8 +1,9 @@
 #!/bin/sh
-alias l='ls -lhoG'
-alias la='ls -laho'
-alias ls='ls -G'
-alias lsa='ls -Ga'
+alias l='ls -G'
+alias la='ls -aG'
+alias ll='ls -l1G'
+alias ld='ls -lG'
+alias lda='ls -alG'
 alias ta='tmux attach'
 alias s='cd ..'
 alias venv='source venv/bin/activate'
