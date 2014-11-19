@@ -32,6 +32,7 @@ Plugin              'datamadsen/dm-snippets.git' "The snippets I use for UltiSni
 Plugin    'altercation/vim-colors-solarized.git' "Solarized Colorscheme for Vim
 Plugin          'christoomey/vim-tmux-navigator' "Navigate tmux panes and vim splits seamlessly
 Plugin                       'vim-ruby/vim-ruby' "Lots of very nice stuff for ruby
+Plugin                         'tpope/vim-rails' "RoR power tools
 
 call vundle#end()
 filetype plugin indent on
@@ -104,9 +105,9 @@ au InsertLeave * hi LineNr ctermbg=64 ctermfg=240 "green statusline in normal
 " Text Formatting/Layout
 set fo=tcrqn
 set autoindent
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 set nowrap
 set textwidth=79
@@ -132,7 +133,7 @@ command! Qa qa
 autocmd FileType sh nmap <leader>r :!./%<CR> 
 
 " Use <Esc> a bit
-map <Esc>s :w<CR>
+map <Esc>w :w<CR>
 map <Esc>h :nohl<CR>
 
 " Strip trailing whitespace on certain file types upon write.
@@ -142,7 +143,6 @@ fun! <SID>StripTrailingWhitespaces()
     %s/\s\+$//e
     call cursor(l, c)
 endfun
-
 autocmd FileType javascript,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 " UltiSnips
