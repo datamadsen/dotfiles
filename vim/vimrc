@@ -122,7 +122,6 @@ set noesckeys
 set ttimeout
 set ttimeoutlen=1
 
-" DM misc. stuff
 " Run shell script being edited.
 autocmd FileType sh nmap <leader>r :!./%<CR> 
 
