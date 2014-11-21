@@ -76,7 +76,7 @@ abstracts = {
 
   # timestamp styling, nothing by default
   # %Y = brightyellow (Solarized: base00, i.e. 2nd darkest gray)
-  timestamp = "%Y$*%n";
+  timestamp = "%G$*%n";
 
   # any kind of text that needs hilighting, default is to bold
   hilight = "%_$*%_";
