@@ -165,28 +165,6 @@ map <leader>pt :TagbarOpen<CR>
 map <leader>pn :NERDTreeFocus<CR>
 map <leader>pN :NERDTreeClose<CR>
 
-" python-mode
-let g:pymode_lint_write = 1
-let g:pymode_lint_cwindow = 0
-let g:pymode_run_key = '<leader>pr'
-map <leader>pc :PyLint<CR>
-
-let g:pymode_rope_map_space=1
-let g:pymode_breakpoint=0
-map <leader>j :RopeGotoDefinition<CR>
-map <leader>r :RopeRename<CR>
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-
-" Rope
-let pymode_rope_extended_complete=1
-let g:pymode_rope_always_show_complete_menu=1
-let g:pymode_rope_local_prefix="<leader>r"
-
-map <leader>rg :RopeGotoDefinition<CR>
-map <leader>rr :RopeRename<CR>
-map <leader>rf :RopeFindOccurrences<CR>
-map <leader>rc :RopeShowCalltip<CR>
-
 " XMlEdit
 let g:xmledit_enable_html=1
 
