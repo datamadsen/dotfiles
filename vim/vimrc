@@ -187,10 +187,6 @@ map <leader>rr :RopeRename<CR>
 map <leader>rf :RopeFindOccurrences<CR>
 map <leader>rc :RopeShowCalltip<CR>
 
-" Yankstack
-"nmap <leader>o <Plug>yankstack_substitute_older_paste
-"nmap <leader>n <Plug>yankstack_substitute_newer_paste
-
 " XMlEdit
 let g:xmledit_enable_html=1
 
