@@ -159,19 +159,6 @@ noremap <silent> <C-l> :wincmd l<CR>
 " Tagbar
 nmap <F8> :TagbarToggle<CR>
 map <leader>pt :TagbarOpen<CR>
-let g:tagbar_type_typescript = {
-    \ 'ctagstype' : 'typescript',
-    \ 'kinds'     : [
-        \ 'c:classes',
-        \ 'm:modules',
-        \ 'f:functions',
-        \ 'v:variables',
-        \ 'V:varlambdas',
-        \ 'm:members',
-        \ 'i:interfaces',
-        \ 'e:enums',
-    \ ]
-\ }
 
 " NERDTree
 "autocmd vimenter * NERDTree
@@ -237,16 +224,6 @@ map <Leader>p :CtrlPBuffer<CR>
 
 " delimit-mate
 let g:delimitMate_expand_cr = 1
-
-" typescript-tools
-autocmd FileType typescript map <buffer> <C-]>      :TSSdef<cr>
-autocmd FileType typescript map <buffer> <C-w>]     :TSSdefsplit<cr>
-autocmd FileType typescript map <buffer> <leader>?  :TSStype<cr>
-autocmd FileType typescript map <buffer> <leader>u  :TSSreload<cr>
-autocmd FileType typescript map <buffer> <leader>r  :TSSreferences<cr>
-
-" ycm
-let g:ycm_semantic_triggers = { 'typescript' : ['.'] }
 
 " Nicer pum color
 highlight Pmenu ctermbg=238
