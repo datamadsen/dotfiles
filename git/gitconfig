@@ -37,7 +37,7 @@
   co = checkout
   st = status
   d = difftool
-  initexternal = initexternal = !"f() { git --work-tree=. --git-dir=\"$1\" init && echo \"gitdir: $1\" >> .git; }; f"
+  initexternal = !"f() { git --work-tree=. --git-dir=\"$1\" init && echo \"gitdir: $1\" >> .git; }; f"
 
 [push]
   default = simple
