@@ -50,3 +50,6 @@
 
 [diff]
   tool = vimdiff
+
+[remote "origin"]
+  prune = true
