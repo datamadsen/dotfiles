@@ -12,6 +12,10 @@ alias ccat='pygmentize -O style=fruity,linenos=1 -f console256 -g'
 alias im='vim'
 alias st='git st'
 alias lg='git lg'
+alias cia='git cia'
+alias cob='git cob'
+alias rb='git rb'
+alias rbm='git rbm'
 alias vimrc='vim ~/.vim/vimrc'
 
 if [[ $(uname) == *Darwin* ]] # Mac OS X

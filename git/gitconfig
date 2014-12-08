@@ -34,7 +34,11 @@
 
 [alias]
   ci = commit
+  cia = commit -a
   co = checkout
+  cob = checkout -b
+  rb = rebase
+  rbm = rebase master
   st = status
   d = difftool
   initexternal = !"f() { git --work-tree=. --git-dir=\"$1\" init && echo \"gitdir: $1\" >> .git; }; f"
