@@ -37,6 +37,7 @@
   cia = commit -a
   co = checkout
   cob = checkout -b
+  com = checkout master
   rb = rebase
   rbm = rebase master
   st = status
