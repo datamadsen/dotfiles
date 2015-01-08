@@ -1,8 +1,7 @@
 #!/bin/sh
 alias l='ls -G'
 alias la='ls -aG'
-alias ll='ls -l1G'
-alias ld='ls -lG'
+alias ll='ls -lG'
 alias lda='ls -alG'
 alias ta='tmux attach'
 alias s='cd ..'
