@@ -274,9 +274,6 @@ settings = {
   };
 };
 hilights = (
-  { text = "tmadsne"; nick = "yes"; word = "yes"; },
-  { text = "tmadsen:"; nick = "yes"; word = "yes"; },
-  { text = "madsen"; nick = "no"; word = "yes"; }
 );
 logs = { };
 ignores = (
