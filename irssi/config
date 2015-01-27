@@ -279,7 +279,7 @@ logs = { };
 ignores = (
   {
     level = "JOINS PARTS QUITS NICKS";
-    channels = ( "#python", "#peewee", "#5by5" );
+    channels = ( "#python", "#peewee", "#5by5", "#relayfm", "#atp");
   },
   { level = "JOINS PARTS QUITS NICKS"; channels = ( "#meteor" ); },
   { level = "JOINS PARTS QUITS NICKS"; channels = ( "#css" ); },
