@@ -33,6 +33,7 @@ Plugin    'altercation/vim-colors-solarized.git' "Solarized Colorscheme for Vim
 Plugin          'christoomey/vim-tmux-navigator' "Navigate tmux panes and vim splits seamlessly
 Plugin                       'vim-ruby/vim-ruby' "Lots of very nice stuff for ruby
 Plugin                         'tpope/vim-rails' "RoR power tools
+Plugin           'nelstrom/vim-markdown-folding' "Markdown folding
 
 call vundle#end()
 filetype plugin indent on
