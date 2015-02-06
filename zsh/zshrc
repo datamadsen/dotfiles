@@ -6,6 +6,7 @@ autoload -U colors && colors
 autoload -U compinit && compinit
 
 source ~/.aliases
+source ~/.ssh-start.sh
 
 source ~/.git-prompt.sh
 GIT_PS1_SHOWDIRTYSTATE=1
