@@ -15,8 +15,6 @@ Plugin                 'groenewege/vim-less.git' "Syntax, indent, completion
 Plugin                    'sirver/UltiSnips.git' "Snippets.
 Plugin                      'jakar/vim-json.git' "Syntax, indent for json
 Plugin                      'sukima/xmledit.git' "Edit XML; includes tag completion and tag jumping
-Plugin              'Valloric/YouCompleteMe.git' "Code completion engine
-Plugin                'marijnh/tern_for_vim.git' "Code completion for JavaScript
 Plugin 'aaronj1335/underscore-templates.vim.git' "Syntax highlighting for underscore.js templates
 Plugin             'pangloss/vim-javascript.git' "Syntax and indent for javascript
 Plugin                      'kien/ctrlp.vim.git' "Fuzzy finder
