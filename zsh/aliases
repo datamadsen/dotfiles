@@ -1,8 +1,9 @@
 #!/bin/sh
-alias l='ls -G'
-alias la='ls -aG'
-alias ll='ls -lG'
-alias lla='ls -alG'
+alias l='ls --color' 
+alias la='ls -a --color'
+alias ll='ls -l1 --color'
+alias ld='ls -l --color'
+alias lda='ls -al --color'
 alias ta='tmux attach'
 alias s='cd ..'
 alias venv='source venv/bin/activate'
@@ -17,7 +18,6 @@ alias com='git com'
 alias rb='git rb'
 alias rbm='git rbm'
 alias vimrc='vim ~/.vim/vimrc'
-alias devror='sh ~/.dev-env-ruby-on-rails.sh'
 
 if [[ $(uname) == *Darwin* ]] # Mac OS X
 then
@@ -29,3 +29,12 @@ alias portcheck="sudo portsnap fetch update && portmaster -L --index-only| egrep
 alias portupdate="sudo portmaster -aBd --delete-build-only"
 
 alias rails42='rails _4.2.0.beta4_'
+
+alias upfind='sh ~/.utilities/upfind.sh'
+alias appclose='echo "\n" | powershell.exe -ExecutionPolicy ByPass -File $(cygpath -aw ~/.utilities/close-application-with-partial-title.ps1) -partialWindowTitle $1' 
+
+alias slnname='echo ${$(upfind -name "*.sln")##*/} | cut -d"." -f1'
+alias slnclose='appclose $(slnname)'
+alias slnopen='cygstart $(upfind -name "*.sln")'
+alias opensln='slnopen'
+alias closesln='slnclose'
