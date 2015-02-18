@@ -2,7 +2,7 @@
 alias l='ls -G'
 alias la='ls -aG'
 alias ll='ls -lG'
-alias lda='ls -alG'
+alias lla='ls -alG'
 alias ta='tmux attach'
 alias s='cd ..'
 alias venv='source venv/bin/activate'
