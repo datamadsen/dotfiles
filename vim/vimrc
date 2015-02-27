@@ -32,6 +32,7 @@ Plugin          'christoomey/vim-tmux-navigator' "Navigate tmux panes and vim sp
 Plugin                       'vim-ruby/vim-ruby' "Lots of very nice stuff for ruby
 Plugin                         'tpope/vim-rails' "RoR power tools
 Plugin           'nelstrom/vim-markdown-folding' "Markdown folding
+Plugin                      'tpope/vim-surround' "Easily surround with or change tags
 
 call vundle#end()
 filetype plugin indent on
