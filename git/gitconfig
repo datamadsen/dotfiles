@@ -16,10 +16,10 @@
   remote = green
 
 [color "diff"]
-  meta = yellow bold
-  frag = magenta bold
-  old = red bold
-  new = green bold
+  meta = yellow
+  frag = magenta
+  old = red
+  new = green
 
 [color "status"]
   added = yellow
@@ -27,7 +27,7 @@
   untracked = cyan
 
 [core]
-  pager = less -FRSX
+  pager = less -FRSX --tabs=2
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
   excludesfile = /Users/tmadsen/.gitignore
   editor = vim
@@ -43,7 +43,7 @@
   st = status
   d = difftool
   initexternal = !"f() { git --work-tree=. --git-dir=\"$1\" init && echo \"gitdir: $1\" >> .git; }; f"
-  lg = "!git --no-pager log -20 --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset' --abbrev-commit --date=relative --all"
+  lg = "!git --no-pager log -20 --graph --pretty=format:'%Cred%h%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative --all"
   lgl = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset' --abbrev-commit --date=relative --all"
   stat = !"f() { git log -n1 --stat $1; }; f"
   bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
