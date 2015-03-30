@@ -257,7 +257,7 @@ statusbar = {
   };
 };
 settings = {
-  core = { real_name = "Tim M. Madsen"; user_name = "tim"; nick = "tim"; };
+  core = { real_name = "Tim M. Madsen"; user_name = "tmadsen"; nick = "tmadsen"; };
   "fe-text" = { actlist_sort = "refnum"; };
   "fe-common/core" = {
     bell_beeps = "yes";

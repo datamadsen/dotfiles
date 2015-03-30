@@ -33,6 +33,7 @@ Plugin                       'vim-ruby/vim-ruby' "Lots of very nice stuff for ru
 Plugin                         'tpope/vim-rails' "RoR power tools
 Plugin           'nelstrom/vim-markdown-folding' "Markdown folding
 Plugin                      'tpope/vim-surround' "Easily surround with or change tags
+Plugin                       'tpope/vim-endwise' "Wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 
 call vundle#end()
 filetype plugin indent on
