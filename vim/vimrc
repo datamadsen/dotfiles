@@ -8,32 +8,34 @@ filetype off
 set rtp+=~/.vim/bundle/vundle
 call vundle#begin()
 
-Plugin                       'gmarik/vundle.git'
-Plugin                       'sjl/gundo.vim.git' "Undo history.
-Plugin                 'scrooloose/nerdtree.git' "File browser
-Plugin                 'groenewege/vim-less.git' "Syntax, indent, completion
-Plugin                    'sirver/UltiSnips.git' "Snippets.
-Plugin                      'jakar/vim-json.git' "Syntax, indent for json
-Plugin                      'sukima/xmledit.git' "Edit XML; includes tag completion and tag jumping
+Plugin 'gmarik/vundle.git'
+Plugin 'sjl/gundo.vim.git'                       "Undo history.
+Plugin 'scrooloose/nerdtree.git'                 "File browser
+Plugin 'groenewege/vim-less.git'                 "Syntax, indent, completion
+Plugin 'sirver/UltiSnips.git'                    "Snippets.
+Plugin 'jakar/vim-json.git'                      "Syntax, indent for json
+Plugin 'sukima/xmledit.git'                      "Edit XML; includes tag completion and tag jumping
 Plugin 'aaronj1335/underscore-templates.vim.git' "Syntax highlighting for underscore.js templates
-Plugin             'pangloss/vim-javascript.git' "Syntax and indent for javascript
-Plugin                      'kien/ctrlp.vim.git' "Fuzzy finder
-Plugin               'heavenshell/vim-jsdoc.git' "Generates JSDoc block comments based on a function signature
-Plugin             'junegunn/vim-easy-align.git' "Easy alignment
-Plugin            'scrooloose/nerdcommenter.git' "Comment/uncomment lines
-Plugin                   'majutsushi/tagbar.git' "Class/member overview
-Plugin              'airblade/vim-gitgutter.git' "Git diffs in gutter (SignColumn)
-Plugin                  'tpope/vim-fugitive.git' "Git wrapper
-Plugin                'jiangmiao/auto-pairs.git' "Insert or delete brackets, parens, quotes in pairs.
-Plugin                'scrooloose/syntastic.git' "Syntax checking
-Plugin              'datamadsen/dm-snippets.git' "The snippets I use for UltiSnips
-Plugin    'altercation/vim-colors-solarized.git' "Solarized Colorscheme for Vim
-Plugin          'christoomey/vim-tmux-navigator' "Navigate tmux panes and vim splits seamlessly
-Plugin                       'vim-ruby/vim-ruby' "Lots of very nice stuff for ruby
-Plugin                         'tpope/vim-rails' "RoR power tools
-Plugin           'nelstrom/vim-markdown-folding' "Markdown folding
-Plugin                      'tpope/vim-surround' "Easily surround with or change tags
-Plugin                       'tpope/vim-endwise' "Wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
+Plugin 'pangloss/vim-javascript.git'             "Syntax and indent for javascript
+Plugin 'kien/ctrlp.vim.git'                      "Fuzzy finder
+Plugin 'heavenshell/vim-jsdoc.git'               "Generates JSDoc block comments based on a function signature
+Plugin 'junegunn/vim-easy-align.git'             "Easy alignment
+Plugin 'scrooloose/nerdcommenter.git'            "Comment/uncomment lines
+Plugin 'majutsushi/tagbar.git'                   "Class/member overview
+Plugin 'airblade/vim-gitgutter.git'              "Git diffs in gutter (SignColumn)
+Plugin 'tpope/vim-fugitive.git'                  "Git wrapper
+Plugin 'jiangmiao/auto-pairs.git'                "Insert or delete brackets, parens, quotes in pairs.
+Plugin 'scrooloose/syntastic.git'                "Syntax checking
+Plugin 'datamadsen/dm-snippets.git'              "The snippets I use for UltiSnips
+Plugin 'altercation/vim-colors-solarized.git'    "Solarized Colorscheme for Vim
+Plugin 'christoomey/vim-tmux-navigator'          "Navigate tmux panes and vim splits seamlessly
+Plugin 'vim-ruby/vim-ruby'                       "Lots of very nice stuff for ruby
+Plugin 'tpope/vim-rails'                         "RoR power tools
+Plugin 'nelstrom/vim-markdown-folding'           "Markdown folding
+Plugin 'tpope/vim-surround'                      "Easily surround with or change tags
+Plugin 'tpope/vim-endwise'                       "Wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'danchoi/ri.vim'                          "browse ri documentation from Vim
 
 call vundle#end()
 filetype plugin indent on
@@ -194,8 +196,9 @@ let g:easy_align_ignore_groups=[]
 vmap <Enter> <Plug>(EasyAlign)
 
 "ctrlp
-map <Leader>p :CtrlPBuffer<CR>
-"map <C-[> :CtrlPTag<CR>
+map <leader>p :CtrlPBuffer<CR>
+map <leader>. :CtrlPBufTag<CR>
+map <leader>, :CtrlPTag<CR>
 "let g:ctrlp_working_path_mode='c'
 
 " delimit-mate
@@ -213,3 +216,8 @@ let g:jsdoc_default_mapping=0 " Don't map <C-l> automatically.
 
 " autopairs
 let g:AutoPairsShortcutFastWrap = '' " If this is not here, we can't write å.
+
+"let g:rubycomplete_buffer_loading = 1
+"let g:rubycomplete_classes_in_global = 1
+"let g:rubycomplete_rails = 1
+"let g:rubycomplete_load_gemfile = 1
