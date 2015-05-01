@@ -5,6 +5,6 @@ echo "[vim] Create symlink"
 ln -s $(pwd)/ ~/.vim
 
 echo "[vim] Clone vundle"
-git clone https://github.com/gmarik/Vundle.vim.git $(pwd)/bundle/Vundle.vim
+git clone https://github.com/gmarik/Vundle.vim.git $(pwd)/bundle/vundle
 
 echo "[vim] Done - install plugins with \`vim +PluginInstall\`"
