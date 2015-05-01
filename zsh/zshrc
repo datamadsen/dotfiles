@@ -62,7 +62,7 @@ gitbranch() {
     printf -- "($branch)"
 }
 
-prompt="%{$fg[yellow]%}%n@%m %{$fg[blue]%}%~ %{$fg[green]%}${gitval}
+prompt="%{$fg[yellow]%}%n@%M %{$fg[blue]%}%~ %{$fg[green]%}${gitval}
 %{$fg[red]%}$ %{$reset_color%}"
 
 # case insensitive completion
