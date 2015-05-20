@@ -105,8 +105,20 @@ au InsertEnter * hi LineNr ctermbg=33 ctermfg=240 "blue linenr in insert
 au InsertLeave * hi StatusLine ctermfg=64 ctermbg=240 "green statusline in normal
 au InsertLeave * hi LineNr ctermbg=64 ctermfg=240 "green statusline in normal
 
+<<<<<<< HEAD
 " Unfold files when opening them.
 au BufRead * normal zR
+=======
+" Append modeline after last line in buffer.
+" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
+" files.
+function! AppendModeline()
+  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+  call append(line("$"), l:modeline)
+endfunction
+>>>>>>> 5f6d7be... Add AppendModeLine function
 
 " Rename tmux window to filename.
 "autocmd BufReadPost,BufEnter,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
