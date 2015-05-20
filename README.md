@@ -1,4 +1,4 @@
-datamadsen's dotfiles
+tmadsen's dotfiles
 =====================
 
 A work in progress.
