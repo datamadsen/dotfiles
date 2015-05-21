@@ -177,6 +177,9 @@ noremap <silent> <C-j> :wincmd j<CR>
 noremap <silent> <C-h> :wincmd h<CR>
 noremap <silent> <C-l> :wincmd l<CR>
 
+" Faster go-to-line
+nnoremap <CR> G
+
 " Tagbar
 nmap <F8> :TagbarToggle<CR>
 map <leader>pt :TagbarOpen<CR>
