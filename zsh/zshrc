@@ -3,7 +3,7 @@ export LANG=en_US.UTF-8
 
 setopt inc_append_history
 HISTSIZE=10000
-SAVEHIST=1000
+SAVEHIST=10000
 HISTFILE=~/.history
 
 tabs -2
