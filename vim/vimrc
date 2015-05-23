@@ -36,6 +36,7 @@ Plugin 'tpope/vim-surround'                      "Easily surround with or change
 Plugin 'tpope/vim-endwise'                       "Wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'danchoi/ri.vim'                          "browse ri documentation from Vim
+Plugin 'tpope/vim-rvm'
 
 call vundle#end()
 filetype plugin indent on
@@ -103,6 +104,9 @@ au InsertEnter * hi LineNr ctermbg=33 ctermfg=240 "blue linenr in insert
 
 au InsertLeave * hi StatusLine ctermfg=64 ctermbg=240 "green statusline in normal
 au InsertLeave * hi LineNr ctermbg=64 ctermfg=240 "green statusline in normal
+
+" Unfold files when opening them.
+au BufRead * normal zR
 
 " Rename tmux window to filename.
 "autocmd BufReadPost,BufEnter,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
@@ -217,7 +221,9 @@ let g:jsdoc_default_mapping=0 " Don't map <C-l> automatically.
 " autopairs
 let g:AutoPairsShortcutFastWrap = '' " If this is not here, we can't write å.
 
-"let g:rubycomplete_buffer_loading = 1
-"let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_use_bundler = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_load_gemfile = 1
 "let g:rubycomplete_rails = 1
-"let g:rubycomplete_load_gemfile = 1
+set tags+=gems.tags
