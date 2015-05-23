@@ -142,6 +142,7 @@ command! Qa qa
 
 " Use <Esc> a bit
 map <Esc>w :w<CR>
+map <Esc><Esc> :w<CR>
 map <Esc>h :nohl<CR>
 
 " Strip trailing whitespace on certain file types upon write.
