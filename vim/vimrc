@@ -64,6 +64,7 @@ endif
 set scrolloff=99 " keep cursor in the middle when possible.
 set linespace=1
 set wildmenu
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/node_modules/*,*/_build/*
 set ruler
 set cmdheight=1
 set number
