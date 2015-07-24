@@ -257,7 +257,11 @@ statusbar = {
   };
 };
 settings = {
-  core = { real_name = "Tim M. Madsen"; user_name = "tmadsen"; nick = "tmadsen"; };
+  core = {
+    real_name = "Tim M. Madsen";
+    user_name = "tmadsen";
+    nick = "tmadsen";
+  };
   "fe-text" = { actlist_sort = "refnum"; };
   "fe-common/core" = {
     bell_beeps = "yes";
@@ -273,13 +277,12 @@ settings = {
     neat_colorize = "no";
   };
 };
-hilights = (
-);
+hilights = ( );
 logs = { };
 ignores = (
   {
     level = "JOINS PARTS QUITS NICKS";
-    channels = ( "#python", "#peewee", "#5by5", "#relayfm", "#atp");
+    channels = ( "#python", "#peewee", "#5by5", "#relayfm", "#atp" );
   },
   { level = "JOINS PARTS QUITS NICKS"; channels = ( "#meteor" ); },
   { level = "JOINS PARTS QUITS NICKS"; channels = ( "#css" ); },
@@ -300,5 +303,7 @@ ignores = (
   },
   { mask = "hekp"; level = "ALL"; },
   { mask = "help"; level = "ALL"; },
-  { level = "JOINS PARTS QUITS NICKS"; channels = ( "#startups" ); }
+  { level = "JOINS PARTS QUITS NICKS"; channels = ( "#startups" ); },
+  { level = "JOINS PARTS QUITS MODES"; channels = ( "#duckduckgo" ); },
+  { level = "JOINS PARTS QUITS MODES"; channels = ( "#ruby" ); }
 );
