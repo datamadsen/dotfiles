@@ -37,6 +37,7 @@ Plugin 'tpope/vim-endwise'                       "Wisely add 'end' in ruby, endf
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'danchoi/ri.vim'                          "browse ri documentation from Vim
 Plugin 'tpope/vim-rvm'
+Plugin 'dhruvasagar/vim-table-mode' 
 
 call vundle#end()
 filetype plugin indent on
@@ -244,3 +245,7 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_load_gemfile = 1
 "let g:rubycomplete_rails = 1
 set tags+=gems.tags
+
+" vim-table-mode
+let g:table_mode_corner_corner="+"
+let g:table_mode_header_fillchar="="
