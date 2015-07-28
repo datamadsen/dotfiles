@@ -78,6 +78,7 @@ set novisualbell
 set laststatus=2
 set hlsearch
 set colorcolumn=80
+set diffopt+=vertical
 set statusline=
 set statusline=%F\ "full filepath
 set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
