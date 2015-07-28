@@ -109,6 +109,7 @@ au InsertLeave * hi LineNr ctermbg=64 ctermfg=240 "green statusline in normal
 
 " Unfold files when opening them.
 au BufRead * normal zR
+
 " Append modeline after last line in buffer.
 " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
 " files.
