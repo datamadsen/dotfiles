@@ -41,3 +41,5 @@ alias opensln='slnopen'
 alias closesln='slnclose'
 alias msbuild='/cygdrive/c/Windows/Microsoft.NET/Framework/v4.0.30319/msbuild.exe'
 alias sln='ruby ~/.utilities/sln.rb'
+
+alias ide-rails='sh ~/.ide-rails.sh'

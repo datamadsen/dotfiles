@@ -13,8 +13,10 @@ if [ "$?" -eq 1 ] ; then
   # no session found, create one.
   tmux new-session -d -s $SESSION_NAME
 
+	# terminal
+
   # editor
-  tmux rename-window "vim"
+  tmux new-window -t $SESSION_NAME -n "vim"
   tmux send-keys "vim +NERDTree" C-m
 
   # tests

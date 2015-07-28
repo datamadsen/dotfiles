@@ -1,10 +1,11 @@
 # Remove symlink
-echo "[tmux] Remove symlink"
+echo "[tmux] Remove symlinks"
 rm ~/.tmux.conf
+rm ~/.ide-rails.sh
 
 # Create symlink
-echo "[tmux] Create symlink"
+echo "[tmux] Create symlinks"
 ln -s $(pwd)/tmux.conf ~/.tmux.conf
-ln -s $(pwd)/dev-env-ruby-on-rails.sh ~/.dev-env-ruby-on-rails.sh
+ln -s $(pwd)/ide-rails.sh ~/.ide-rails.sh
 
 echo "[tmux] Done - remember to source ~/.tmux.conf"
