@@ -27,7 +27,7 @@ Plugin 'tpope/vim-fugitive.git'                  "Git wrapper
 Plugin 'jiangmiao/auto-pairs.git'                "Insert or delete brackets, parens, quotes in pairs.
 Plugin 'scrooloose/syntastic.git'                "Syntax checking
 Plugin 'datamadsen/dm-snippets.git'              "The snippets I use for UltiSnips
-Plugin 'altercation/vim-colors-solarized.git'    "Solarized Colorscheme for Vim
+"Plugin 'altercation/vim-colors-solarized.git'    "Solarized Colorscheme for Vim
 Plugin 'christoomey/vim-tmux-navigator'          "Navigate tmux panes and vim splits seamlessly
 Plugin 'vim-ruby/vim-ruby'                       "Lots of very nice stuff for ruby
 Plugin 'tpope/vim-rails'                         "RoR power tools
@@ -49,7 +49,7 @@ set ffs=unix,dos,mac " support all three, in this order
 set viminfo+=! " make sure it can save viminfo
 
 " Theme/Colors
-colorscheme solarized
+colorscheme morning
 set background=light
 if has("gui_running")
     set guioptions-=T " remove toolbar
@@ -97,14 +97,23 @@ set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file
 
-hi StatusLine ctermfg=64 ctermbg=240
-hi LineNr ctermbg=64 ctermfg=240
+" Initial colors for lines
+hi StatusLine  ctermbg=white  ctermfg=green
+hi LineNr      ctermbg=green  ctermfg=white
+hi ColorColumn ctermbg=green  ctermfg=white
+hi Pmenu       ctermbg=blue   ctermfg=white
+hi PmenuSel    ctermbg=green  ctermfg=white
+hi Visual      ctermbg=blue   ctermfg=white
 
-au InsertEnter * hi StatusLine ctermfg=33 ctermbg=240 "blue statusline in insert
-au InsertEnter * hi LineNr ctermbg=33 ctermfg=240 "blue linenr in insert
+" Blue lines in insert mode
+au InsertEnter * hi StatusLine  ctermbg=white ctermfg=blue
+au InsertEnter * hi LineNr      ctermbg=blue  ctermfg=white
+au InsertEnter * hi ColorColumn ctermbg=blue  ctermfg=white
 
-au InsertLeave * hi StatusLine ctermfg=64 ctermbg=240 "green statusline in normal
-au InsertLeave * hi LineNr ctermbg=64 ctermfg=240 "green statusline in normal
+" Green lines in normal mode
+au InsertLeave * hi StatusLine  ctermbg=white  ctermfg=green
+au InsertLeave * hi LineNr      ctermbg=green  ctermfg=white
+au InsertLeave * hi ColorColumn ctermbg=green  ctermfg=white
 
 " Unfold files when opening them.
 au BufRead * normal zR
