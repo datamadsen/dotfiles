@@ -2,3 +2,4 @@ irssi/saved_colors
 vim/bundle
 irssi/away.log
 .netrwhist
+*.swp
