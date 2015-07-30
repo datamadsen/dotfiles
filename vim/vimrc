@@ -38,7 +38,7 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'danchoi/ri.vim'                          "browse ri documentation from Vim
 Plugin 'tpope/vim-rvm'
 Plugin 'dhruvasagar/vim-table-mode' 
-
+ 
 call vundle#end()
 filetype plugin indent on
 
@@ -244,6 +244,7 @@ let g:jsdoc_default_mapping=0 " Don't map <C-l> automatically.
 
 " autopairs
 let g:AutoPairsShortcutFastWrap = '' " If this is not here, we can't write å.
+let g:AutoPairsFlyMode = 1
 
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_use_bundler = 1
