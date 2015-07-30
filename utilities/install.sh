@@ -4,6 +4,6 @@ rm ~/.utilities
 
 # Create symlink
 echo "[tmux] Create symlinks"
-ln -s $(pwd)/utilities ~/.utilities
+ln -s $(pwd) ~/.utilities
 
 echo "[utilities] Done"

@@ -58,8 +58,13 @@ if has("gui_running")
 else
     set t_Co=256
 endif
+let hour = strftime("%H") " Set the background light from 7am to 7pm
+if 7 <= hour && hour < 19
+  set background=light
+else " Set to dark from 7pm to 7am
+  set background=dark
+endif
 colorscheme solarized
-"set background=light
 
 " Vim UI
 set scrolloff=99 " keep cursor in the middle when possible.
