@@ -14,7 +14,7 @@ Plugin 'scrooloose/nerdtree.git'                 "File browser
 Plugin 'groenewege/vim-less.git'                 "Syntax, indent, completion
 Plugin 'sirver/UltiSnips.git'                    "Snippets.
 Plugin 'jakar/vim-json.git'                      "Syntax, indent for json
-Plugin 'sukima/xmledit.git'                      "Edit XML; includes tag completion and tag jumping
+Plugin 'tmadsen/xmledit.git'                      "Edit XML; includes tag completion and tag jumping
 Plugin 'aaronj1335/underscore-templates.vim.git' "Syntax highlighting for underscore.js templates
 Plugin 'pangloss/vim-javascript.git'             "Syntax and indent for javascript
 Plugin 'kien/ctrlp.vim.git'                      "Fuzzy finder
@@ -256,3 +256,17 @@ set tags+=gems.tags
 " vim-table-mode
 let g:table_mode_corner_corner="+"
 let g:table_mode_header_fillchar="="
+
+" indentation on newline between html tags
+function! NewlineInTag()
+    let lnum = getline('.')
+    let cnum = col('.')
+
+    let chars = strpart(lnum, cnum - 2, 3)
+    if chars =~ '></'
+        return "\<CR>\<ESC>\<UP>$o"
+    else
+        return "\<CR>"
+    endif
+endfunction
+autocmd FileType eruby,html imap <CR> <C-R>=NewlineInTag()<CR>
