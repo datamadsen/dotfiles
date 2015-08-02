@@ -102,13 +102,10 @@ set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file
 
-" Initial colors for lines
+" Initial colors for visual indicator lines on screen
 hi StatusLine  ctermbg=white  ctermfg=green
 hi LineNr      ctermbg=green  ctermfg=white
 hi ColorColumn ctermbg=green  ctermfg=white
-hi Pmenu       ctermbg=blue   ctermfg=white
-hi PmenuSel    ctermbg=green  ctermfg=white
-hi Visual      ctermbg=blue   ctermfg=white
 
 " Blue lines in insert mode
 au InsertEnter * hi StatusLine  ctermbg=white ctermfg=blue
