@@ -38,6 +38,7 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'danchoi/ri.vim'                          "browse ri documentation from Vim
 Plugin 'tpope/vim-rvm'
 Plugin 'dhruvasagar/vim-table-mode' 
+Plugin 'tpope/vim-ragtag'
  
 call vundle#end()
 filetype plugin indent on
