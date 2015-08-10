@@ -1,6 +1,6 @@
 on run argv
 	set h to hours of (current date)
-	if (h > 7) and (h < 19) then
+	if (h > 6) and (h < 19) then
 		set tint to "light"
 	else
 		set tint to "dark"
