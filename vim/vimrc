@@ -179,6 +179,7 @@ function! ToggleColorColumn()
 	endif
 endfunction
 map <Esc>c :call ToggleColorColumn()<CR>
+call ToggleColorColumn()
 
 map <Esc>t :TagbarToggle<CR>
 map <Esc>p :NERDTreeToggle<CR>
