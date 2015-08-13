@@ -1,8 +1,5 @@
-tmadsen's dotfiles
-=====================
-
+# tmadsen's dotfiles
 A work in progress.
 
-Install
-=======
+## Install
 `./install.sh`
