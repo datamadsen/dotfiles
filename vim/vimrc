@@ -169,6 +169,17 @@ map <Esc>w :w<CR>
 map <Esc><Esc> :w<CR>
 map <Esc>h :nohl<CR>
 
+let g:oldColorColumn = 0
+function! ToggleColorColumn()
+	if &colorcolumn > '0'
+		let g:oldColorColumn=&colorcolumn
+		let &colorcolumn=0
+	else
+		let &colorcolumn=g:oldColorColumn
+	endif
+endfunction
+map <Esc>c :call ToggleColorColumn()<CR>
+
 " Strip trailing whitespace on certain file types upon write.
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
