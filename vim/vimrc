@@ -20,7 +20,8 @@ Plugin 'pangloss/vim-javascript.git'             "Syntax and indent for javascri
 Plugin 'kien/ctrlp.vim.git'                      "Fuzzy finder
 Plugin 'heavenshell/vim-jsdoc.git'               "Generates JSDoc block comments based on a function signature
 Plugin 'junegunn/vim-easy-align.git'             "Easy alignment
-Plugin 'scrooloose/nerdcommenter.git'            "Comment/uncomment lines
+"Plugin 'scrooloose/nerdcommenter.git'            "Comment/uncomment lines
+Plugin 'tpope/vim-commentary'					           "Let's try a tpope plugin for this
 Plugin 'majutsushi/tagbar.git'                   "Class/member overview
 Plugin 'airblade/vim-gitgutter.git'              "Git diffs in gutter (SignColumn)
 Plugin 'tpope/vim-fugitive.git'                  "Git wrapper
