@@ -180,6 +180,8 @@ function! ToggleColorColumn()
 endfunction
 map <Esc>c :call ToggleColorColumn()<CR>
 
+map <Esc>t :TagbarToggle<CR>
+
 " Strip trailing whitespace on certain file types upon write.
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
