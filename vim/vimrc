@@ -181,6 +181,7 @@ endfunction
 map <Esc>c :call ToggleColorColumn()<CR>
 
 map <Esc>t :TagbarToggle<CR>
+map <Esc>p :NERDTreeToggle<CR>
 
 " Strip trailing whitespace on certain file types upon write.
 fun! <SID>StripTrailingWhitespaces()
@@ -211,15 +212,6 @@ noremap <silent> <C-w>- :wincmd s<CR>
 
 " Faster go-to-line
 nnoremap <CR> G
-
-" Tagbar
-nmap <F8> :TagbarToggle<CR>
-map <leader>pt :TagbarOpen<CR>
-
-" NERDTree
-"autocmd vimenter * NERDTree
-map <leader>pn :NERDTreeFocus<CR>
-map <leader>pN :NERDTreeClose<CR>
 
 " XMlEdit
 let g:xmledit_enable_html=1
