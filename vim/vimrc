@@ -188,6 +188,13 @@ noremap <silent> <C-j> :wincmd j<CR>
 noremap <silent> <C-h> :wincmd h<CR>
 noremap <silent> <C-l> :wincmd l<CR>
 
+" Might turn out to be a bad idea since it overrides other mapprings wrt.
+" windows. See:
+"		* help CTRL-W_bar
+"		* help CTRL-W_-
+noremap <silent> <C-w>\| :wincmd v<CR>
+noremap <silent> <C-w>- :wincmd s<CR>
+
 " Faster go-to-line
 nnoremap <CR> G
 
