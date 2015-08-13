@@ -6,5 +6,3 @@ A work in progress.
 Install
 =======
 `./install.sh`
-
-<!--vim: set ts=2 sw=2 tw=79 ft=markdown fdm=expr noet :-->
