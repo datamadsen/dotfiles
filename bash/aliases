@@ -1,0 +1,45 @@
+#!/bin/sh
+alias l='ls -G'
+alias la='ls -aG'
+alias lsa='ls -aG'
+alias ll='ls -lhG'
+alias lla='ls -alhG'
+alias ta='tmux attach'
+alias s='cd ..'
+alias venv='source venv/bin/activate'
+alias mkvenv='virtualenv venv'
+alias ccat='pygmentize -O style=fruity,linenos=1 -f console256 -g'
+alias im='vim'
+alias st='git st'
+alias lg='git lg'
+alias lgs='git lgs'
+alias cia='git cia'
+alias cob='git cob'
+alias com='git com'
+alias rb='git rb'
+alias rbm='git rbm'
+alias vimrc='vim ~/.vim/vimrc'
+alias gh='gem_home'
+
+if [[ $(uname) == *Darwin* ]] # Mac OS X
+then
+    alias ctags="`brew --prefix`/bin/ctags"
+fi
+
+alias portcheck="sudo portsnap fetch update && portmaster -L --index-only| egrep '(ew|ort) version|total install'"
+alias portupdate="sudo portmaster -aBd --delete-build-only"
+
+alias rails42='rails _4.2.0.beta4_'
+
+alias upfind='sh ~/.utilities/upfind.sh'
+alias appclose='echo "\n" | powershell.exe -ExecutionPolicy ByPass -File $(cygpath -aw ~/.utilities/close-application-with-partial-title.ps1) -partialWindowTitle $1' 
+
+alias slnname='upfind -name "*.sln" | rev | cut -d"/" -f1 | rev | cut -d"." -f1'
+alias slnclose='appclose $(slnname)'
+alias slnopen='cygstart $(upfind -name "*.sln")'
+alias opensln='slnopen'
+alias closesln='slnclose'
+alias msbuild='/cygdrive/c/Windows/Microsoft.NET/Framework/v4.0.30319/msbuild.exe'
+alias sln='ruby ~/.utilities/sln.rb'
+
+alias ide-rails='sh ~/.ide-rails.sh'
