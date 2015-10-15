@@ -32,6 +32,7 @@
   excludesfile = /Users/tmadsen/.gitignore
   editor = vim
 	autocrlf = false
+	trustctime = false
 
 [alias]
   ci = commit
