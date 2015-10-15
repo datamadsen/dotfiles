@@ -193,4 +193,5 @@ elif type compctl &>/dev/null; then
 fi
 ###-end-npm-completion-###
 
+export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
