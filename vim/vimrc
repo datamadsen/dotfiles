@@ -246,6 +246,7 @@ map <leader>p :CtrlPBuffer<CR>
 map <leader>. :CtrlPBufTag<CR>
 map <leader>, :CtrlPTag<CR>
 let g:ctrlp_custom_ignore = 'git\|hg\|svn\|node_modules\|_build'
+let g:ctrlp_working_path_mode = 'ra'
 
 " delimit-mate
 let g:delimitMate_expand_cr = 1
