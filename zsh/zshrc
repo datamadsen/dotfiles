@@ -2,13 +2,6 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export TERM="xterm-256color"
 
-# If we're on OS X we're using iTerm, in which we set colors
-# based on time of day.
-if [ "$(uname)" = "Darwin" ]
-then
-	osascript ~/.utilities/itermcolors.applescript
-fi
-
 setopt inc_append_history
 HISTSIZE=10000
 SAVEHIST=10000
