@@ -162,7 +162,7 @@ if filterlist <>
 ; 
 ; I never use the CapsLock key, that's why I chose it. 
 ; 
-#z:: 
+!Space:: 
 
 search = 
 numallwin = 0 

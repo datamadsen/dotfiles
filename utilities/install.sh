@@ -3,7 +3,7 @@ echo "[utilities] Remove symlinks"
 rm ~/.utilities
 
 # Create symlink
-echo "[tmux] Create symlinks"
+echo "[utilities] Create symlinks"
 ln -s $(pwd) ~/.utilities
 
 echo "[utilities] Done"
