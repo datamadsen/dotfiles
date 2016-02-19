@@ -33,6 +33,7 @@
   editor = vim
 	autocrlf = false
 	trustctime = false
+	filemode = false
 
 [alias]
   ci = commit
@@ -50,6 +51,12 @@
   lgl = "log --graph --pretty=format:'%Cred%h%Creset %<(60)%s %Cgreen%>(16)%cr %Cblue<%an>%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative --all"
   stat = !"f() { git log -n1 --stat $1; }; f"
   bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
+	last = log -1 --stat
+	cp = cherry-pick
+	cl = clone
+	br = branch
+	unstage = reset HEAD --
+	dc = diff --cached
 
 [push]
   default = simple
@@ -59,3 +66,12 @@
 
 [remote "origin"]
   prune = true
+[credential]
+	helper = cache --timeout=3600
+[merge]
+	tool = vimdiff
+[mergetool]
+	keeptemporaries = false
+	keepbackups = false
+	prompt = false
+	trustexitcode = false

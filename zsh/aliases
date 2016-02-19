@@ -43,3 +43,5 @@ alias msbuild='/cygdrive/c/Windows/Microsoft.NET/Framework/v4.0.30319/msbuild.ex
 alias sln='ruby ~/.utilities/sln.rb'
 
 alias ide-rails='sh ~/.ide-rails.sh'
+
+alias t='settitle'

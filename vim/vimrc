@@ -1,4 +1,5 @@
 set nocompatible
+set encoding=utf-8
 
 " use comma as leader.
 let mapleader = ","
@@ -9,39 +10,28 @@ set rtp+=~/.vim/bundle/vundle
 call vundle#begin()
 
 Plugin 'gmarik/vundle.git'
-Plugin 'sjl/gundo.vim.git'                       "Undo history.
-Plugin 'scrooloose/nerdtree.git'                 "File browser
-Plugin 'groenewege/vim-less.git'                 "Syntax, indent, completion
-Plugin 'sirver/UltiSnips.git'                    "Snippets.
-Plugin 'jakar/vim-json.git'                      "Syntax, indent for json
-Plugin 'tmadsen/xmledit.git'                      "Edit XML; includes tag completion and tag jumping
-" Plugin 'tmadsen/HTML-AutoCloseTag' " Let's try with this plugin instead
-Plugin 'aaronj1335/underscore-templates.vim.git' "Syntax highlighting for underscore.js templates
-Plugin 'pangloss/vim-javascript.git'             "Syntax and indent for javascript
-Plugin 'kien/ctrlp.vim.git'                      "Fuzzy finder
-Plugin 'heavenshell/vim-jsdoc.git'               "Generates JSDoc block comments based on a function signature
-Plugin 'junegunn/vim-easy-align.git'             "Easy alignment
-"Plugin 'scrooloose/nerdcommenter.git'            "Comment/uncomment lines
-Plugin 'tpope/vim-commentary'					           "Let's try a tpope plugin for this
-Plugin 'majutsushi/tagbar.git'                   "Class/member overview
-Plugin 'airblade/vim-gitgutter.git'              "Git diffs in gutter (SignColumn)
-Plugin 'tpope/vim-fugitive.git'                  "Git wrapper
-Plugin 'jiangmiao/auto-pairs.git'                "Insert or delete brackets, parens, quotes in pairs.
-Plugin 'scrooloose/syntastic.git'                "Syntax checking
-Plugin 'datamadsen/dm-snippets.git'              "The snippets I use for UltiSnips
-Plugin 'altercation/vim-colors-solarized.git'    "Solarized Colorscheme for Vim
-Plugin 'christoomey/vim-tmux-navigator'          "Navigate tmux panes and vim splits seamlessly
-Plugin 'vim-ruby/vim-ruby'                       "Lots of very nice stuff for ruby
-Plugin 'tpope/vim-rails'                         "RoR power tools
-Plugin 'nelstrom/vim-markdown-folding'           "Markdown folding
-Plugin 'tpope/vim-surround'                      "Easily surround with or change tags
-Plugin 'tpope/vim-endwise'                       "Wisely add 'end' in ruby, endfunction/endif/more in vim script, etc
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'danchoi/ri.vim'                          "browse ri documentation from Vim
-Plugin 'tpope/vim-rvm'
-Plugin 'dhruvasagar/vim-table-mode' 
-Plugin 'tpope/vim-ragtag'
- 
+Plugin 'kien/ctrlp.vim.git'
+Plugin 'tpope/vim-commentary'
+Plugin 'crusoexia/vim-monokai'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-dispatch'
+" Plugin 'OrangeT/vim-csharp'
+Plugin 'tpope/vim-markdown'
+Plugin 'nelstrom/vim-markdown-folding' 
+Plugin 'tpope/vim-fugitive' 
+Plugin 'ervandew/supertab'
+Plugin 'airblade/vim-gitgutter.git'
+Plugin 'adamclerk/vim-razor'
+Plugin 'SirVer/ultisnips'
+Plugin 'tmadsen/dm-snippets'
+Plugin 'milkypostman/vim-togglelist'
+Plugin 'simeji/winresizer'
+
+if has("python")
+	Plugin 'OmniSharp/Omnisharp-vim'
+endif
+
 call vundle#end()
 filetype plugin indent on
 
@@ -57,31 +47,39 @@ if has("gui_running")
     set guioptions-=r " remove right-hand-side scrollbar
     set guioptions-=L " remove left-hand-side scrollbar
     set guioptions-=m " remove menu
-    set guifont=Consolas:h16
+    set guifont=Consolas:h13
 else
     set t_Co=256
 endif
-let hour = strftime("%H") " Set the background light from 7am to 7pm
-if 7 <= hour && hour < 19
-  set background=light
-else " Set to dark from 7pm to 7am
-  set background=dark
-endif
-colorscheme solarized
+colorscheme monokai
+highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
+highlight nonText ctermbg=NONE
 
 " Vim UI
-set scrolloff=99 " keep cursor in the middle when possible.
+"set scrolloff=99 " keep cursor in the middle when possible.
 set linespace=1
 set wildmenu
 set ruler
 set cmdheight=1
-set number
 set backspace=2
 set whichwrap+=<,>,h,l
 set shortmess=atI
 set report=0
 set noerrorbells
 set splitbelow
+set number
+set relativenumber
+augroup linenumbers
+  autocmd!
+  autocmd BufEnter *    :set relativenumber
+  autocmd BufLeave *    :set number norelativenumber
+  autocmd WinEnter *    :set relativenumber
+  autocmd WinLeave *    :set number norelativenumber
+  autocmd InsertEnter * :set number norelativenumber
+  autocmd InsertLeave * :set relativenumber
+  autocmd FocusLost *   :set number norelativenumber
+  autocmd FocusGained * :set relativenumber
+augroup END
 
 " Visual Cues
 set showmatch " show matching '(' '{' '[' etc.
@@ -92,6 +90,7 @@ set laststatus=2
 set hlsearch
 set colorcolumn=81
 set diffopt+=vertical
+set cursorline
 set statusline=
 set statusline=%F\ "full filepath
 set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
@@ -104,21 +103,22 @@ set statusline+=%=      "left/right separator
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file
+set statusline+=%{fugitive#statusline()}
 
 " Initial colors for visual indicator lines on screen
-hi StatusLine  ctermbg=white  ctermfg=green
-hi LineNr      ctermbg=green  ctermfg=white
-hi ColorColumn ctermbg=green  ctermfg=white
+"hi StatusLine  ctermbg=white  ctermfg=green
+"hi LineNr      ctermbg=green  ctermfg=white
+"hi ColorColumn ctermbg=green  ctermfg=white
 
 " Blue lines in insert mode
-au InsertEnter * hi StatusLine  ctermbg=white ctermfg=blue
-au InsertEnter * hi LineNr      ctermbg=blue  ctermfg=white
-au InsertEnter * hi ColorColumn ctermbg=blue  ctermfg=white
+"au InsertEnter * hi StatusLine  ctermbg=white ctermfg=blue
+"au InsertEnter * hi LineNr      ctermbg=blue  ctermfg=white
+"au InsertEnter * hi ColorColumn ctermbg=blue  ctermfg=white
 
 " Green lines in normal mode
-au InsertLeave * hi StatusLine  ctermbg=white  ctermfg=green
-au InsertLeave * hi LineNr      ctermbg=green  ctermfg=white
-au InsertLeave * hi ColorColumn ctermbg=green  ctermfg=white
+"au InsertLeave * hi StatusLine  ctermbg=white  ctermfg=green
+"au InsertLeave * hi LineNr      ctermbg=green  ctermfg=white
+"au InsertLeave * hi ColorColumn ctermbg=green  ctermfg=white
 
 " Unfold files when opening them.
 au BufRead * normal zR
@@ -149,7 +149,7 @@ set textwidth=79
 " Misc.
 set ignorecase
 set foldmethod=syntax
-set completeopt=menuone
+set completeopt=longest,menuone,noselect
 
 " Should turn of esc-key delay:
 set noesckeys
@@ -166,9 +166,9 @@ command! Q q
 command! Qa qa
 
 " Use <Esc> a bit
-map <Esc>w :w<CR>
-map <Esc><Esc> :w<CR>
-map <Esc>h :nohl<CR>
+map <Esc>w :w<CR> " Esc+w=write
+map <Esc><Esc> :w<CR> " Esc+Esc=write
+map <Esc>h :nohl<CR> " Esc+h=stop highlighting
 
 let g:oldColorColumn = 0
 function! ToggleColorColumn()
@@ -179,11 +179,13 @@ function! ToggleColorColumn()
 		let &colorcolumn=g:oldColorColumn
 	endif
 endfunction
-map <Esc>c :call ToggleColorColumn()<CR>
+map <Esc>c :call ToggleColorColumn()<CR> " Esc+c=toggle color column
 call ToggleColorColumn()
 
 map <Esc>t :TagbarToggle<CR>
 map <Esc>p :NERDTreeToggle<CR>
+let g:NERDTreeWinSize = 40 
+let g:NERDTreeShowLineNumbers=1
 
 " Strip trailing whitespace on certain file types upon write.
 fun! <SID>StripTrailingWhitespaces()
@@ -196,7 +198,7 @@ autocmd FileType javascript,html autocmd BufWritePre <buffer> :call <SID>StripTr
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsSnippetsDir="~/.vim/bundle/dm-snippets/UltiSnips"
+let g:UltiSnipsSnippetsDir="~/vimfiles/bundle/dm-snippets/UltiSnips"
 let g:UltiSnipsEditSplit="horizontal"
 
 " Better window movement
@@ -204,16 +206,6 @@ noremap <silent> <C-k> :wincmd k<CR>
 noremap <silent> <C-j> :wincmd j<CR>
 noremap <silent> <C-h> :wincmd h<CR>
 noremap <silent> <C-l> :wincmd l<CR>
-
-" Might turn out to be a bad idea since it overrides other mapprings wrt.
-" windows. See:
-"		* help CTRL-W_bar
-"		* help CTRL-W_-
-noremap <silent> <C-w>\| :wincmd v<CR>
-noremap <silent> <C-w>- :wincmd s<CR>
-
-" Faster go-to-line
-nnoremap <CR> G
 
 " XMlEdit
 let g:xmledit_enable_html=1
@@ -245,8 +237,7 @@ vmap <Enter> <Plug>(EasyAlign)
 map <leader>p :CtrlPBuffer<CR>
 map <leader>. :CtrlPBufTag<CR>
 map <leader>, :CtrlPTag<CR>
-let g:ctrlp_custom_ignore = 'git\|hg\|svn\|node_modules\|_build'
-let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = 'git\|hg\|svn\|node_modules\|_build\|packages\|TestResults'
 
 " delimit-mate
 let g:delimitMate_expand_cr = 1
@@ -289,3 +280,136 @@ function! NewlineInTag()
     endif
 endfunction
 autocmd FileType eruby,html imap <CR> <C-R>=NewlineInTag()<CR>
+
+" use nested markdown folding expression
+let g:markdown_fold_style = 'nested'
+
+
+""" omnisharp test
+"This is the default value, setting it isn't actually necessary
+let g:OmniSharp_host = "http://localhost:2000"
+
+"Set the type lookup function to use the preview window instead of the status line
+"let g:OmniSharp_typeLookupInPreview = 1
+
+"Timeout in seconds to wait for a response from the server
+let g:OmniSharp_timeout = 1
+
+"Showmatch significantly slows down omnicomplete
+"when the first match contains parentheses.
+set noshowmatch
+
+"Super tab settings - uncomment the next 4 lines
+let g:SuperTabDefaultCompletionType = 'context'
+let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
+let g:SuperTabDefaultCompletionTypeDiscovery = ["&omnifunc:<c-x><c-o>","&completefunc:<c-x><c-n>"]
+let g:SuperTabClosePreviewOnPopupClose = 1
+
+"don't autoselect first item in omnicomplete, show if only one item (for preview)
+"remove preview if you don't want to see any documentation whatsoever.
+" set completeopt=longest,menuone,preview
+" Fetch full documentation during omnicomplete requests.
+" There is a performance penalty with this (especially on Mono)
+" By default, only Type/Method signatures are fetched. Full documentation can still be fetched when
+" you need it with the :OmniSharpDocumentation command.
+let g:omnicomplete_fetch_documentation=1
+
+"Move the preview window (code documentation) to the bottom of the screen, so it doesn't move the code!
+"You might also want to look at the echodoc plugin
+set splitbelow
+
+" Get Code Issues and syntax errors
+let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
+" If you are using the omnisharp-roslyn backend, use the following
+" let g:syntastic_cs_checkers = ['code_checker']
+augroup omnisharp_commands
+    autocmd!
+
+    "Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
+    autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
+
+    " Synchronous build (blocks Vim)
+    "autocmd FileType cs nnoremap <F5> :wa!<cr>:OmniSharpBuild<cr>
+    " Builds can also run asynchronously with vim-dispatch installed
+    autocmd FileType cs nnoremap <leader>b :wa!<cr>:OmniSharpBuildAsync<cr>
+    " automatic syntax check on events (TextChanged requires Vim 7.4)
+    autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
+
+    " Automatically add new cs files to the nearest project on save
+    autocmd BufWritePost *.cs call OmniSharp#AddToProject()
+
+		" Automatically generate ctags on write
+    " autocmd BufWritePost *.cs :Dispatch! ctags
+
+    "show type information automatically when the cursor stops moving
+    autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
+
+    "The following commands are contextual, based on the current cursor position.
+
+    autocmd FileType cs nnoremap gd :OmniSharpGotoDefinition<cr>
+    autocmd FileType cs nnoremap <leader>fi :OmniSharpFindImplementations<cr>
+    autocmd FileType cs nnoremap <leader>ft :OmniSharpFindType<cr>
+    autocmd FileType cs nnoremap <leader>fs :OmniSharpFindSymbol<cr>
+    autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
+    "finds members in the current buffer
+    autocmd FileType cs nnoremap <leader>fm :OmniSharpFindMembers<cr>
+    " cursor can be anywhere on the line containing an issue
+    autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
+    autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
+    autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
+    autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
+    "navigate up by method/property/field
+    autocmd FileType cs nnoremap <M-K> :OmniSharpNavigateUp<cr>
+    "navigate down by method/property/field
+    autocmd FileType cs nnoremap <M-J> :OmniSharpNavigateDown<cr>
+		autocmd FileType cs nnoremap <leader>tr :OmniSharpRunTests<cr>
+		autocmd FileType cs nnoremap <leader>tf :OmniSharpRunTestFixture<cr>
+		autocmd FileType cs nnoremap <leader>ta :OmniSharpRunAllTests<cr>
+		autocmd FileType cs nnoremap <leader>tl :OmniSharpRunLastTests<cr>
+augroup END
+
+
+" this setting controls how long to wait (in ms) before fetching type / symbol information.
+set updatetime=500
+" Remove 'Press Enter to continue' message when type information is longer than one line.
+set cmdheight=2
+
+" Contextual code actions (requires CtrlP or unite.vim)
+nnoremap <leader><space> :OmniSharpGetCodeActions<cr>
+" Run code actions with text selected in visual mode to extract method
+vnoremap <leader><space> :call OmniSharp#GetCodeActions('visual')<cr>
+
+" rename with dialog, write file first or we'll see errors
+nnoremap <leader>nm :w <bar> OmniSharpRename<cr>
+" nnoremap <F2> :OmniSharpRename<cr>
+" rename without dialog - with cursor on the symbol to rename... ':Rename newname'
+command! -nargs=1 Rename :call OmniSharp#RenameTo("<args>")
+
+" Force OmniSharp to reload the solution. Useful when switching branches etc.
+nnoremap <leader>rl :OmniSharpReloadSolution<cr>
+nnoremap <leader>cf :OmniSharpCodeFormat<cr>
+" Load the current .cs file to the nearest project
+nnoremap <leader>tp :OmniSharpAddToProject<cr>
+
+" (Experimental - uses vim-dispatch or vimproc plugin) - Start the omnisharp server for the current solution
+nnoremap <leader>ss :OmniSharpStartServer<cr>
+nnoremap <leader>sp :OmniSharpStopServer<cr>
+
+" Add syntax highlighting for types and interfaces
+nnoremap <leader>th :OmniSharpHighlightTypes<cr>
+"Don't ask to save when changing buffers (i.e. when jumping to a type definition)
+set hidden
+
+function! SLADeploy()
+	call system('c:\progra~2\MSBuild\12.0\Bin\msbuild.exe /nologo /clp:Verbosity=quiet /p:GenerateFullPaths=true /p:DeployOnBuild=true /p:PublishProfile=test .\SLAManagementSystem.sln')
+endfunction
+
+""" omnisharp test end
+" Gitgutter
+let g:gitgutter_enabled = 0
+
+" Togglelist
+let g:toggle_list_copen_command="Copen"
+
+" winresizer
+let g:winresizer_start_key='<C-T>'
