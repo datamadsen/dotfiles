@@ -1,8 +1,9 @@
 set nocompatible
 set encoding=utf-8
 
-" use comma as leader.
-let mapleader = ","
+" use space as leader. I used to use comma as leader, but it's useful for
+" navigating
+let mapleader = " "
 
 " General
 filetype off
@@ -27,6 +28,9 @@ Plugin 'SirVer/ultisnips'
 Plugin 'tmadsen/dm-snippets'
 Plugin 'milkypostman/vim-togglelist'
 Plugin 'simeji/winresizer'
+Plugin 'tpope/vim-tbone'
+Plugin 'while1eq1/vim-monokai-black'
+Plugin 'cohama/lexima.vim'
 
 if has("python")
 	Plugin 'OmniSharp/Omnisharp-vim'
@@ -52,8 +56,8 @@ else
     set t_Co=256
 endif
 colorscheme monokai
-highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
-highlight nonText ctermbg=NONE
+" highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
+" highlight nonText ctermbg=NONE
 
 " Vim UI
 "set scrolloff=99 " keep cursor in the middle when possible.
@@ -106,19 +110,24 @@ set statusline+=\ %P    "percent through file
 set statusline+=%{fugitive#statusline()}
 
 " Initial colors for visual indicator lines on screen
-"hi StatusLine  ctermbg=white  ctermfg=green
-"hi LineNr      ctermbg=green  ctermfg=white
-"hi ColorColumn ctermbg=green  ctermfg=white
+" hi StatusLine  ctermbg=white  ctermfg=green
+" hi LineNr      ctermbg=green  ctermfg=white
+" hi ColorColumn ctermbg=green  ctermfg=white
 
-" Blue lines in insert mode
-"au InsertEnter * hi StatusLine  ctermbg=white ctermfg=blue
-"au InsertEnter * hi LineNr      ctermbg=blue  ctermfg=white
-"au InsertEnter * hi ColorColumn ctermbg=blue  ctermfg=white
+" augroup gutters
+	" " Blue lines in insert mode
+	" au InsertEnter * hi StatusLine  ctermbg=white ctermfg=blue
+	" au InsertEnter * hi LineNr      ctermbg=blue  ctermfg=white
+	" au InsertEnter * hi ColorColumn ctermbg=blue  ctermfg=white
 
-" Green lines in normal mode
-"au InsertLeave * hi StatusLine  ctermbg=white  ctermfg=green
-"au InsertLeave * hi LineNr      ctermbg=green  ctermfg=white
-"au InsertLeave * hi ColorColumn ctermbg=green  ctermfg=white
+	" " Green lines in normal mode
+	" au InsertLeave * hi StatusLine  ctermbg=white  ctermfg=green
+	" au InsertLeave * hi LineNr      ctermbg=green  ctermfg=white
+	" au InsertLeave * hi ColorColumn ctermbg=green  ctermfg=white
+
+	" au WinLeave * hi LineNr ctermbg=grey
+	" au WinEnter * hi LineNr ctermbg=green
+" augroup END
 
 " Unfold files when opening them.
 au BufRead * normal zR
@@ -149,7 +158,7 @@ set textwidth=79
 " Misc.
 set ignorecase
 set foldmethod=syntax
-set completeopt=longest,menuone,noselect
+set completeopt=menuone
 
 " Should turn of esc-key delay:
 set noesckeys
@@ -165,10 +174,6 @@ command! Wq wq
 command! Q q
 command! Qa qa
 
-" Use <Esc> a bit
-map <Esc>w :w<CR> " Esc+w=write
-map <Esc><Esc> :w<CR> " Esc+Esc=write
-map <Esc>h :nohl<CR> " Esc+h=stop highlighting
 
 let g:oldColorColumn = 0
 function! ToggleColorColumn()
@@ -179,13 +184,7 @@ function! ToggleColorColumn()
 		let &colorcolumn=g:oldColorColumn
 	endif
 endfunction
-map <Esc>c :call ToggleColorColumn()<CR> " Esc+c=toggle color column
 call ToggleColorColumn()
-
-map <Esc>t :TagbarToggle<CR>
-map <Esc>p :NERDTreeToggle<CR>
-let g:NERDTreeWinSize = 40 
-let g:NERDTreeShowLineNumbers=1
 
 " Strip trailing whitespace on certain file types upon write.
 fun! <SID>StripTrailingWhitespaces()
@@ -254,7 +253,7 @@ let g:jsdoc_default_mapping=0 " Don't map <C-l> automatically.
 
 " autopairs
 let g:AutoPairsShortcutFastWrap = '' " If this is not here, we can't write å.
-let g:AutoPairsFlyMode = 1
+let g:AutoPairsFlyMode = 0
 
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_use_bundler = 1
@@ -333,35 +332,39 @@ augroup omnisharp_commands
     " Builds can also run asynchronously with vim-dispatch installed
     autocmd FileType cs nnoremap <leader>b :wa!<cr>:OmniSharpBuildAsync<cr>
     " automatic syntax check on events (TextChanged requires Vim 7.4)
-    autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
+    " autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
+    autocmd BufWritePost *.cs SyntasticCheck
 
     " Automatically add new cs files to the nearest project on save
     autocmd BufWritePost *.cs call OmniSharp#AddToProject()
 
 		" Automatically generate ctags on write
     " autocmd BufWritePost *.cs :Dispatch! ctags
+		" Not necessary because omnisharp and ctrl-p seeming talks together.
 
     "show type information automatically when the cursor stops moving
     autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
 
-    "The following commands are contextual, based on the current cursor position.
 
-    autocmd FileType cs nnoremap gd :OmniSharpGotoDefinition<cr>
+    autocmd FileType cs nnoremap gd :w <bar> :OmniSharpGotoDefinition<cr>
     autocmd FileType cs nnoremap <leader>fi :OmniSharpFindImplementations<cr>
     autocmd FileType cs nnoremap <leader>ft :OmniSharpFindType<cr>
     autocmd FileType cs nnoremap <leader>fs :OmniSharpFindSymbol<cr>
     autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
     "finds members in the current buffer
-    autocmd FileType cs nnoremap <leader>fm :OmniSharpFindMembers<cr>
+    "autocmd FileType cs nnoremap <leader>fm :OmniSharpFindMembers<cr>
+		" ctrl-p does this for me.
     " cursor can be anywhere on the line containing an issue
     autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
     autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
-    autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
+    "autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
     autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
     "navigate up by method/property/field
-    autocmd FileType cs nnoremap <M-K> :OmniSharpNavigateUp<cr>
+    "autocmd FileType cs nnoremap <A-k> :OmniSharpNavigateUp<cr>
+    autocmd FileType cs nnoremap k :OmniSharpNavigateUp<cr>
     "navigate down by method/property/field
-    autocmd FileType cs nnoremap <M-J> :OmniSharpNavigateDown<cr>
+    "autocmd FileType cs nnoremap <A-j> :OmniSharpNavigateDown<cr>
+    autocmd FileType cs nnoremap j :OmniSharpNavigateDown<cr>
 		autocmd FileType cs nnoremap <leader>tr :OmniSharpRunTests<cr>
 		autocmd FileType cs nnoremap <leader>tf :OmniSharpRunTestFixture<cr>
 		autocmd FileType cs nnoremap <leader>ta :OmniSharpRunAllTests<cr>
@@ -393,7 +396,7 @@ nnoremap <leader>tp :OmniSharpAddToProject<cr>
 
 " (Experimental - uses vim-dispatch or vimproc plugin) - Start the omnisharp server for the current solution
 nnoremap <leader>ss :OmniSharpStartServer<cr>
-nnoremap <leader>sp :OmniSharpStopServer<cr>
+nnoremap <leader>sq :OmniSharpStopServer<cr>
 
 " Add syntax highlighting for types and interfaces
 nnoremap <leader>th :OmniSharpHighlightTypes<cr>
@@ -413,3 +416,18 @@ let g:toggle_list_copen_command="Copen"
 
 " winresizer
 let g:winresizer_start_key='<C-T>'
+
+" fugitive
+autocmd FileType gitcommit setlocal nofoldenable
+
+" nerdtree
+map <leader>P :NERDTreeToggle<CR>
+let g:NERDTreeWinSize = 40 
+let g:NERDTreeShowLineNumbers=1
+
+" madsen leader
+map <leader>c :call ToggleColorColumn()<CR> " Esc+c=toggle color column
+map <leader>h :nohl <CR> 
+map <leader>gs :Gstatus <CR> 
+map <leader>gw :Gwrite <CR> 
+map <leader>gd :GDiff <CR> 
