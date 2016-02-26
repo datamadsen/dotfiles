@@ -36,7 +36,8 @@
     "^Keyword 'private' is redundant. This is the default modifier.$",
     ".* should not separate words with an underscore.*",
 		"^Parameter can be I.*$",
-		"^Parameter can be Nullable$"
+		"^Parameter can be Nullable$",
+		"Type check and casts can be replaced with 'as' and null check"
   ],
 
 	/*
@@ -51,18 +52,23 @@
     "Fixture": "vstest.console.exe {{AssemblyPath}} /Tests:{{TypeName}} /Logger:Madsen",
     "Single": "vstest.console.exe {{AssemblyPath}} /Tests:{{TypeName}}.{{MethodName}} /Logger:Madsen"
   },
-	*/
   "TestCommands": {
     "All": "vstest.console.exe {{AssemblyPath}} /Logger:Madsen",
     "Fixture": "vstest.console.exe {{AssemblyPath}} /Tests:{{TypeName}} /Logger:Madsen",
     "Single": "mstest.exe /testcontainer:{{AssemblyPath}} /test:{{TypeName}}.{{MethodName}} /detail:errormessage /detail:errorstacktrace /detail:stdout /detail:stderr /nologo"
   },
+	*/
+  "TestCommands": {
+    "All": "vstest.console.exe {{AssemblyPath}} /Logger:Madsen",
+    "Fixture": "vstest.console.exe {{AssemblyPath}} /Tests:{{TypeName}} /Logger:Madsen",
+    "Single": "vstest.console.exe {{AssemblyPath}} /Tests:{{TypeName}}.{{MethodName}} /Logger:Madsen"
+  },
 
   "TextEditorOptions": {
-    "tabsToSpaces": true,
-    "tabSize": 4,
-    "indentSize": 4,
-    "continuationIndent": 4,
+    "tabsToSpaces": false,
+    "tabSize": 2,
+    "indentSize": 2,
+    "continuationIndent": 2,
     "labelIndent": 0,
     /* "eolMarker": "\r\n", */
     "indentBlankLines": false,
