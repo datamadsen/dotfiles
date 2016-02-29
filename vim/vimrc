@@ -17,7 +17,6 @@ Plugin 'crusoexia/vim-monokai'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-dispatch'
-" Plugin 'OrangeT/vim-csharp'
 Plugin 'tpope/vim-markdown'
 Plugin 'nelstrom/vim-markdown-folding' 
 Plugin 'tpope/vim-fugitive' 
@@ -33,7 +32,7 @@ Plugin 'while1eq1/vim-monokai-black'
 Plugin 'cohama/lexima.vim'
 
 if has("python")
-	Plugin 'OmniSharp/Omnisharp-vim'
+	Plugin 'tmadsen/omnisharp-vim'
 endif
 
 call vundle#end()
@@ -56,8 +55,8 @@ else
     set t_Co=256
 endif
 colorscheme monokai
-" highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
-" highlight nonText ctermbg=NONE
+highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
+highlight nonText ctermbg=NONE
 
 " Vim UI
 "set scrolloff=99 " keep cursor in the middle when possible.
