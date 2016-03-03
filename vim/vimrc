@@ -196,7 +196,7 @@ autocmd FileType javascript,html autocmd BufWritePre <buffer> :call <SID>StripTr
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsSnippetsDir="~/vimfiles/bundle/dm-snippets/UltiSnips"
+let g:UltiSnipsSnippetsDir="~/.vim/bundle/dm-snippets/UltiSnips"
 let g:UltiSnipsEditSplit="horizontal"
 
 " Better window movement
@@ -360,10 +360,11 @@ augroup omnisharp_commands
     autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
     "navigate up by method/property/field
     "autocmd FileType cs nnoremap <A-k> :OmniSharpNavigateUp<cr>
-    autocmd FileType cs nnoremap k :OmniSharpNavigateUp<cr>
+    " autocmd FileType cs nnoremap k :OmniSharpNavigateUp<cr> This creates a messy situation with the escape key somehow.
     "navigate down by method/property/field
     "autocmd FileType cs nnoremap <A-j> :OmniSharpNavigateDown<cr>
-    autocmd FileType cs nnoremap j :OmniSharpNavigateDown<cr>
+    "autocmd FileType cs nnoremap j :OmniSharpNavigateDown<cr> This creates a
+		"messy situation with the escape key somehow.
 		autocmd FileType cs nnoremap <leader>tr :OmniSharpRunTests<cr>
 		autocmd FileType cs nnoremap <leader>tf :OmniSharpRunTestFixture<cr>
 		autocmd FileType cs nnoremap <leader>ta :OmniSharpRunAllTests<cr>
