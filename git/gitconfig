@@ -75,3 +75,6 @@
 	keepbackups = false
 	prompt = false
 	trustexitcode = false
+[filter "gitignore"]
+	clean = "sed '/#gitignore$/'d"
+	smudge = cat

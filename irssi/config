@@ -22,7 +22,14 @@ servers = (
   { address = "irc.webchat.org"; chatnet = "WebChat"; port = "6667"; },
   { address = "irc.rizon.net"; chatnet = "Rizon"; port = "6667"; },
   { address = "irc.link-net.org"; chatnet = "LinkNet"; port = "6667"; },
-  { address = "silc.silcnet.org"; chatnet = "SILC"; port = "706"; }
+  { address = "silc.silcnet.org"; chatnet = "SILC"; port = "706"; },
+  {
+    address = "datam.at";
+    chatnet = "freenode";
+    port = "8080";
+    use_ssl = "no";
+    ssl_verify = "no";
+  }
 );
 
 chatnets = {
@@ -88,6 +95,7 @@ chatnets = {
     max_whois = "30";
   };
   SILC = { type = "SILC"; };
+  freenode = { type = "IRC"; };
 };
 
 channels = (
