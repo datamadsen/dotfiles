@@ -22,7 +22,8 @@ Plugin 'nelstrom/vim-markdown-folding'
 Plugin 'tpope/vim-fugitive' 
 Plugin 'ervandew/supertab'
 Plugin 'airblade/vim-gitgutter.git'
-Plugin 'adamclerk/vim-razor'
+"Plugin 'adamclerk/vim-razor'
+Plugin 'enthooz/vim-razor'
 Plugin 'SirVer/ultisnips'
 Plugin 'tmadsen/dm-snippets'
 Plugin 'milkypostman/vim-togglelist'
@@ -372,6 +373,8 @@ augroup omnisharp_commands
 		autocmd FileType cs nnoremap <leader>tf :OmniSharpRunTestFixture<cr>
 		autocmd FileType cs nnoremap <leader>ta :OmniSharpRunAllTests<cr>
 		autocmd FileType cs nnoremap <leader>tl :OmniSharpRunLastTests<cr>
+
+		autocmd BufNewFile,BufRead *.cshtml setf razor
 augroup END
 
 
