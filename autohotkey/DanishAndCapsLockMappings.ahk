@@ -48,3 +48,5 @@ Capslock::Esc
 
 :c?*:ee,::é
 :c?*:EE,::É
+
+#+s::DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
