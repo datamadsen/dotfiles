@@ -22,8 +22,7 @@ Plugin 'nelstrom/vim-markdown-folding'
 Plugin 'tpope/vim-fugitive' 
 Plugin 'ervandew/supertab'
 Plugin 'airblade/vim-gitgutter.git'
-"Plugin 'adamclerk/vim-razor'
-Plugin 'enthooz/vim-razor'
+Plugin 'adamclerk/vim-razor'
 Plugin 'SirVer/ultisnips'
 Plugin 'tmadsen/dm-snippets'
 Plugin 'milkypostman/vim-togglelist'
@@ -31,6 +30,7 @@ Plugin 'simeji/winresizer'
 Plugin 'tpope/vim-tbone'
 Plugin 'while1eq1/vim-monokai-black'
 Plugin 'cohama/lexima.vim'
+Plugin 'danielmiessler/VimBlog'
 
 if has("python")
 	Plugin 'tmadsen/omnisharp-vim'
@@ -109,25 +109,6 @@ set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file
 set statusline+=%{fugitive#statusline()}
 
-" Initial colors for visual indicator lines on screen
-" hi StatusLine  ctermbg=white  ctermfg=green
-" hi LineNr      ctermbg=green  ctermfg=white
-" hi ColorColumn ctermbg=green  ctermfg=white
-
-" augroup gutters
-	" " Blue lines in insert mode
-	" au InsertEnter * hi StatusLine  ctermbg=white ctermfg=blue
-	" au InsertEnter * hi LineNr      ctermbg=blue  ctermfg=white
-	" au InsertEnter * hi ColorColumn ctermbg=blue  ctermfg=white
-
-	" " Green lines in normal mode
-	" au InsertLeave * hi StatusLine  ctermbg=white  ctermfg=green
-	" au InsertLeave * hi LineNr      ctermbg=green  ctermfg=white
-	" au InsertLeave * hi ColorColumn ctermbg=green  ctermfg=white
-
-	" au WinLeave * hi LineNr ctermbg=grey
-	" au WinEnter * hi LineNr ctermbg=green
-" augroup END
 
 " Unfold files when opening them.
 au BufRead * normal zR
@@ -196,7 +177,6 @@ endfun
 autocmd FileType javascript,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 " UltiSnips
-" let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsSnippetsDir="~/.vim/bundle/dm-snippets/UltiSnips"
 let g:UltiSnipsEditSplit="horizontal"
 
