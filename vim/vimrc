@@ -95,6 +95,7 @@ set hlsearch
 set colorcolumn=81
 set diffopt+=vertical
 set cursorline
+set mouse=a
 set statusline=
 set statusline=%F\ "full filepath
 set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
