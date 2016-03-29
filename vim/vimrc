@@ -95,7 +95,9 @@ set hlsearch
 set colorcolumn=81
 set diffopt+=vertical
 set cursorline
-set mouse=a
+set mouse=a " Enable mouse in all modes
+set ttymouse=xterm2 " Works with my mintty/tmux setup
+set ttyfast " We have a fast terminal connection
 set statusline=
 set statusline=%F\ "full filepath
 set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
@@ -437,3 +439,22 @@ nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 nnoremap \ :Ag<SPACE>
+
+" Better movemment when text is wrapped
+function! ScreenMovement(movement)
+   if &wrap
+      return "g" . a:movement
+   else
+      return a:movement
+   endif
+endfunction
+onoremap <silent> <expr> j ScreenMovement("j")
+onoremap <silent> <expr> k ScreenMovement("k")
+onoremap <silent> <expr> 0 ScreenMovement("0")
+onoremap <silent> <expr> ^ ScreenMovement("^")
+onoremap <silent> <expr> $ ScreenMovement("$")
+nnoremap <silent> <expr> j ScreenMovement("j")
+nnoremap <silent> <expr> k ScreenMovement("k")
+nnoremap <silent> <expr> 0 ScreenMovement("0")
+nnoremap <silent> <expr> ^ ScreenMovement("^")
+nnoremap <silent> <expr> $ ScreenMovement("$")
