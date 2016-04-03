@@ -5,3 +5,4 @@ cd irssi && ./install.sh && cd ..
 cd vim && ./install.sh && cd ..
 cd git && ./install.sh && cd ..
 cd utilities && ./install.sh && cd ..
+cd thyme && ./install.sh && cd ..
