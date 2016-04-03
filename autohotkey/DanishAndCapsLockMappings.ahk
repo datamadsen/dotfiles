@@ -50,3 +50,17 @@ Capslock::Esc
 :c?*:EE,::É
 
 #+s::DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
+
+!t::
+	WinExist("ahk_class Shell_TrayWnd")
+
+	t := !t
+
+	If (t = "1") {
+		WinHide, ahk_class Shell_TrayWnd
+		WinHide, Start ahk_class Button
+	} Else {
+		WinShow, ahk_class Shell_TrayWnd
+		WinShow, Start ahk_class Button
+	}
+return
