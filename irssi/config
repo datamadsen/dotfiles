@@ -9,7 +9,11 @@ servers = (
   },
   { address = "irc.dal.net"; chatnet = "DALnet"; port = "6667"; },
   { address = "irc.oftc.net"; chatnet = "OFTC"; port = "6667"; },
-  { address = "irc.gamesurge.net"; chatnet = "GameSurge"; port = "6667"; },
+  {
+    address = "irc.gamesurge.net";
+    chatnet = "GameSurge";
+    port = "6667";
+  },
   { address = "irc.webchat.org"; chatnet = "WebChat"; port = "6667"; },
   { address = "irc.rizon.net"; chatnet = "Rizon"; port = "6667"; },
   { address = "irc.link-net.org"; chatnet = "LinkNet"; port = "6667"; },
@@ -24,6 +28,13 @@ servers = (
   {
     address = "datam.at";
     chatnet = "quakenet";
+    port = "8080";
+    use_ssl = "no";
+    ssl_verify = "no";
+  },
+  {
+    address = "datam.at";
+    chatnet = "apati";
     port = "8080";
     use_ssl = "no";
     ssl_verify = "no";
@@ -94,6 +105,7 @@ chatnets = {
   };
   SILC = { type = "SILC"; };
   freenode = { type = "IRC"; };
+  apati = { type = "IRC"; };
 };
 
 channels = (
@@ -283,7 +295,7 @@ settings = {
     neat_colorize = "no";
   };
 };
-hilights = ( );
+hilights = ( { text = "@tmadsen"; nick = "yes"; word = "yes"; } );
 logs = { };
 ignores = (
   {
@@ -291,6 +303,10 @@ ignores = (
     channels = ( "#python", "#peewee", "#5by5", "#relayfm", "#atp" );
   },
   { level = "JOINS PARTS QUITS NICKS"; channels = ( "#meteor" ); },
+  { 
+    level = "JOINS PARTS QUITS NICKS";
+    channels = ( "#taskwarrior" );
+  },
   { level = "JOINS PARTS QUITS NICKS"; channels = ( "#css" ); },
   { level = "JOINS PARTS QUITS NICKS"; channels = ( "##freebsd" ); },
   { level = "JOINS PARTS QUITS NICKS"; channels = ( "#jquery" ); },
@@ -312,4 +328,7 @@ ignores = (
   { level = "JOINS PARTS QUITS NICKS"; channels = ( "#startups" ); },
   { level = "JOINS PARTS QUITS MODES"; channels = ( "#duckduckgo" ); },
   { level = "JOINS PARTS QUITS MODES"; channels = ( "#ruby" ); }
+);
+keyboard = ( 
+  { key = "meta-[M"; id = "command"; data = "mouse_xterm "; }
 );
