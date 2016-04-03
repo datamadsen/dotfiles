@@ -33,7 +33,6 @@ Plugin 'cohama/lexima.vim'
 Plugin 'danielmiessler/VimBlog'
 Plugin 'vimwiki/vimwiki'
 Plugin 'tbabej/taskwiki'
-"Plugin 'teranex/vimwiki-tasks'
 
 if has("python")
 	Plugin 'tmadsen/omnisharp-vim'
