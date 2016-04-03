@@ -31,6 +31,9 @@ Plugin 'tpope/vim-tbone'
 Plugin 'while1eq1/vim-monokai-black'
 Plugin 'cohama/lexima.vim'
 Plugin 'danielmiessler/VimBlog'
+Plugin 'vimwiki/vimwiki'
+Plugin 'tbabej/taskwiki'
+"Plugin 'teranex/vimwiki-tasks'
 
 if has("python")
 	Plugin 'tmadsen/omnisharp-vim'
@@ -91,7 +94,7 @@ set mat=2
 set incsearch
 set novisualbell
 set laststatus=2
-set hlsearch
+set nohlsearch " experimenting with navigating more by search
 set colorcolumn=81
 set diffopt+=vertical
 set cursorline
@@ -415,7 +418,7 @@ let g:NERDTreeShowLineNumbers=1
 
 " madsen leader
 map <leader>c :call ToggleColorColumn()<CR> " Esc+c=toggle color column
-map <leader>h :nohl <CR> 
+map <leader>h :set hlsearch! <CR> " toggle search highlighting
 map <leader>gs :Gstatus <CR> 
 map <leader>gw :Gwrite <CR> 
 map <leader>gd :GDiff <CR> 
@@ -458,3 +461,14 @@ nnoremap <silent> <expr> k ScreenMovement("k")
 nnoremap <silent> <expr> 0 ScreenMovement("0")
 nnoremap <silent> <expr> ^ ScreenMovement("^")
 nnoremap <silent> <expr> $ ScreenMovement("$")
+
+
+let g:vimwiki_conceallevel = 0
+autocmd FileType vimwiki setlocal expandtab
+
+" automatically wrap quickfix area
+augroup quickfix
+    autocmd!
+    autocmd FileType qf setlocal wrap
+    autocmd FileType qf setlocal linebreak
+augroup END
