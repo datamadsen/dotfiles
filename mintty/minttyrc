@@ -25,3 +25,4 @@ CursorBlinks=no
 Font=Consolas
 FontHeight=11
 PgUpDnScroll=no
+BellType=0
