@@ -13,3 +13,7 @@
 data.location=~/.task
 editor=vim
 include ~/dotfiles/taskwarrior/dark-gray-blue-256.theme
+taskd.certificate=\/home\/tmadsen\/.task\/tmadsen.cert.pem
+taskd.key=\/home\/tmadsen\/.task\/tmadsen.key.pem
+taskd.ca=\/home\/tmadsen\/.task\/ca.cert.pem
+taskd.trust=ignore hostname
