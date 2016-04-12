@@ -11,6 +11,7 @@ set rtp+=~/.vim/bundle/vundle
 call vundle#begin()
 
 Plugin 'gmarik/vundle.git'
+Plugin 'vimwiki/vimwiki'
 Plugin 'kien/ctrlp.vim.git'
 Plugin 'tpope/vim-commentary'
 Plugin 'crusoexia/vim-monokai'
@@ -31,8 +32,8 @@ Plugin 'tpope/vim-tbone'
 Plugin 'while1eq1/vim-monokai-black'
 Plugin 'cohama/lexima.vim'
 Plugin 'danielmiessler/VimBlog'
-Plugin 'vimwiki/vimwiki'
 Plugin 'tbabej/taskwiki'
+Plugin 'powerman/vim-plugin-AnsiEsc'
 
 if has("python")
 	Plugin 'tmadsen/omnisharp-vim'
@@ -184,6 +185,7 @@ autocmd FileType javascript,html autocmd BufWritePre <buffer> :call <SID>StripTr
 " UltiSnips
 let g:UltiSnipsSnippetsDir="~/.vim/bundle/dm-snippets/UltiSnips"
 let g:UltiSnipsEditSplit="horizontal"
+let g:UltiSnipsExpandTrigger="<c-j>"
 
 " Better window movement
 noremap <silent> <C-k> :wincmd k<CR>
@@ -463,7 +465,9 @@ nnoremap <silent> <expr> $ ScreenMovement("$")
 
 
 let g:vimwiki_conceallevel = 0
+let g:vimwiki_folding = 'syntax'
 autocmd FileType vimwiki setlocal expandtab
+autocmd FileType vimwiki setlocal foldmethod=syntax
 
 " automatically wrap quickfix area
 augroup quickfix
