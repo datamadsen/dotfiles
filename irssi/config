@@ -295,7 +295,10 @@ settings = {
     neat_colorize = "no";
   };
 };
-hilights = ( { text = "@tmadsen"; nick = "yes"; word = "yes"; } );
+hilights = (
+  { text = "@tmadsen:"; nick = "no"; word = "yes"; },
+  { text = "@tmadsen"; nick = "no"; word = "yes"; }
+);
 logs = { };
 ignores = (
   {
