@@ -23,7 +23,7 @@ Plugin 'nelstrom/vim-markdown-folding'
 Plugin 'tpope/vim-fugitive' 
 Plugin 'ervandew/supertab'
 Plugin 'airblade/vim-gitgutter.git'
-Plugin 'adamclerk/vim-razor'
+Plugin 'tmadsen/vim-razor'
 Plugin 'SirVer/ultisnips'
 Plugin 'tmadsen/dm-snippets'
 Plugin 'milkypostman/vim-togglelist'
@@ -31,9 +31,9 @@ Plugin 'simeji/winresizer'
 Plugin 'tpope/vim-tbone'
 Plugin 'while1eq1/vim-monokai-black'
 Plugin 'cohama/lexima.vim'
-Plugin 'danielmiessler/VimBlog'
 Plugin 'tbabej/taskwiki'
 Plugin 'powerman/vim-plugin-AnsiEsc'
+Plugin 'Konfekt/FastFold'
 
 if has("python")
 	Plugin 'tmadsen/omnisharp-vim'
@@ -145,7 +145,7 @@ set textwidth=79
 " Misc.
 set ignorecase
 set foldmethod=syntax
-set completeopt=menuone
+set completeopt=menuone,noinsert
 
 " Should turn of esc-key delay:
 set noesckeys
@@ -475,3 +475,13 @@ augroup quickfix
     autocmd FileType qf setlocal wrap
     autocmd FileType qf setlocal linebreak
 augroup END
+
+" Improvements to pum
+" Enter key will simply select the highlighted menu item, just as <C-Y> does. 
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>" 
+
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
