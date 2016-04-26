@@ -429,7 +429,7 @@ autocmd FileType gitcommit setlocal nofoldenable
 
 " nerdtree
 map <leader>P :NERDTreeToggle<CR>
-let g:NERDTreeWinSize = 40 
+let g:NERDTreeWinSize = 50 
 let g:NERDTreeShowLineNumbers=1
 
 " madsen leader
