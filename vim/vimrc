@@ -10,11 +10,11 @@ filetype off
 set rtp+=~/.vim/bundle/vundle
 call vundle#begin()
 
+Plugin 'cohama/lexima.vim'
 Plugin 'gmarik/vundle.git'
 Plugin 'vimwiki/vimwiki'
 Plugin 'kien/ctrlp.vim.git'
 Plugin 'tpope/vim-commentary'
-Plugin 'crusoexia/vim-monokai'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-dispatch'
@@ -22,7 +22,6 @@ Plugin 'tpope/vim-markdown'
 Plugin 'nelstrom/vim-markdown-folding' 
 Plugin 'tpope/vim-fugitive' 
 Plugin 'ervandew/supertab'
-Plugin 'airblade/vim-gitgutter.git'
 Plugin 'tmadsen/vim-razor'
 Plugin 'SirVer/ultisnips'
 Plugin 'tmadsen/dm-snippets'
@@ -30,10 +29,12 @@ Plugin 'milkypostman/vim-togglelist'
 Plugin 'simeji/winresizer'
 Plugin 'tpope/vim-tbone'
 Plugin 'while1eq1/vim-monokai-black'
-Plugin 'cohama/lexima.vim'
 Plugin 'tbabej/taskwiki'
 Plugin 'powerman/vim-plugin-AnsiEsc'
 Plugin 'Konfekt/FastFold'
+Plugin 'w0ng/vim-hybrid'
+Plugin 'alvan/vim-closetag'
+Plugin 'tpope/vim-surround'
 
 if has("python")
 	Plugin 'tmadsen/omnisharp-vim'
@@ -58,9 +59,26 @@ if has("gui_running")
 else
     set t_Co=256
 endif
-colorscheme monokai
+colorscheme hybrid
+set background=dark
 highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
 highlight nonText ctermbg=NONE
+
+
+" Initial colors for visual indicator lines on screen
+hi StatusLine  ctermbg=white  ctermfg=green
+hi LineNr      ctermbg=green  ctermfg=white
+hi ColorColumn ctermbg=green  ctermfg=white
+
+" Blue lines in insert mode
+au InsertEnter * hi StatusLine  ctermbg=white ctermfg=blue
+au InsertEnter * hi LineNr      ctermbg=blue  ctermfg=white
+au InsertEnter * hi ColorColumn ctermbg=blue  ctermfg=white
+
+" Green lines in normal mode
+au InsertLeave * hi StatusLine  ctermbg=white  ctermfg=green
+au InsertLeave * hi LineNr      ctermbg=green  ctermfg=white
+au InsertLeave * hi ColorColumn ctermbg=green  ctermfg=white
 
 " Vim UI
 "set scrolloff=99 " keep cursor in the middle when possible.
@@ -102,7 +120,8 @@ set mouse=a " Enable mouse in all modes
 set ttymouse=xterm2 " Works with my mintty/tmux setup
 set ttyfast " We have a fast terminal connection
 set statusline=
-set statusline=%F\ "full filepath
+" set statusline=%F\ "full filepath
+set statusline=%t\ "file name
 set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
 set statusline+=%{&ff}] "file format
 set statusline+=%h      "help file flag
@@ -113,7 +132,6 @@ set statusline+=%=      "left/right separator
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file
-set statusline+=%{fugitive#statusline()}
 
 
 " Unfold files when opening them.
@@ -145,7 +163,6 @@ set textwidth=79
 " Misc.
 set ignorecase
 set foldmethod=syntax
-set completeopt=menuone,noinsert
 
 " Should turn of esc-key delay:
 set noesckeys
@@ -186,6 +203,14 @@ autocmd FileType javascript,html autocmd BufWritePre <buffer> :call <SID>StripTr
 let g:UltiSnipsSnippetsDir="~/.vim/bundle/dm-snippets/UltiSnips"
 let g:UltiSnipsEditSplit="horizontal"
 let g:UltiSnipsExpandTrigger="<c-j>"
+
+let g:ulti_expand_or_jump_res = 0 "default value, just set once
+function! Ulti_ExpandOrJump_and_getRes()
+    call UltiSnips#ExpandSnippetOrJump()
+    return g:ulti_expand_or_jump_res
+endfunction
+
+inoremap ,, <C-R>=(Ulti_ExpandOrJump_and_getRes() > 0)?"":"\n"<CR>
 
 " Better window movement
 noremap <silent> <C-k> :wincmd k<CR>
@@ -257,18 +282,19 @@ let g:table_mode_corner_corner="+"
 let g:table_mode_header_fillchar="="
 
 " indentation on newline between html tags
-function! NewlineInTag()
-    let lnum = getline('.')
-    let cnum = col('.')
+" function! NewlineInTag()
+"     let lnum = getline('.')
+"     let cnum = col('.')
 
-    let chars = strpart(lnum, cnum - 2, 3)
-    if chars =~ '></'
-        return "\<CR>\<ESC>\<UP>$o"
-    else
-        return "\<CR>"
-    endif
-endfunction
-autocmd FileType eruby,html imap <CR> <C-R>=NewlineInTag()<CR>
+"     let chars = strpart(lnum, cnum - 2, 3)
+"     if chars =~ '></'
+"         return "\<CR>\<ESC>\<UP>$o"
+"     else
+"         return "\<CR>"
+"     endif
+" endfunction
+" autocmd FileType eruby,html imap <CR> <C-R>=NewlineInTag()<CR>
+" TODO: this is achieved with other plugins. Like closetag and lexima.
 
 " use nested markdown folding expression
 let g:markdown_fold_style = 'nested'
@@ -317,20 +343,14 @@ augroup omnisharp_commands
     "Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
     autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
-    " Synchronous build (blocks Vim)
-    "autocmd FileType cs nnoremap <F5> :wa!<cr>:OmniSharpBuild<cr>
     " Builds can also run asynchronously with vim-dispatch installed
     autocmd FileType cs nnoremap <leader>b :wa!<cr>:OmniSharpBuildAsync<cr>
+		
     " automatic syntax check on events (TextChanged requires Vim 7.4)
-    " autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
-    autocmd BufWritePost *.cs SyntasticCheck
+    autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
 
     " Automatically add new cs files to the nearest project on save
     autocmd BufWritePost *.cs call OmniSharp#AddToProject()
-
-		" Automatically generate ctags on write
-    " autocmd BufWritePost *.cs :Dispatch! ctags
-		" Not necessary because omnisharp and ctrl-p seeming talks together.
 
     "show type information automatically when the cursor stops moving
     autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
@@ -340,27 +360,22 @@ augroup omnisharp_commands
     autocmd FileType cs nnoremap <leader>, :OmniSharpFindType<cr>
     autocmd FileType cs nnoremap <leader>fs :OmniSharpFindSymbol<cr>
     autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
-    "finds members in the current buffer
-    "autocmd FileType cs nnoremap <leader>fm :OmniSharpFindMembers<cr>
-		" ctrl-p does this for me.
-    " cursor can be anywhere on the line containing an issue
     autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
     autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
-    "autocmd FileType cs nnoremap <leader>tt :OmniSharpTypeLookup<cr>
     autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
-    "navigate up by method/property/field
-    "autocmd FileType cs nnoremap <A-k> :OmniSharpNavigateUp<cr>
-    " autocmd FileType cs nnoremap k :OmniSharpNavigateUp<cr> This creates a messy situation with the escape key somehow.
-    "navigate down by method/property/field
-    "autocmd FileType cs nnoremap <A-j> :OmniSharpNavigateDown<cr>
-    "autocmd FileType cs nnoremap j :OmniSharpNavigateDown<cr> This creates a
-		"messy situation with the escape key somehow.
 		autocmd FileType cs nnoremap <leader>tr :OmniSharpRunTests<cr>
 		autocmd FileType cs nnoremap <leader>tf :OmniSharpRunTestFixture<cr>
 		autocmd FileType cs nnoremap <leader>ta :OmniSharpRunAllTests<cr>
 		autocmd FileType cs nnoremap <leader>tl :OmniSharpRunLastTests<cr>
 
 		autocmd BufNewFile,BufRead *.cshtml setf razor
+
+		autocmd FileType cs inoremap <buffer> <expr> . pumvisible() ? "\<C-y>.<C-x><C-o>" : ".\<C-x><C-o>"
+		autocmd FileType cs inoremap <buffer> <expr> ; pumvisible() ? "\<C-y>;" : ";"
+		autocmd FileType cs inoremap <buffer> <expr> , pumvisible() ? "\<C-y>," : ","
+		autocmd FileType cs inoremap <buffer> <expr> <Tab> pumvisible() ? "\<C-y>" : "\<C-x><C-o>"
+		autocmd FileType cs inoremap <buffer> <expr> <Space> pumvisible() ? "\<C-y> " : " "
+		autocmd FileType cs inoremap <buffer> <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>" 
 augroup END
 
 
@@ -477,11 +492,11 @@ augroup quickfix
 augroup END
 
 " Improvements to pum
+set completeopt=menuone,noinsert ",noselect
 " Enter key will simply select the highlighted menu item, just as <C-Y> does. 
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>" 
+" inoremap <expr> <C-n> pumvisible() ? "\<Down>" : "\<C-n>"
+" inoremap <expr> <C-p> pumvisible() ? "\<Up>" : "\<C-n>"
+"inoremap ,, <C-x><C-o><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ""<CR>
 
-inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
-  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.cshtml"
 
-inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
-  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
