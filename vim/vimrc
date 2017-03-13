@@ -35,6 +35,12 @@ Plugin 'Konfekt/FastFold'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'alvan/vim-closetag'
 Plugin 'tpope/vim-surround'
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Quramy/tsuquyomi'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'Quramy/vim-js-pretty-template'
+Plugin 'jason0x43/vim-js-indent'
+Plugin 'Quramy/ng-tsserver'
 
 if has("python")
 	Plugin 'tmadsen/omnisharp-vim'
@@ -197,7 +203,8 @@ fun! <SID>StripTrailingWhitespaces()
     %s/\s\+$//e
     call cursor(l, c)
 endfun
-autocmd FileType javascript,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType typescript,javascript,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd FileType typescript JsPreTmpl html
 
 " UltiSnips
 let g:UltiSnipsSnippetsDir="~/.vim/bundle/dm-snippets/UltiSnips"
@@ -302,10 +309,11 @@ let g:markdown_fold_style = 'nested'
 
 """ omnisharp test
 "This is the default value, setting it isn't actually necessary
-let g:OmniSharp_host = "http://localhost:2000"
+let g:Omnisharp_start_server = 0
+let g:OmniSharp_host = "http://localhost:2001"
 
 "Set the type lookup function to use the preview window instead of the status line
-"let g:OmniSharp_typeLookupInPreview = 1
+" let g:OmniSharp_typeLookupInPreview = 1
 
 "Timeout in seconds to wait for a response from the server
 let g:OmniSharp_timeout = 1
@@ -336,7 +344,7 @@ set splitbelow
 " Get Code Issues and syntax errors
 let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
 " If you are using the omnisharp-roslyn backend, use the following
-" let g:syntastic_cs_checkers = ['code_checker']
+let g:syntastic_cs_checkers = ['code_checker']
 augroup omnisharp_commands
     autocmd!
 
