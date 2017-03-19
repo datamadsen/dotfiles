@@ -1,5 +1,5 @@
 set nocompatible
-set encoding=utf-8
+set encoding=utf8
 
 " use space as leader. I used to use comma as leader, but it's useful for
 " navigating
@@ -10,37 +10,38 @@ filetype off
 set rtp+=~/.vim/bundle/vundle
 call vundle#begin()
 
-Plugin 'cohama/lexima.vim'
-Plugin 'gmarik/vundle.git'
-Plugin 'vimwiki/vimwiki'
-Plugin 'kien/ctrlp.vim.git'
-Plugin 'tpope/vim-commentary'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-markdown'
-Plugin 'nelstrom/vim-markdown-folding' 
-Plugin 'tpope/vim-fugitive' 
-Plugin 'ervandew/supertab'
-Plugin 'tmadsen/vim-razor'
-Plugin 'SirVer/ultisnips'
-Plugin 'tmadsen/dm-snippets'
-Plugin 'milkypostman/vim-togglelist'
-Plugin 'simeji/winresizer'
-Plugin 'tpope/vim-tbone'
-Plugin 'while1eq1/vim-monokai-black'
-Plugin 'tbabej/taskwiki'
+Plugin 'cohama/lexima.vim' " Auto-close parentheses
+Plugin 'gmarik/vundle.git' " Plugin manager
+Plugin 'vimwiki/vimwiki' " Wiki
+Plugin 'kien/ctrlp.vim.git' " Fuzzy finder
+Plugin 'tpope/vim-commentary' " Comment stuff out/in
+Plugin 'scrooloose/nerdtree' " Tree explorer
+Plugin 'scrooloose/syntastic' " Syntax checking
+Plugin 'tpope/vim-dispatch' " Async build/test
+Plugin 'tpope/vim-markdown' " Markdown
+Plugin 'nelstrom/vim-markdown-folding' " Markdown folding
+Plugin 'tpope/vim-fugitive' " Git
+Plugin 'ervandew/supertab' " tab-completion
+Plugin 'SirVer/ultisnips' " Snippet stuff
+Plugin 'tmadsen/dm-snippets' " My snippets
+Plugin 'milkypostman/vim-togglelist' " Location list
+Plugin 'simeji/winresizer' " Resize windows
+Plugin 'tbabej/taskwiki' " Task manager
 Plugin 'powerman/vim-plugin-AnsiEsc'
-Plugin 'Konfekt/FastFold'
-Plugin 'w0ng/vim-hybrid'
-Plugin 'alvan/vim-closetag'
-Plugin 'tpope/vim-surround'
-Plugin 'Shougo/vimproc.vim'
-Plugin 'Quramy/tsuquyomi'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'Quramy/vim-js-pretty-template'
-Plugin 'jason0x43/vim-js-indent'
-Plugin 'Quramy/ng-tsserver'
+Plugin 'Konfekt/FastFold' " Folding optimization
+Plugin 'w0ng/vim-hybrid' " Color scheme
+Plugin 'alvan/vim-closetag' " Auto-close html tags
+Plugin 'tpope/vim-surround' " vim-surround
+Plugin 'Shougo/vimproc.vim' " Async command execution
+Plugin 'Quramy/tsuquyomi' " Typescript ide
+Plugin 'leafgarland/typescript-vim' " Typescript syntax
+Plugin 'jason0x43/vim-js-indent' " js/ts indenter
+Plugin 'Quramy/ng-tsserver' " Typescript server
+Plugin 'mhartington/oceanic-next' " Colorscheme
+Plugin 'vim-airline/vim-airline' " Statusline
+Plugin 'mhinz/vim-startify' " Startup screen
+Plugin 'sjl/badwolf' " Colorscheme
+Plugin 'tpope/vim-vividchalk' " Colorscheme
 
 if has("python")
 	Plugin 'tmadsen/omnisharp-vim'
@@ -57,16 +58,18 @@ set viminfo+=! " make sure it can save viminfo
 
 " Theme/Colors
 if has("gui_running")
-    set guioptions-=T " remove toolbar
-    set guioptions-=r " remove right-hand-side scrollbar
-    set guioptions-=L " remove left-hand-side scrollbar
-    set guioptions-=m " remove menu
-    set guifont=Consolas:h13
+	set guioptions-=T " remove toolbar
+	set guioptions-=r " remove right-hand-side scrollbar
+	set guioptions-=L " remove left-hand-side scrollbar
+	set guioptions-=m " remove menu
+	" set guifont=Consolas:h13
+	" set guifont=Bitstream\ Vera\ Sans\ Mono\ Nerd\ Font\ Complete\ Mono:h11
+	set guifont=Anonymice\ Powerline\ Nerd\ Font\ Complete\ Mono:h14
 else
-    set t_Co=256
+	set t_Co=256
 endif
-colorscheme hybrid
-set background=dark
+colorscheme OceanicNext
+let g:airline_theme='oceanicnext'
 highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
 highlight nonText ctermbg=NONE
 
@@ -101,15 +104,15 @@ set splitbelow
 set number
 set relativenumber
 augroup linenumbers
-  autocmd!
-  autocmd BufEnter *    :set relativenumber
-  autocmd BufLeave *    :set number norelativenumber
-  autocmd WinEnter *    :set relativenumber
-  autocmd WinLeave *    :set number norelativenumber
-  autocmd InsertEnter * :set number norelativenumber
-  autocmd InsertLeave * :set relativenumber
-  autocmd FocusLost *   :set number norelativenumber
-  autocmd FocusGained * :set relativenumber
+	autocmd!
+	autocmd BufEnter *    :set relativenumber
+	autocmd BufLeave *    :set number norelativenumber
+	autocmd WinEnter *    :set relativenumber
+	autocmd WinLeave *    :set number norelativenumber
+	autocmd InsertEnter * :set number norelativenumber
+	autocmd InsertLeave * :set relativenumber
+	autocmd FocusLost *   :set number norelativenumber
+	autocmd FocusGained * :set relativenumber
 augroup END
 
 " Visual Cues
@@ -147,10 +150,10 @@ au BufRead * normal zR
 " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
 " files.
 function! AppendModeline()
-  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
-        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
-  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-  call append(line("$"), l:modeline)
+	let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+				\ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+	let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+	call append(line("$"), l:modeline)
 endfunction
 
 " Rename tmux window to filename.
@@ -176,7 +179,7 @@ set ttimeout
 set ttimeoutlen=1
 
 " Run shell script being edited.
-autocmd FileType sh nmap <leader>r :!./%<CR> 
+autocmd FileType sh nmap <leader>r :!./%<CR>
 
 " Remap commands that I mistype
 command! W w
@@ -198,13 +201,13 @@ call ToggleColorColumn()
 
 " Strip trailing whitespace on certain file types upon write.
 fun! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    call cursor(l, c)
+	let l = line(".")
+	let c = col(".")
+	%s/\s\+$//e
+	call cursor(l, c)
 endfun
-autocmd FileType typescript,javascript,html autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
-autocmd FileType typescript JsPreTmpl html
+autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+" autocmd FileType typescript JsPreTmpl html
 
 " UltiSnips
 let g:UltiSnipsSnippetsDir="~/.vim/bundle/dm-snippets/UltiSnips"
@@ -213,8 +216,8 @@ let g:UltiSnipsExpandTrigger="<c-j>"
 
 let g:ulti_expand_or_jump_res = 0 "default value, just set once
 function! Ulti_ExpandOrJump_and_getRes()
-    call UltiSnips#ExpandSnippetOrJump()
-    return g:ulti_expand_or_jump_res
+	call UltiSnips#ExpandSnippetOrJump()
+	return g:ulti_expand_or_jump_res
 endfunction
 
 inoremap ,, <C-R>=(Ulti_ExpandOrJump_and_getRes() > 0)?"":"\n"<CR>
@@ -243,8 +246,8 @@ let g:jseol#trigger="<leader>e"
 
 " Use ag.
 if executable("ag")
-    set grepprg=ag\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+	set grepprg=ag\ --nogroup\ --nocolor
+	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
 " easy-align.
@@ -267,8 +270,8 @@ let g:delimitMate_expand_cr = 1
 highlight Pmenu ctermbg=238
 
 " syntastic
-let g:syntastic_check_on_wq = 0
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
 
 " jsdoc
 let g:jsdoc_default_mapping=0 " Don't map <C-l> automatically.
@@ -346,44 +349,44 @@ let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
 " If you are using the omnisharp-roslyn backend, use the following
 let g:syntastic_cs_checkers = ['code_checker']
 augroup omnisharp_commands
-    autocmd!
+	autocmd!
 
-    "Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
-    autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
+	"Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
+	autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
-    " Builds can also run asynchronously with vim-dispatch installed
-    autocmd FileType cs nnoremap <leader>b :wa!<cr>:OmniSharpBuildAsync<cr>
-		
-    " automatic syntax check on events (TextChanged requires Vim 7.4)
-    autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
+	" Builds can also run asynchronously with vim-dispatch installed
+	autocmd FileType cs nnoremap <leader>b :wa!<cr>:OmniSharpBuildAsync<cr>
 
-    " Automatically add new cs files to the nearest project on save
-    autocmd BufWritePost *.cs call OmniSharp#AddToProject()
+	" automatic syntax check on events (TextChanged requires Vim 7.4)
+	autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
 
-    "show type information automatically when the cursor stops moving
-    autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
+	" Automatically add new cs files to the nearest project on save
+	autocmd BufWritePost *.cs call OmniSharp#AddToProject()
 
-    autocmd FileType cs nnoremap gd :w <bar> :OmniSharpGotoDefinition<cr>
-    autocmd FileType cs nnoremap <leader>fi :OmniSharpFindImplementations<cr>
-    autocmd FileType cs nnoremap <leader>, :OmniSharpFindType<cr>
-    autocmd FileType cs nnoremap <leader>fs :OmniSharpFindSymbol<cr>
-    autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
-    autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
-    autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
-    autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
-		autocmd FileType cs nnoremap <leader>tr :OmniSharpRunTests<cr>
-		autocmd FileType cs nnoremap <leader>tf :OmniSharpRunTestFixture<cr>
-		autocmd FileType cs nnoremap <leader>ta :OmniSharpRunAllTests<cr>
-		autocmd FileType cs nnoremap <leader>tl :OmniSharpRunLastTests<cr>
+	"show type information automatically when the cursor stops moving
+	autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
 
-		autocmd BufNewFile,BufRead *.cshtml setf razor
+	autocmd FileType cs nnoremap gd :w <bar> :OmniSharpGotoDefinition<cr>
+	autocmd FileType cs nnoremap <leader>fi :OmniSharpFindImplementations<cr>
+	autocmd FileType cs nnoremap <leader>, :OmniSharpFindType<cr>
+	autocmd FileType cs nnoremap <leader>fs :OmniSharpFindSymbol<cr>
+	autocmd FileType cs nnoremap <leader>fu :OmniSharpFindUsages<cr>
+	autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
+	autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
+	autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
+	autocmd FileType cs nnoremap <leader>tr :OmniSharpRunTests<cr>
+	autocmd FileType cs nnoremap <leader>tf :OmniSharpRunTestFixture<cr>
+	autocmd FileType cs nnoremap <leader>ta :OmniSharpRunAllTests<cr>
+	autocmd FileType cs nnoremap <leader>tl :OmniSharpRunLastTests<cr>
 
-		autocmd FileType cs inoremap <buffer> <expr> . pumvisible() ? "\<C-y>.<C-x><C-o>" : ".\<C-x><C-o>"
-		autocmd FileType cs inoremap <buffer> <expr> ; pumvisible() ? "\<C-y>;" : ";"
-		autocmd FileType cs inoremap <buffer> <expr> , pumvisible() ? "\<C-y>," : ","
-		autocmd FileType cs inoremap <buffer> <expr> <Tab> pumvisible() ? "\<C-y>" : "\<C-x><C-o>"
-		autocmd FileType cs inoremap <buffer> <expr> <Space> pumvisible() ? "\<C-y> " : " "
-		autocmd FileType cs inoremap <buffer> <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>" 
+	autocmd BufNewFile,BufRead *.cshtml setf razor
+
+	autocmd FileType cs inoremap <buffer> <expr> . pumvisible() ? "\<C-y>.<C-x><C-o>" : ".\<C-x><C-o>"
+	autocmd FileType cs inoremap <buffer> <expr> ; pumvisible() ? "\<C-y>;" : ";"
+	autocmd FileType cs inoremap <buffer> <expr> , pumvisible() ? "\<C-y>," : ","
+	autocmd FileType cs inoremap <buffer> <expr> <Tab> pumvisible() ? "\<C-y>" : "\<C-x><C-o>"
+	autocmd FileType cs inoremap <buffer> <expr> <Space> pumvisible() ? "\<C-y> " : " "
+	autocmd FileType cs inoremap <buffer> <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 augroup END
 
 
@@ -437,43 +440,43 @@ autocmd FileType gitcommit setlocal nofoldenable
 
 " nerdtree
 map <leader>P :NERDTreeToggle<CR>
-let g:NERDTreeWinSize = 50 
+let g:NERDTreeWinSize = 50
 let g:NERDTreeShowLineNumbers=1
 
 " madsen leader
 map <leader>c :call ToggleColorColumn()<CR> " Esc+c=toggle color column
 map <leader>h :set hlsearch! <CR> " toggle search highlighting
-map <leader>gs :Gstatus <CR> 
-map <leader>gw :Gwrite <CR> 
-map <leader>gd :GDiff <CR> 
+map <leader>gs :Gstatus <CR>
+map <leader>gw :Gwrite <CR>
+map <leader>gd :GDiff <CR>
 
 " The Silver Searcher
 if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
+	" Use ag over grep
+	set grepprg=ag\ --nogroup\ --nocolor
 
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+	" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+	let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
-  " ag is fast enough that CtrlP doesn't need to cache
-  "let g:ctrlp_use_caching = 0 no it's not
+	" ag is fast enough that CtrlP doesn't need to cache
+	"let g:ctrlp_use_caching = 0 no it's not
 endif
 
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " bind \ (backward slash) to grep shortcut
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 nnoremap \ :Ag<SPACE>
 
 " Better movemment when text is wrapped
 function! ScreenMovement(movement)
-   if &wrap
-      return "g" . a:movement
-   else
-      return a:movement
-   endif
+	if &wrap
+		return "g" . a:movement
+	else
+		return a:movement
+	endif
 endfunction
 onoremap <silent> <expr> j ScreenMovement("j")
 onoremap <silent> <expr> k ScreenMovement("k")
@@ -494,17 +497,16 @@ autocmd FileType vimwiki setlocal foldmethod=syntax
 
 " automatically wrap quickfix area
 augroup quickfix
-    autocmd!
-    autocmd FileType qf setlocal wrap
-    autocmd FileType qf setlocal linebreak
+	autocmd!
+	autocmd FileType qf setlocal wrap
+	autocmd FileType qf setlocal linebreak
 augroup END
 
 " Improvements to pum
 set completeopt=menuone,noinsert ",noselect
-" Enter key will simply select the highlighted menu item, just as <C-Y> does. 
-" inoremap <expr> <C-n> pumvisible() ? "\<Down>" : "\<C-n>"
-" inoremap <expr> <C-p> pumvisible() ? "\<Up>" : "\<C-n>"
-"inoremap ,, <C-x><C-o><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ""<CR>
+inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
+inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+inoremap <expr> <cr> ((pumvisible())?("\<C-y>"):("\<cr>"))
 
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.cshtml"
 
