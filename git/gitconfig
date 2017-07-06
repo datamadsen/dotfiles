@@ -36,25 +36,14 @@
 	filemode = false
 
 [alias]
-  ci = commit
-  cia = commit -a
   co = checkout
   cob = checkout -b
-  com = checkout master
-  rb = rebase
-  rbm = rebase master
   st = status
   d = difftool
-  initexternal = !"f() { git --work-tree=. --git-dir=\"$1\" init && echo \"gitdir: $1\" >> .git; }; f"
   lg = "!git --no-pager log -20 --graph --pretty=format:'%Cred%h%Creset %<(60)%s %Cgreen%>(16)%cr %Cblue<%an>%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative --all"
   lgs = "!git --no-pager log -20 --graph --pretty=format:'%Cred%h%Creset %s'"
   lgl = "log --graph --pretty=format:'%Cred%h%Creset %<(60)%s %Cgreen%>(16)%cr %Cblue<%an>%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative --all"
   stat = !"f() { git log -n1 --stat $1; }; f"
-  bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
-	last = log -1 --stat
-	cp = cherry-pick
-	cl = clone
-	br = branch
 	unstage = reset HEAD --
 	dc = diff --cached
 	b = branch -a -vv
