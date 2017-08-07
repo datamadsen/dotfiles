@@ -18,7 +18,9 @@ Plugin 'tpope/vim-commentary' " Comment stuff out/in
 Plugin 'scrooloose/nerdtree' " Tree explorer
 Plugin 'scrooloose/syntastic' " Syntax checking
 Plugin 'tpope/vim-dispatch' " Async build/test
-Plugin 'tpope/vim-markdown' " Markdown
+" Plugin 'tpope/vim-markdown' " Markdown
+Plugin 'godlygeek/tabular' " vim-markdown dependency
+Plugin 'plasticboy/vim-markdown' " Markdown
 Plugin 'nelstrom/vim-markdown-folding' " Markdown folding
 Plugin 'tpope/vim-fugitive' " Git
 Plugin 'ervandew/supertab' " tab-completion
@@ -68,7 +70,7 @@ if has("gui_running")
 else
 	set t_Co=256
 endif
-colorscheme OceanicNext
+colorscheme badwolf
 let g:airline_theme='oceanicnext'
 highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
 highlight nonText ctermbg=NONE
@@ -271,6 +273,7 @@ highlight Pmenu ctermbg=238
 
 " syntastic
 let g:syntastic_html_tidy_ignore_errors=['proprietary attribute']
+let g:syntastic_typescript_checkers = ['tsuquyomi']
 
 " jsdoc
 let g:jsdoc_default_mapping=0 " Don't map <C-l> automatically.
@@ -279,16 +282,21 @@ let g:jsdoc_default_mapping=0 " Don't map <C-l> automatically.
 let g:AutoPairsShortcutFastWrap = '' " If this is not here, we can't write å.
 let g:AutoPairsFlyMode = 0
 
+" markdown
+let g:vim_markdown_new_list_item_indent = 2
+
 """ omnisharp test
 "This is the default value, setting it isn't actually necessary
 let g:Omnisharp_start_server = 0
-let g:OmniSharp_host = "http://localhost:2001"
+let g:Omnisharp_stop_server = 0
+let g:OmniSharp_server_path = "/Users/tmadsen/forks/omnisharp-roslyn/artifacts/publish/OmniSharp/default/netcoreapp1.1"
+" let g:OmniSharp_host = "http://localhost:2000"
 
 "Set the type lookup function to use the preview window instead of the status line
 " let g:OmniSharp_typeLookupInPreview = 1
 
 "Timeout in seconds to wait for a response from the server
-let g:OmniSharp_timeout = 1
+" let g:OmniSharp_timeout = 1
 
 "Showmatch significantly slows down omnicomplete
 "when the first match contains parentheses.
@@ -314,8 +322,9 @@ let g:omnicomplete_fetch_documentation=1
 set splitbelow
 
 " Get Code Issues and syntax errors
-let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
+" let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
 " If you are using the omnisharp-roslyn backend, use the following
+let g:OmniSharp_server_type = 'roslyn'
 let g:syntastic_cs_checkers = ['code_checker']
 augroup omnisharp_commands
 	autocmd!
@@ -330,7 +339,7 @@ augroup omnisharp_commands
 	autocmd BufEnter,TextChanged,InsertLeave *.cs SyntasticCheck
 
 	" Automatically add new cs files to the nearest project on save
-	autocmd BufWritePost *.cs call OmniSharp#AddToProject()
+	" autocmd BufWritePost *.cs call OmniSharp#AddToProject()
 
 	"show type information automatically when the cursor stops moving
 	autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
@@ -343,17 +352,17 @@ augroup omnisharp_commands
 	autocmd FileType cs nnoremap <leader>x  :OmniSharpFixIssue<cr>
 	autocmd FileType cs nnoremap <leader>fx :OmniSharpFixUsings<cr>
 	autocmd FileType cs nnoremap <leader>dc :OmniSharpDocumentation<cr>
-	autocmd FileType cs nnoremap <leader>tr :OmniSharpRunTests<cr>
-	autocmd FileType cs nnoremap <leader>tf :OmniSharpRunTestFixture<cr>
-	autocmd FileType cs nnoremap <leader>ta :OmniSharpRunAllTests<cr>
-	autocmd FileType cs nnoremap <leader>tl :OmniSharpRunLastTests<cr>
+	" autocmd FileType cs nnoremap <leader>tr :OmniSharpRunTests<cr>
+	" autocmd FileType cs nnoremap <leader>tf :OmniSharpRunTestFixture<cr>
+	" autocmd FileType cs nnoremap <leader>ta :OmniSharpRunAllTests<cr>
+	" autocmd FileType cs nnoremap <leader>tl :OmniSharpRunLastTests<cr>
 
 	autocmd BufNewFile,BufRead *.cshtml setf razor
 
 	autocmd FileType cs inoremap <buffer> <expr> . pumvisible() ? "\<C-y>.<C-x><C-o>" : ".\<C-x><C-o>"
 	autocmd FileType cs inoremap <buffer> <expr> ; pumvisible() ? "\<C-y>;" : ";"
 	autocmd FileType cs inoremap <buffer> <expr> , pumvisible() ? "\<C-y>," : ","
-	autocmd FileType cs inoremap <buffer> <expr> <Tab> pumvisible() ? "\<C-y>" : "\<C-x><C-o>"
+	" autocmd FileType cs inoremap <buffer> <expr> <Tab> pumvisible() ? "\<C-y>" : "\<C-x><C-o>"
 	autocmd FileType cs inoremap <buffer> <expr> <Space> pumvisible() ? "\<C-y> " : " "
 	autocmd FileType cs inoremap <buffer> <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 augroup END
@@ -460,10 +469,18 @@ augroup quickfix
 augroup END
 
 " Improvements to pum
-set completeopt=menuone,noinsert ",noselect
+set completeopt=menuone,noselect ",noinsert ",noselect
 inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
 inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
 inoremap <expr> <cr> ((pumvisible())?("\<C-y>"):("\<cr>"))
+inoremap <expr> l ((pumvisible())?("\<C-y>"):("l"))
 
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.cshtml"
 
+" tsuquyomi
+" Syntastic shows errors
+let g:tsuquyomi_disable_quickfix = 1
+
+" Markdown
+autocmd FileType markdown setlocal wrap
+autocmd FileType markdown setlocal linebreak
