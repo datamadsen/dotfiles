@@ -33,16 +33,6 @@ alias portupdate="sudo portmaster -aBd --delete-build-only"
 alias rails42='rails _4.2.0.beta4_'
 
 alias upfind='sh ~/.utilities/upfind.sh'
-alias appclose='echo "\n" | powershell.exe -ExecutionPolicy ByPass -File $(cygpath -aw ~/.utilities/close-application-with-partial-title.ps1) -partialWindowTitle $1' 
-
-alias slnname='upfind -name "*.sln" | rev | cut -d"/" -f1 | rev | cut -d"." -f1'
-alias slnclose='appclose $(slnname)'
-alias slnopen='cygstart $(upfind -name "*.sln")'
-alias opensln='slnopen'
-alias closesln='slnclose'
-alias msbuild='/cygdrive/c/Windows/Microsoft.NET/Framework/v4.0.30319/msbuild.exe'
-alias sln='ruby ~/.utilities/sln.rb'
-
 alias ide-rails='sh ~/.ide-rails.sh'
 
 alias t='settitle'
