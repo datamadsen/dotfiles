@@ -33,7 +33,7 @@ gitbranch() {
     local repo="${_GITBRANCH_LAST_REPO-}"
     local gitdir=""
     [[ ! -z "$repo" ]] && gitdir="$repo/.git"
- 
+
     # If we don't have a last seen git repo, or we are in a different directory
     if [[ -z "$repo" || "$PWD" != "$repo"* || ! -e "$gitdir" ]]; then
         local cur="$PWD"
@@ -46,7 +46,7 @@ gitbranch() {
             cur="${cur%/*}"
         done
     fi
- 
+
     if [[ -z "$gitdir" ]]; then
         unset _GITBRANCH_LAST_REPO
         return 0
@@ -111,8 +111,4 @@ function settitle() {
 	echo -ne "\e]0;$1\a"
 }
 
-PATH="/cygdrive/c/Users/bb8420/perl5/bin${PATH+:}${PATH}"; export PATH;
-PERL5LIB="/cygdrive/c/Users/bb8420/perl5/lib/perl5${PERL5LIB+:}${PERL5LIB}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/cygdrive/c/Users/bb8420/perl5${PERL_LOCAL_LIB_ROOT+:}${PERL_LOCAL_LIB_ROOT}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/cygdrive/c/Users/bb8420/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/cygdrive/c/Users/bb8420/perl5"; export PERL_MM_OPT;
+# PATH="/usr/lib/:/usr/local/lib${PATH+:}${PATH}"; export PATH;
