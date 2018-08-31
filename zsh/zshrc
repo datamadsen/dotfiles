@@ -111,4 +111,4 @@ function settitle() {
 	echo -ne "\e]0;$1\a"
 }
 
-# PATH="/usr/lib/:/usr/local/lib${PATH+:}${PATH}"; export PATH;
+PATH="/usr/lib/:/usr/local/lib${PATH+:}${PATH}"; export PATH;
