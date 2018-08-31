@@ -30,7 +30,7 @@
   pager = less -FRSX --tabs=2
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
   excludesfile = /Users/tmadsen/.gitignore
-  editor = vim
+  editor = mvim -f
 	autocrlf = false
 	trustctime = false
 	filemode = false
@@ -50,7 +50,7 @@
 	push-to-remote = "!git push -u origin $(git symbolic-ref --short HEAD)"
 	unstage = reset HEAD --
 	lastmessage = "!git log -1 --pretty=%B"
-	prune-branches = !git remote prune origin && git branch -vv | grep ': gone' | awk '{print $1}' | xargs -r git branch -d
+	prune-branches = !git remote prune origin && git branch -vv | grep ': gone' | awk '{print $1}' | xargs git branch -d
 
 [push]
   default = simple
