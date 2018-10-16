@@ -241,9 +241,6 @@ let g:NERDTreeShowLineNumbers=1
 " madsen leader stuff
 map <leader>c :call ToggleColorColumn()<CR> " Esc+c=toggle color column
 map <leader>h :set hlsearch! <CR> " toggle search highlighting
-map <leader>gs :Gstatus <CR>
-map <leader>gw :Gwrite <CR>
-map <leader>gd :GDiff <CR>
 
 " The Silver Searcher
 if executable('ag')
