@@ -62,7 +62,7 @@ highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
 highlight nonText ctermbg=NONE
 set lines=52
 set columns=140
-winpos 900 66
+winpos 1200 66
 
 " Initial colors for visual indicator lines on screen
 hi StatusLine  ctermbg=white  ctermfg=green
