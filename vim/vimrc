@@ -237,6 +237,7 @@ autocmd FileType gitcommit setlocal nofoldenable
 map <leader>P :NERDTreeToggle<CR>
 let g:NERDTreeWinSize = 50
 let g:NERDTreeShowLineNumbers=1
+let g:webdevicons_conceal_nerdtree_brackets = 1
 
 " madsen leader stuff
 map <leader>c :call ToggleColorColumn()<CR> " Esc+c=toggle color column
