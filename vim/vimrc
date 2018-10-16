@@ -196,6 +196,9 @@ let g:tern_show_signature_in_pum=1
 if executable("ag")
     set grepprg=ag\ --nogroup\ --nocolor
     let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    " bind \ (backward slash) to Ag shortcut
+    command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+    nnoremap \ :Ag<SPACE>
 endif
 " use rg ;)
 if (executable("rg"))
