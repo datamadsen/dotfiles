@@ -275,21 +275,15 @@ set completeopt=menuone,noselect ",noinsert ",noselect
 " tsuquyomi
 let g:tsuquyomi_disable_quickfix = 1
 
-" Markdown
-autocmd FileType markdown setlocal wrap
-autocmd FileType markdown setlocal linebreak
-
 " youcompleteme
-map <F9> :YcmCompleter FixIt<CR>
-
-" prettier
-nmap <C-F> <Plug>(Prettier)
-let g:prettier#autoformat = 0
+" map <F9> :YcmCompleter FixIt<CR>
 
 " Ale
-let g:ale_fixers = {
-            \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-            \   'javascript': ['eslint'],
-            \   'typescript': ['tslint'],
-            \}
-nmap <F5> :ALEFix<CR>
+" let g:ale_fixers = {
+"             \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+"             \   'typescript': ['tslint'],
+"             \}
+" nmap <C-F> :ALEFix<CR>
+
+" unfold folds on buffer read
+autocmd BufRead * normal zR
