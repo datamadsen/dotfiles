@@ -220,6 +220,8 @@ highlight Pmenu ctermbg=238
 
 " markdown
 let g:vim_markdown_new_list_item_indent = 2
+autocmd FileType markdown setlocal wrap
+autocmd FileType markdown setlocal linebreak
 
 """ omnisharp test
 "This is the default value, setting it isn't actually necessary
