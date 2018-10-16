@@ -242,20 +242,6 @@ let g:NERDTreeShowLineNumbers=1
 map <leader>c :call ToggleColorColumn()<CR> " Esc+c=toggle color column
 map <leader>h :set hlsearch! <CR> " toggle search highlighting
 
-" The Silver Searcher
-if executable('ag')
-    " Use ag over grep
-    set grepprg=ag\ --nogroup\ --nocolor
-
-    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
-
-" bind \ (backward slash) to Ag shortcut
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-
-nnoremap \ :Ag<SPACE>
-
 " Better movemment when text is wrapped
 function! ScreenMovement(movement)
     if &wrap
