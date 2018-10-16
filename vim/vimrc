@@ -27,15 +27,16 @@ Plug 'leafgarland/typescript-vim', { 'for': 'typescript' } " Typescript syntax
 Plug 'vim-airline/vim-airline' " Statusline
 Plug 'mhinz/vim-startify' " Startup screen
 Plug 'rakr/vim-one' "color theme
-Plug 'Valloric/YouCompleteMe' " completion engine
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' } " javascript niceties
 Plug 'ternjs/tern_for_vim', { 'for': 'javascript' } " javascript goodness
-Plug 'prettier/vim-prettier' " code formatting
 Plug 'maxbrunsfeld/vim-yankstack' " meta-p goes back
-Plug 'w0rp/ale' " linter
+" Plug 'w0rp/ale' " linter
 Plug 'ryanoasis/vim-devicons' " nice icons everywhere
-
+Plug 'ajh17/VimCompletesMe' " another completion experiment
+Plug 'severin-lemaignan/vim-minimap' " minimap
+Plug 'editorconfig/editorconfig-vim' " editorconfig
 call plug#end()
+
 filetype plugin indent on
 
 syntax on " syntax highlighting on
