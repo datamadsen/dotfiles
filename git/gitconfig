@@ -31,9 +31,9 @@
   whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
   excludesfile = /Users/tmadsen/.gitignore
   editor = mvim -f
-	autocrlf = false
-	trustctime = false
-	filemode = false
+  autocrlf = false
+  trustctime = false
+  filemode = false
 
 [alias]
   co = checkout
@@ -44,13 +44,14 @@
   lgs = "!git --no-pager log -20 --graph --pretty=format:'%Cred%h%Creset %s'"
   lgl = "log --graph --pretty=format:'%Cred%h%Creset %<(60)%s %Cgreen%>(16)%cr %Cblue<%an>%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative --all"
   stat = !"f() { git log -n1 --stat $1; }; f"
-	unstage = reset HEAD --
-	dc = diff --cached
-	b = branch -a -vv
-	push-to-remote = "!git push -u origin $(git symbolic-ref --short HEAD)"
-	unstage = reset HEAD --
-	lastmessage = "!git log -1 --pretty=%B"
-	prune-branches = !git remote prune origin && git branch -vv | grep ': gone' | awk '{print $1}' | xargs git branch -d
+  unstage = reset HEAD --
+  dc = diff --cached
+  b = branch -a -vv
+  push-to-remote = "!git push -u origin $(git symbolic-ref --short HEAD)"
+  unstage = reset HEAD --
+  lastmessage = "!git log -1 --pretty=%B"
+  prune-branches = !git remote prune origin && git branch -vv | grep ': gone' | awk '{print $1}' | xargs git branch -d
+  nuke = !sh -c 'git branch -D $1 && git push origin :$1' -
 
 [push]
   default = simple
@@ -61,14 +62,14 @@
 [remote "origin"]
   prune = true
 [credential]
-	helper = cache --timeout=3600
+  helper = cache --timeout=3600
 [merge]
-	tool = vimdiff
+  tool = vimdiff
 [mergetool]
-	keeptemporaries = false
-	keepbackups = false
-	prompt = false
-	trustexitcode = false
+  keeptemporaries = false
+  keepbackups = false
+  prompt = false
+  trustexitcode = false
 [filter "gitignore"]
-	clean = "sed '/#gitignore$/'d"
-	smudge = cat
+  clean = "sed '/#gitignore$/'d"
+  smudge = cat
