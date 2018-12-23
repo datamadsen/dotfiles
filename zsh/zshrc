@@ -26,10 +26,8 @@ export GIT_PS1_SHOWCOLORHINTS=1
 export GIT_PS1_DESCRIBE_STYLE="branch"
 export GIT_PS1_SHOWUPSTREAM="auto git verbose"
 
-prompt="%{$fg[white]%}%n@%M %{$fg[blue]%}%~ %{$fg[green]%}${gitval}
+PS1="%{$fg[white]%}%n@%M %{$fg[blue]%}%~ %{$fg[green]%}$(__git_ps1)
 %{$fg[red]%}$ %{$reset_color%}"
-
-RPROMPT='[%D{%H:%M:%S}]'
 
 # case insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
