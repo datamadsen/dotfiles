@@ -26,7 +26,7 @@ export GIT_PS1_SHOWCOLORHINTS=1
 export GIT_PS1_DESCRIBE_STYLE="branch"
 export GIT_PS1_SHOWUPSTREAM="auto git verbose"
 
-prompt="%{$fg[yellow]%}%n@%M %{$fg[blue]%}%~ %{$fg[green]%}${gitval}
+prompt="%{$fg[white]%}%n@%M %{$fg[blue]%}%~ %{$fg[green]%}${gitval}
 %{$fg[red]%}$ %{$reset_color%}"
 
 RPROMPT='[%D{%H:%M:%S}]'
