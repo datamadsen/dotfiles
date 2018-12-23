@@ -51,7 +51,7 @@ if has("gui_running")
     set guioptions-=r " remove right-hand-side scrollbar
     set guioptions-=L " remove left-hand-side scrollbar
     set guioptions-=m " remove menu
-    set guifont=BitstreamVeraSansMonoNerdFontCM-Roman:h14
+    set guifont=BitstreamVeraSansMonoNerdFontComplete-Roman:h14
 else
     set t_Co=256
 endif
