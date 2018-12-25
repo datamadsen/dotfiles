@@ -11,7 +11,7 @@ set-window-option -g window-status-bg black
 set-window-option -g window-status-attr default
 
 # active window title colors
-set-window-option -g window-status-current-fg green
+set-window-option -g window-status-current-fg blue
 set-window-option -g window-status-current-bg default
 set-window-option -g window-status-current-attr default
 
@@ -28,4 +28,4 @@ set-option -g display-panes-active-colour blue
 set-option -g display-panes-colour brightred
 
 # clock
-set-window-option -g clock-mode-colour green
+set-window-option -g clock-mode-colour blue
