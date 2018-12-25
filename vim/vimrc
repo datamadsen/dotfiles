@@ -15,7 +15,7 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' } " Markdown
 Plug 'godlygeek/tabular', { 'for': 'markdown' } " vim-markdown dependency
 Plug 'nelstrom/vim-markdown-folding', { 'for': 'markdown' } " Markdown folding
-Plug 'tpope/vim-fugitive', { 'on': 'Gstatus' } " Git
+Plug 'tpope/vim-fugitive'
 Plug 'milkypostman/vim-togglelist' " Location list
 Plug 'simeji/winresizer' " Resize windows
 Plug 'powerman/vim-plugin-AnsiEsc'
@@ -24,17 +24,18 @@ Plug 'alvan/vim-closetag', { 'for': 'html' } " Auto-close html tags
 Plug 'tpope/vim-surround' " vim-surround
 Plug 'Quramy/tsuquyomi', { 'for': 'typescript' } " Typescript ide
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' } " Typescript syntax
-Plug 'vim-airline/vim-airline' " Statusline
+Plug 'itchyny/lightline.vim' " Statusline
 Plug 'mhinz/vim-startify' " Startup screen
 Plug 'rakr/vim-one' "color theme
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' } " javascript niceties
 Plug 'ternjs/tern_for_vim', { 'for': 'javascript' } " javascript goodness
 Plug 'maxbrunsfeld/vim-yankstack' " meta-p goes back
-" Plug 'w0rp/ale' " linter
+Plug 'w0rp/ale' " linter and more
 Plug 'ryanoasis/vim-devicons' " nice icons everywhere
 Plug 'ajh17/VimCompletesMe' " another completion experiment
 Plug 'severin-lemaignan/vim-minimap' " minimap
 Plug 'editorconfig/editorconfig-vim' " editorconfig
+Plug 'morhetz/gruvbox' " colors
 call plug#end()
 
 filetype plugin indent on
@@ -55,14 +56,11 @@ if has("gui_running")
 else
     set t_Co=256
 endif
-colorscheme one
-set background=light
+colorscheme gruvbox
+set background=dark
 let g:airline_theme='one'
 highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
 highlight nonText ctermbg=NONE
-set lines=52
-set columns=140
-winpos 1200 66
 
 " Initial colors for visual indicator lines on screen
 hi StatusLine  ctermbg=white  ctermfg=green
