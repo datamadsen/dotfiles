@@ -6,5 +6,7 @@ vim/view
 vim/plugged
 vim/autoload/plug.vim
 irssi/away.log
+utilities/async
+utilities/prompt_pure_setup
 .netrwhist
 *.swp
