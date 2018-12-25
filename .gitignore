@@ -2,8 +2,9 @@ irssi/saved_colors
 irssi/config.autosave
 vim/bundle
 vim/files
+vim/view
+vim/plugged
+vim/autoload/plug.vim
 irssi/away.log
 .netrwhist
 *.swp
-vim/view
-vim/plugged
