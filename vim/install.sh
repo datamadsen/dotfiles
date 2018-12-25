@@ -4,7 +4,8 @@ rm ~/.vim
 echo "[vim] Create symlink"
 ln -s $(pwd)/ ~/.vim
 
-echo "[vim] Clone vundle"
-git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/vundle
+echo "[vim] Install Plug"
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-echo "[vim] Done - install plugins with \`vim +PluginInstall\`"
+echo "[vim] Done."
