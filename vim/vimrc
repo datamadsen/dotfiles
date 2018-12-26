@@ -37,6 +37,7 @@ Plug 'ajh17/VimCompletesMe' " another completion experiment
 Plug 'severin-lemaignan/vim-minimap' " minimap
 Plug 'editorconfig/editorconfig-vim' " editorconfig
 Plug 'morhetz/gruvbox' " colors
+Plug 'christoomey/vim-tmux-navigator' " What it says
 call plug#end()
 
 filetype plugin indent on
