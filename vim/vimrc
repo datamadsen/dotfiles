@@ -9,7 +9,8 @@ let mapleader = " "
 filetype off
 call plug#begin('$HOME/.vim/plugged')
 Plug 'cohama/lexima.vim' " Auto-close parentheses
-Plug 'ctrlpvim/ctrlp.vim' " Fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
+Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary' " Comment stuff out/in
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' } " Markdown
