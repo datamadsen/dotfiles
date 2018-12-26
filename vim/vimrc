@@ -287,3 +287,6 @@ let g:OmniSharp_highlight_types = 1
 " vimcompletesme
 autocmd FileType cs let b:vcm_tab_complete = "omni"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" fzf
+nmap <C-P> :FZF<CR>
