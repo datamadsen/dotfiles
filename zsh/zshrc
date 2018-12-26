@@ -56,3 +56,5 @@ function settitle() {
 }
 
 PATH="/usr/lib/:/usr/local/lib${PATH+:}${PATH}"; export PATH;
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
