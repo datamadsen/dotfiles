@@ -7,6 +7,7 @@ alias lla='ls -alhG'
 alias ta='tmux attach'
 alias im='vim'
 alias vimrc='vim ~/.vim/vimrc'
+alias :q='exit'
 
 if [[ $(uname) == *Darwin* ]] # Mac OS X
 then
