@@ -64,21 +64,6 @@ let g:airline_theme='one'
 highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
 highlight nonText ctermbg=NONE
 
-" Initial colors for visual indicator lines on screen
-hi StatusLine  ctermbg=white  ctermfg=green
-hi LineNr      ctermbg=green  ctermfg=white
-hi ColorColumn ctermbg=green  ctermfg=white
-
-" Blue lines in insert mode
-au InsertEnter * hi StatusLine  ctermbg=white ctermfg=blue
-au InsertEnter * hi LineNr      ctermbg=blue  ctermfg=white
-au InsertEnter * hi ColorColumn ctermbg=blue  ctermfg=white
-
-" Green lines in normal mode
-au InsertLeave * hi StatusLine  ctermbg=white  ctermfg=green
-au InsertLeave * hi LineNr      ctermbg=green  ctermfg=white
-au InsertLeave * hi ColorColumn ctermbg=green  ctermfg=white
-
 " Vim UI
 set linespace=1
 set wildmenu
