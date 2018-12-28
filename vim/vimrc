@@ -39,6 +39,7 @@ Plug 'editorconfig/editorconfig-vim' " editorconfig
 Plug 'morhetz/gruvbox' " colors
 Plug 'omnisharp/omnisharp-vim' " C# completion
 Plug 'christoomey/vim-tmux-navigator' " What it says
+Plug 'tpope/vim-obsession' " continuously updated session files
 call plug#end()
 
 filetype plugin indent on
