@@ -34,3 +34,5 @@ wget
 xz
 yarn
 zsh
+cowsay
+nyancat
