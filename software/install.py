@@ -8,9 +8,6 @@ def main():
     print("Installing missing formulas")
     install_formulas()
 
-    print("Adding all the taps")
-    subprocess.call("cat brew-taps | xargs brew tap", shell=True)
-
     print("Installing missing casks")
     install_casks()
 
