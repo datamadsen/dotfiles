@@ -131,6 +131,8 @@ set textwidth=79
 
 " Misc.
 set ignorecase
+set smartcase
+set wildignorecase
 set foldmethod=syntax
 set autowrite
 
