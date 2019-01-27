@@ -332,6 +332,11 @@ augroup omnisharp_commands
 	autocmd FileType cs command! Start :OmniSharpStartServer
 augroup END
 
+set foldnestmax=3
+set foldlevelstart=2
+set foldlevel=2
+map zM :set foldlevel=2<CR>
+
 " vimcompletesme
 autocmd FileType cs let b:vcm_tab_complete = "omni"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
