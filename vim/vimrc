@@ -330,6 +330,10 @@ augroup omnisharp_commands
 	autocmd FileType cs command! StopAll :OmniSharpStopAllServers
 	autocmd FileType cs command! Stop :OmniSharpStopServer
 	autocmd FileType cs command! Start :OmniSharpStartServer
+
+    autocmd FileType cs map <C-]> :OmniSharpGotoDefinition<CR>
+    autocmd FileType cs map <C-f> :OmniSharpCodeFormat<CR>
+    autocmd FileType cs map <C-a> :OmniSharpCodeActions<CR>
 augroup END
 
 set foldnestmax=3
