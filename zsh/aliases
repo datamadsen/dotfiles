@@ -15,4 +15,4 @@ then
 fi
 
 # jwt.show log for datam.at
-alias jwtlog='bash zcat -f /var/log/nginx/jwt.show.access.log* | goaccess'
+alias jwtlog='sudo bash zcat -f /var/log/nginx/jwt.show.access.log* | goaccess'
