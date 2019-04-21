@@ -1,12 +1,15 @@
 ccat
 cscope
 docker
+docker-compose
 erlang
 fzf
 gdbm
 gettext
 git
 glib
+htop
+httpie
 icu4c
 jpeg
 libevent
@@ -17,6 +20,7 @@ libssh2
 libtiff
 libunistring
 libuv
+libyaml
 lua
 lua@5.1
 luarocks
