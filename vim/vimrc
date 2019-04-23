@@ -339,6 +339,7 @@ augroup END
 set foldnestmax=3
 set foldlevelstart=2
 set foldlevel=2
+set signcolumn=yes
 map zM :set foldlevel=2<CR>
 
 " vimcompletesme
