@@ -40,6 +40,7 @@ Plug 'morhetz/gruvbox' " colors
 Plug 'omnisharp/omnisharp-vim' " C# completion
 Plug 'christoomey/vim-tmux-navigator' " What it says
 Plug 'tpope/vim-obsession' " continuously updated session files
+Plug 'chriskempson/vim-tomorrow-theme'
 call plug#end()
 
 filetype plugin indent on
@@ -280,7 +281,7 @@ autocmd BufRead * normal zR
 
 " omnisharp
 " Use the machine's mono
-let g:OmniSharp_server_use_mono = 1
+" let g:OmniSharp_server_use_mono = 1
 " Set this or it will look like everything is broken
 " let g:OmniSharp_port = 2000
 " let g:OmniSharp_start_server = 0
@@ -290,7 +291,7 @@ let g:ale_linters = {
 let NERDTreeIgnore=['bin', 'obj']
 let g:OmniSharp_selector_ui = 'fzf' " Use fzf.vim
 let g:OmniSharp_highlight_types = 1
-set updatetime=400
+set updatetime=40000
 augroup omnisharp_commands
     autocmd!
     " Show type information automatically when the cursor stops moving
