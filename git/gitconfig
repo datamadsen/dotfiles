@@ -40,9 +40,8 @@
   cob = checkout -b
   st = status
   d = difftool
-  lg = "!git --no-pager log -20 --graph --pretty=format:'%Cred%h%Creset %<(60)%s %Cgreen%>(16)%cr %Cblue<%an>%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative --all"
-  lgs = "!git --no-pager log -20 --graph --pretty=format:'%Cred%h%Creset %s'"
-  lgl = "log --graph --pretty=format:'%Cred%h%Creset %<(60)%s %Cgreen%>(16)%cr %Cblue<%an>%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative --all"
+  lg = "!git --no-pager log -20 --graph --pretty=format:'%Cred%h%Creset %<(80,trunc)%s %Cgreen %>(16)%cr by %<(25,trunc)%an|%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative --all"
+  lgl = "log --graph --pretty=format:'%Cred%h%Creset %<(80,trunc)%s %Cgreen %>(16)%cr by %<(25,trunc)%an|%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative --all"
   stat = !"f() { git log -n1 --stat $1; }; f"
   unstage = reset HEAD --
   dc = diff --cached
