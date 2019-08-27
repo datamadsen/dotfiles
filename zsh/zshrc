@@ -56,6 +56,8 @@ function settitle() {
 	echo -ne "\e]0;$1\a"
 }
 
-PATH="/usr/lib/:/usr/local/lib${PATH+:}${PATH}"; export PATH;
+PATH="/home/tmadsen/.yarn/bin:/usr/lib/:/usr/local/lib${PATH+:}${PATH}"; export PATH;
 export FZF_COMPLETION_OPTS='-e'
+export FZF_DEFAULT_COMMAND='ag --ignore-dir={bin,obj} -g ""'
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
