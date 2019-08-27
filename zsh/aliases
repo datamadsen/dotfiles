@@ -1,18 +1,26 @@
-#!/bin/sh
-alias l='ls -G --color'
-alias la='ls -aG --color'
-alias lsa='ls -aG --color'
-alias ll='ls -lhG --color'
-alias lla='ls -alhG --color'
 alias ta='tmux attach'
 alias im='vim'
 alias vimrc='vim ~/.vim/vimrc'
 alias :q='exit'
+alias :Q='exit'
 
-if [[ $(uname) == *Darwin* ]] # Mac OS X
-then
+case `uname` in
+  Darwin)
+	alias l='ls -G'
+	alias la='ls -aG'
+	alias lsa='ls -aG'
+	alias ll='ls -lhG'
+	alias lla='ls -alhG'
     alias ctags="`brew --prefix`/bin/ctags"
-fi
+  ;;
+  Linux)
+	alias l='ls -G --color'
+	alias la='ls -aG --color'
+	alias lsa='ls -aG --color'
+	alias ll='ls -lhG --color'
+	alias lla='ls -alhG --color'
+	# jwt.show log for datam.at
+	alias jwtlog='sudo bash zcat -f /var/log/nginx/jwt.show.access.log* | goaccess'
+  ;;
+esac
 
-# jwt.show log for datam.at
-alias jwtlog='sudo bash zcat -f /var/log/nginx/jwt.show.access.log* | goaccess'
