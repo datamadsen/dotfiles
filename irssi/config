@@ -282,7 +282,6 @@ settings = {
   };
   "fe-text" = { actlist_sort = "refnum"; };
   "fe-common/core" = {
-    bell_beeps = "yes";
     beep_msg_level = "MSGS NOTICES DCC DCCMSGS HILIGHT";
     beep_when_window_active = "yes";
     beep_when_away = "yes";
@@ -330,7 +329,8 @@ ignores = (
   { mask = "help"; level = "ALL"; },
   { level = "JOINS PARTS QUITS NICKS"; channels = ( "#startups" ); },
   { level = "JOINS PARTS QUITS MODES"; channels = ( "#duckduckgo" ); },
-  { level = "JOINS PARTS QUITS MODES"; channels = ( "#ruby" ); }
+  { level = "JOINS PARTS QUITS MODES"; channels = ( "#ruby" ); },
+  { level = "JOINS PARTS QUITS NICKS"; channels = ( "#vim" ); }
 );
 keyboard = ( 
   { key = "meta-[M"; id = "command"; data = "mouse_xterm "; }
