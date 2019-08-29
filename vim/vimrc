@@ -377,17 +377,17 @@ augroup omnisharp_commands
     autocmd FileType cs map <C-f> :OmniSharpCodeFormat<CR>
     autocmd FileType cs map <C-a> :OmniSharpCodeActions<CR>
 
-    autocmd FileType cs set makeprg=dotnet\ build
+    autocmd FileType cs setlocal makeprg=dotnet\ build
     autocmd FileType cs let b:dispatch='dotnet build && dotnet test'
-    autocmd FileType cs set errorformat=\ %#%f(%l\\\,%c):\ %m
+    autocmd FileType cs setlocal errorformat=\ %#%f(%l\\\,%c):\ %m
 
-	autocmd FileType cs set foldmethod=indent
+	autocmd FileType cs setlocal foldmethod=indent
 
-	autocmd FileType cs set foldnestmax=3
-	autocmd FileType cs set foldlevelstart=2
-	autocmd FileType cs set foldlevel=2
-	autocmd FileType cs set signcolumn=yes
-	autocmd FileType cs map zM :set foldlevel=2<CR>
+	autocmd FileType cs setlocal foldnestmax=3
+	autocmd FileType cs setlocal foldlevelstart=2
+	autocmd FileType cs setlocal foldlevel=2
+	autocmd FileType cs setlocal signcolumn=yes
+	autocmd FileType cs map zM :setlocal foldlevel=2<CR>
 augroup END
 
 " Contextual code actions (uses fzf, CtrlP or unite.vim when available)
