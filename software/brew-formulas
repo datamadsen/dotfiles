@@ -27,11 +27,16 @@ luarocks
 macvim
 mariadb
 midnight-commander
+mosh
 ncurses
 node
 openssl
+openssl@1.1
 pcre
 pcre2
+pkg-config
+postgresql
+protobuf
 python
 rabbitmq
 readline
