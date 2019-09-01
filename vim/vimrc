@@ -178,7 +178,8 @@ let g:winresizer_start_key='<C-T>'
 " nerdtree
 map <leader>P :NERDTreeToggle<CR>
 let g:NERDTreeWinSize = 50
-let g:NERDTreeShowLineNumbers=1
+let g:NERDTreeShowLineNumbers = 1
+let g:NERDTreeIgnore = ['bin', 'obj']
 
 " Better movemment when text is wrapped
 function! ScreenMovement(movement)
@@ -241,7 +242,7 @@ let g:asyncomplete_auto_popup = 1
 "   \ asyncomplete#force_refresh()
 " inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-set completeopt=longest,noinsert,menuone,noselect,preview
+set completeopt=noinsert,menuone,noselect
 let g:asyncomplete_auto_completeopt = 0
 
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
