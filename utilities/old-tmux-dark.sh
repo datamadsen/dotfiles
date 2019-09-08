@@ -1,25 +1,27 @@
+#### COLOUR (Solarized dark)
+
 # default statusbar colors
 set-option -g status-bg black
 set-option -g status-fg white
-set-option -g status-attr-style default
+set-option -g status-attr default
 
 # default window title colors
-set-window-option -g window-status-fg-style white
-set-window-option -g window-status-bg-style black
-set-window-option -g window-status-attr-style default
+set-window-option -g window-status-fg white
+set-window-option -g window-status-bg black
+set-window-option -g window-status-attr default
 
 # active window title colors
-set-window-option -g window-status-current-fg-style blue
-set-window-option -g window-status-current-bg-style default
-set-window-option -g window-status-current-attr-style default
+set-window-option -g window-status-current-fg blue
+set-window-option -g window-status-current-bg default
+set-window-option -g window-status-current-attr default
 
 # pane border
-set-option -g pane-border-fg-style black
-set-option -g pane-active-border-fg-style brightgreen
+set-option -g pane-border-fg black
+set-option -g pane-active-border-fg brightgreen
 
 # message text
-set-option -g message-bg-style black
-set-option -g message-fg-style brightred
+set-option -g message-bg black
+set-option -g message-fg brightred
 
 # pane number display
 set-option -g display-panes-active-colour blue
