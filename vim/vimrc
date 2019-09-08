@@ -1,46 +1,118 @@
 set nocompatible
 set encoding=utf8
-
-" use space as leader. I used to use comma as leader, but it's useful for
-" navigating
 let mapleader = " "
 
-" General
+" {{{ Plugins
 filetype off
 call plug#begin('$HOME/.vim/plugged')
+Plug 'cohama/lexima.vim' " auto close stuff
+"{{{ fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
+nmap <C-P> :FZF<CR>
+"}}}
+Plug 'tpope/vim-fugitive' " Git wrapper
 Plug 'tpope/vim-commentary' " Comment stuff out/in
+"{{{ scrooloose/nerdtree
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
+map <leader>P :NERDTreeToggle<CR>
+let g:NERDTreeWinSize = 50
+let g:NERDTreeShowLineNumbers = 1
+let g:NERDTreeIgnore = ['bin', 'obj']
+"}}}
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' } " Markdown
 Plug 'godlygeek/tabular', { 'for': 'markdown' } " vim-markdown dependency
 Plug 'milkypostman/vim-togglelist' " Location list
+" {{{ simeji/winresizer
 Plug 'simeji/winresizer' " Resize windows
+let g:winresizer_start_key='<C-T>'
+" }}}
 Plug 'alvan/vim-closetag', { 'for': 'html' } " Auto-close html tags
 Plug 'tpope/vim-surround' " vim-surround
+" {{{ itchyny/lightline.vim
 Plug 'itchyny/lightline.vim' " Statusline
+let g:lightline = {
+      \ 'active': {
+      \   'right': [ [ 'gitbranch' ],
+      \              [ 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'component_function': {
+      \   'filename': 'LightlineFilename',
+      \   'gitbranch': 'fugitive#head'
+      \ }
+      \ }
+
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%')
+endfunction
+" }}}
+" {{{ mhinz/vim-startify
 Plug 'mhinz/vim-startify' " Startup screen
+let g:startify_change_to_dir = 0
+"
+" }}}
+"{{{ w0rp/ale
 Plug 'w0rp/ale' " linter and more
+let g:ale_fixers = {
+            \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+            \   'typescript': ['tslint'],
+            \}
+
+"}}}
+"{{{ prabirshrestha/asyncomplete.vim
 Plug 'prabirshrestha/asyncomplete.vim'
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+
+let g:asyncomplete_auto_popup = 1
+
+set completeopt=noinsert,menuone,noselect
+let g:asyncomplete_auto_completeopt = 0
+
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+"}}}
 Plug 'morhetz/gruvbox' " colors
+"{{{ omnisharp/omnisharp-vim
 Plug 'omnisharp/omnisharp-vim' " C# completion
+let g:OmniSharp_server_stdio = 1 " Use the stdio OmniSharp-roslyn server
+let g:OmniSharp_typeLookupInPreview = 0 " Set the type lookup function to use the preview window instead of echoing it
+let g:OmniSharp_timeout = 5 " Timeout in seconds to wait for a response from the server
+let g:ale_linters = { 'cs': ['OmniSharp'] } " Tell ALE to use OmniSharp for linting C# files, and no other linters.
+let g:OmniSharp_highlight_types = 2 " Update semantic highlighting on BufEnter and InsertLeave
+let g:OmniSharp_want_snippet=0
+let g:omnicomplete_fetch_full_documentation = 1
+"}}}
 Plug 'christoomey/vim-tmux-navigator' " What it says
+"{{{ janko/vim-test
 Plug 'janko/vim-test'
+let g:test#csharp#runner='dotnettest'
+let test#strategy = "vimterminal"
+"}}}
 Plug 'tpope/vim-dispatch'
+"{{{ Shougo/echodoc.vim
 Plug 'Shougo/echodoc.vim'
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'echo'
+"}}}
+Plug 'junegunn/vim-peekaboo' " Peeks registers when you press \"
+Plug 'editorconfig/editorconfig-vim'
 Plug 'tmadsen/vim-compiler-plugin-for-dotnet'
 Plug 'tmadsen/vim-filetype-settings'
 call plug#end()
+" }}}
 
 filetype plugin indent on
+syntax on
 
-syntax on " syntax highlighting on
-
-set history=100
-set ffs=unix,dos,mac " support all three, in this order
-set viminfo+=! " make sure it can save viminfo
-
-" Theme/Colors
+" {{{ Theme/Colors
 if has("gui_running")
     set guioptions-=T " remove toolbar
     set guioptions-=r " remove right-hand-side scrollbar
@@ -55,8 +127,13 @@ set background=dark
 let g:airline_theme='one'
 highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
 highlight nonText ctermbg=NONE
+" }}}
 
-" Vim UI
+"{{{ Vim UI
+set history=100
+set ffs=unix,dos,mac " support all three, in this order
+set viminfo+=! " make sure it can save viminfo
+set noshowmode " lightline shows mode
 set linespace=1
 set wildmenu
 set ruler
@@ -82,7 +159,6 @@ augroup linenumbers
 augroup END
 nnoremap <silent> <C-S> :<C-u>update<CR>
 
-" Visual Cues
 set showmatch " show matching '(' '{' '[' etc.
 set mat=2
 set incsearch
@@ -95,19 +171,6 @@ set cursorline
 set mouse=a " Enable mouse in all modes
 " set ttymouse=xterm2 " Works with my mintty/tmux setup
 set ttyfast " We have a fast terminal connection
-set statusline=
-set statusline=%F\ "full filepath
-" set statusline=%t\ "file name
-set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
-set statusline+=%{&ff}] "file format
-set statusline+=%h      "help file flag
-set statusline+=%m      "modified flag
-set statusline+=%r      "read only flag
-set statusline+=%y      "filetype
-set statusline+=%=      "left/right separator
-set statusline+=%c,     "cursor column
-set statusline+=%l/%L   "cursor line/total lines
-set statusline+=\ %P    "percent through file
 
 set fo=tcrqnj
 set autoindent
@@ -119,18 +182,22 @@ set nowrap
 set textwidth=79
 set ignorecase
 set wildignorecase
-set foldmethod=syntax
+set foldmethod=marker
 set autowrite
 set smartcase
 set cmdheight=2
+highlight Pmenu ctermbg=238
+map <leader>h :set hlsearch! <CR> " toggle search highlighting
+"}}}
 
-" Remap commands that I mistype
+" {{{ Remap commands that I mistype
 command! W w
 command! Wq wq
 command! Q q
 command! Qa qa
+" }}}
 
-" Toggle the color column
+" {{{ Toggle the color column
 let g:oldColorColumn = 0
 function! ToggleColorColumn()
     if &colorcolumn > '0'
@@ -141,6 +208,7 @@ function! ToggleColorColumn()
     endif
 endfunction
 call ToggleColorColumn()
+map <leader>c :call ToggleColorColumn()<CR> " Esc+c=toggle color column
 
 " Strip trailing whitespace on certain file types upon write.
 fun! <SID>StripTrailingWhitespaces()
@@ -150,38 +218,22 @@ fun! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+" }}}
 
-" Better window movement
+" {{{ Better window movement
 noremap <silent> <C-k> :wincmd k<CR>
 noremap <silent> <C-j> :wincmd j<CR>
 noremap <silent> <C-h> :wincmd h<CR>
 noremap <silent> <C-l> :wincmd l<CR>
+" }}}
 
-" use rg for grep
+" {{{ use rg for grep
 if (executable("rg"))
     set grepprg=rg\ --vimgrep
 endif
+" }}}
 
-" Nicer pum color
-highlight Pmenu ctermbg=238
-
-" unfold folds on buffer read
-autocmd BufRead * normal zR
-
-" madsen leader stuff
-map <leader>c :call ToggleColorColumn()<CR> " Esc+c=toggle color column
-map <leader>h :set hlsearch! <CR> " toggle search highlighting
-
-" winresizer
-let g:winresizer_start_key='<C-T>'
-
-" nerdtree
-map <leader>P :NERDTreeToggle<CR>
-let g:NERDTreeWinSize = 50
-let g:NERDTreeShowLineNumbers = 1
-let g:NERDTreeIgnore = ['bin', 'obj']
-
-" Better movemment when text is wrapped
+" {{{ Better movemment when text is wrapped
 function! ScreenMovement(movement)
     if &wrap
         return "g" . a:movement
@@ -199,66 +251,17 @@ nnoremap <silent> <expr> k ScreenMovement("k")
 nnoremap <silent> <expr> 0 ScreenMovement("0")
 nnoremap <silent> <expr> ^ ScreenMovement("^")
 nnoremap <silent> <expr> $ ScreenMovement("$")
+" }}}
 
-" automatically wrap quickfix area
+"{{{ automatically wrap quickfix area
 augroup quickfix
     autocmd!
     autocmd FileType qf setlocal wrap
     autocmd FileType qf setlocal linebreak
 augroup END
+"}}}
 
-" Ale
-let g:ale_fixers = {
-            \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-            \   'typescript': ['tslint'],
-            \}
-
-" fzf
-nmap <C-P> :FZF<CR>
-
-" vim-test
-let g:test#csharp#runner='dotnettest'
-let test#strategy = "vimterminal"
-
-" echodoc
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'echo'
-
-" asyncomplete
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
-
-let g:asyncomplete_auto_popup = 1
-
-" function! s:check_back_space() abort
-"     let col = col('.') - 1
-"     return !col || getline('.')[col - 1]  =~ '\s'
-" endfunction
-
-" inoremap <silent><expr> <TAB>
-"   \ pumvisible() ? "\<C-n>" :
-"   \ <SID>check_back_space() ? "\<TAB>" :
-"   \ asyncomplete#force_refresh()
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-set completeopt=noinsert,menuone,noselect
-let g:asyncomplete_auto_completeopt = 0
-
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
-" \ 'name': 'omni',
-" \ 'whitelist': ['*'],
-" \ 'blacklist': ['c', 'cpp', 'html'],
-" \ 'completor': function('asyncomplete#sources#omni#completor')
-" \  }))
-
-" omnisharp-vim
-let g:OmniSharp_server_stdio = 1 " Use the stdio OmniSharp-roslyn server
-let g:OmniSharp_typeLookupInPreview = 0 " Set the type lookup function to use the preview window instead of echoing it
-let g:OmniSharp_timeout = 5 " Timeout in seconds to wait for a response from the server
-let g:ale_linters = { 'cs': ['OmniSharp'] } " Tell ALE to use OmniSharp for linting C# files, and no other linters.
-let g:OmniSharp_highlight_types = 2 " Update semantic highlighting on BufEnter and InsertLeave
-let g:OmniSharp_want_snippet=0
-let g:omnicomplete_fetch_full_documentation = 1
+" {{{ trying without these settings.
+" unfold folds on buffer read
+" autocmd BufRead * normal zR
+" }}}
