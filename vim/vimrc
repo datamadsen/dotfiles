@@ -59,13 +59,14 @@ let g:startify_change_to_dir = 0
 "
 " }}}
 "{{{ w0rp/ale
-Plug 'w0rp/ale' " linter and more
+Plug 'w0rp/ale', { 'for': 'cs' } " linter and more
 let g:ale_fixers = {
             \   '*': ['remove_trailing_lines', 'trim_whitespace'],
             \   'typescript': ['tslint'],
+            \   'javascript': ['eslint'],
             \}
-
 "}}}
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': 'javascript'} " CocInstall coc-tsserver coc-json
 "{{{ prabirshrestha/asyncomplete.vim
 Plug 'prabirshrestha/asyncomplete.vim'
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -81,7 +82,7 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 "}}}
 Plug 'morhetz/gruvbox' " colors
 "{{{ omnisharp/omnisharp-vim
-Plug 'omnisharp/omnisharp-vim' " C# completion
+Plug 'omnisharp/omnisharp-vim', { 'for': 'cs' } " C# completion
 let g:OmniSharp_server_stdio = 1 " Use the stdio OmniSharp-roslyn server
 let g:OmniSharp_typeLookupInPreview = 0 " Set the type lookup function to use the preview window instead of echoing it
 let g:OmniSharp_timeout = 5 " Timeout in seconds to wait for a response from the server
@@ -89,6 +90,7 @@ let g:ale_linters = { 'cs': ['OmniSharp'] } " Tell ALE to use OmniSharp for lint
 let g:OmniSharp_highlight_types = 2 " Update semantic highlighting on BufEnter and InsertLeave
 let g:OmniSharp_want_snippet=0
 let g:omnicomplete_fetch_full_documentation = 1
+let g:OmniSharp_selector_ui = 'fzf'
 "}}}
 Plug 'christoomey/vim-tmux-navigator' " What it says
 "{{{ janko/vim-test
