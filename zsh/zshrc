@@ -60,6 +60,6 @@ PATH="/home/tmadsen/.yarn/bin:/usr/lib/:/usr/local/lib${PATH+:}${PATH}"; export 
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/lib/ruby/gems/2.6.0/bin:$PATH"
 export FZF_COMPLETION_OPTS='-e'
-export FZF_DEFAULT_COMMAND='ag --ignore-dir={bin,obj} -g ""'
+export FZF_DEFAULT_COMMAND='ag --ignore-dir={bin,obj,node_modules} -g ""'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
