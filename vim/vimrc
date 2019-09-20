@@ -198,6 +198,7 @@ command! W w
 command! Wq wq
 command! Q q
 command! Qa qa
+command! Here split | lcd %:h | terminal ++curwin
 " }}}
 
 " {{{ Toggle the color column
