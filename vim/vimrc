@@ -69,6 +69,7 @@ let g:ale_fixers = {
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': 'javascript'} " CocInstall coc-tsserver coc-json
 "{{{ prabirshrestha/asyncomplete.vim
 Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'yami-beta/asyncomplete-omni.vim'
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
@@ -266,4 +267,12 @@ augroup END
 " {{{ trying without these settings.
 " unfold folds on buffer read
 " autocmd BufRead * normal zR
+" }}}
+
+" {{{ asyncomplete sources
+call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+	\ 'name': 'omni',
+	\ 'whitelist': ['*'],
+	\ 'completor': function('asyncomplete#sources#omni#completor')
+	\  }))
 " }}}
