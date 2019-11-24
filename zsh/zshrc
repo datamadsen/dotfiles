@@ -7,7 +7,7 @@ fpath=( ~/.zsh/completion $fpath)
 setopt inc_append_history
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE=~/.history
+HISTFILE=~/.cache/zsh/history
 
 tabs -2
 
@@ -50,16 +50,64 @@ zstyle ':completion:*' file-sort modification reverse
 # Better directory completion
 zstyle ':completion:*' special-dirs true
 
-export KEYTIMEOUT=1
+zmodload zsh/complist
 
 function settitle() {
 	echo -ne "\e]0;$1\a"
 }
 
+# vi mode
+bindkey -v
+export KEYTIMEOUT=1
+
+# Use vim keys in tab complete menu:
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
+
+# Change cursor shape for different vi modes.
+# actually, for me, this changes the pure prompt cursor from a
+# right-pointing arrow to a left-pointing arrow which I thought
+# was a nice accident so I haven't changed it :)
+zle-keymap-select () {
+    if [ "$TERM" = "xterm-256color" ]; then
+        if [ $KEYMAP = vicmd ]; then
+            # the command mode for vi
+            echo -ne "\e[2 q"
+        else
+            # the insert mode for vi
+            echo -ne "\e[4 q"
+        fi
+    fi
+}
+
+# Use lf to switch directories and bind it to ctrl-o
+lfcd () {
+    tmp="$(mktemp)"
+    lf -last-dir-path="$tmp" "$@"
+    if [ -f "$tmp" ]; then
+        dir="$(cat "$tmp")"
+        rm -f "$tmp"
+        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+    fi
+}
+bindkey -s '^o' 'lfcd\n'
+
+# Edit line in vim with ctrl-e:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^e' edit-command-line
+
 PATH="/home/tmadsen/.yarn/bin:/usr/lib/:/usr/local/lib${PATH+:}${PATH}"; export PATH;
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/lib/ruby/gems/2.6.0/bin:$PATH"
+export PATH="/home/tmadsen/go/bin:$PATH"
 export FZF_COMPLETION_OPTS='-e'
 export FZF_DEFAULT_COMMAND='ag --ignore-dir={bin,obj,node_modules} -g ""'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+# Load zsh-syntax-highlighting; should be last.
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
