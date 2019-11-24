@@ -14,11 +14,11 @@ case `uname` in
     alias ctags="`brew --prefix`/bin/ctags"
   ;;
   Linux)
-	alias l='ls -G --color'
-	alias la='ls -aG --color'
-	alias lsa='ls -aG --color'
-	alias ll='ls -lhG --color'
-	alias lla='ls -alhG --color'
+	alias l='ls -G --color --group-directories-first'
+	alias la='ls -aG --color --group-directories-first'
+	alias lsa='ls -aG --color --group-directories-first'
+	alias ll='ls -lhG --color --group-directories-first'
+	alias lla='ls -alhG --color --group-directories-first'
 	# jwt.show log for datam.at
 	alias jwtlog='sudo bash zcat -f /var/log/nginx/jwt.show.access.log* | goaccess'
   ;;
