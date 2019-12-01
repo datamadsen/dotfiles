@@ -10,6 +10,7 @@ Plug 'cohama/lexima.vim' " auto close stuff
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
 nmap <C-P> :FZF<CR>
+nmap <C-_> :Rg<CR>
 "}}}
 Plug 'tpope/vim-fugitive' " Git wrapper
 Plug 'tpope/vim-commentary' " Comment stuff out/in
