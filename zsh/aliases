@@ -9,7 +9,7 @@ case `uname` in
 	alias l='ls -G'
 	alias la='ls -aG'
 	alias lsa='ls -aG'
-	alias ll='ls -lhG'
+	alias ll='ls -lgohG'
 	alias lla='ls -alhG'
     alias ctags="`brew --prefix`/bin/ctags"
   ;;
