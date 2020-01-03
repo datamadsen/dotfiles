@@ -200,6 +200,7 @@ command! Wq wq
 command! Q q
 command! Qa qa
 command! Here split | lcd %:h | terminal ++curwin
+cmap w!! w !sudo tee > /dev/null %
 " }}}
 
 " {{{ Toggle the color column
