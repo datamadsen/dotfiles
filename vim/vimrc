@@ -83,6 +83,9 @@ let g:asyncomplete_auto_completeopt = 0
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 "}}}
 Plug 'morhetz/gruvbox' " colors
+"{{{
+
+"}}}
 "{{{ omnisharp/omnisharp-vim
 Plug 'omnisharp/omnisharp-vim', { 'for': 'cs' } " C# completion
 let g:OmniSharp_server_stdio = 1 " Use the stdio OmniSharp-roslyn server
@@ -108,6 +111,39 @@ let g:echodoc#type = 'echo'
 "}}}
 Plug 'junegunn/vim-peekaboo' " Peeks registers when you press \"
 Plug 'editorconfig/editorconfig-vim'
+Plug 'junegunn/goyo.vim'
+"{{{ goyo settings.
+function! s:goyo_enter()
+    " set noshowmode
+    " set noshowcmd
+    set scrolloff=999
+    set nocursorline
+    Limelight
+endfunction
+
+function! s:goyo_leave()
+    Limelight!
+    silent! source ~/.vim/vimrc
+endfunction
+
+function! s:goyo_start()
+    augroup linenumbers
+      autocmd!
+    augroup END
+    set norelativenumber
+    set nonumber
+    Goyo
+endfunction
+
+command! Z call <SID>goyo_start()
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+" autocmd! User GoyoLeave source ~/.vim/vimrc
+"}}}
+Plug 'junegunn/limelight.vim'
+"{{{
+let g:limelight_conceal_ctermfg = 240
+"}}}
 Plug 'tmadsen/vim-compiler-plugin-for-dotnet'
 Plug 'tmadsen/vim-filetype-settings'
 call plug#end()
@@ -127,6 +163,10 @@ else
     set t_Co=256
 endif
 colorscheme gruvbox
+"{{{
+let g:gruvbox_contrast_dark='hard'
+let g:gruvbox_contrast_light='hard'
+"}}}
 set background=dark
 let g:airline_theme='one'
 highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
@@ -182,7 +222,7 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
-set nowrap
+set wrap
 set textwidth=79
 set ignorecase
 set wildignorecase
