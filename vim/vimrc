@@ -5,55 +5,50 @@ let mapleader = " "
 " {{{ Plugins
 filetype off
 call plug#begin('$HOME/.vim/plugged')
+"{{{cohama/lexima.vim
 Plug 'cohama/lexima.vim' " auto close stuff
+"}}}
 "{{{ fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
 nmap <C-P> :FZF<CR>
 nmap <C-_> :Rg<CR>
 "}}}
+"{{{tpope/vim-fugitive
 Plug 'tpope/vim-fugitive' " Git wrapper
+"}}}
+"{{{tpope/vim-commentary
 Plug 'tpope/vim-commentary' " Comment stuff out/in
-"{{{ scrooloose/nerdtree
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " Tree explorer
-map <leader>P :NERDTreeToggle<CR>
+"}}}
+"{{{ preservim/nerdtree
+Plug 'preservim/nerdtree'
+map <leader>P :NERDTreeToggleVCS<CR>
+map <leader>F :NERDTreeFind<CR>
 let g:NERDTreeWinSize = 50
 let g:NERDTreeShowLineNumbers = 1
 let g:NERDTreeIgnore = ['bin', 'obj']
+let g:NERDTreeDirArrowExpandable = '+'
+let g:NERDTreeDirArrowCollapsible = '~'
 "}}}
+"{{{plasticboy/vim-markdown
 Plug 'plasticboy/vim-markdown', { 'for': 'markdown' } " Markdown
+"}}}
+"{{{godlygeek/tabular
 Plug 'godlygeek/tabular', { 'for': 'markdown' } " vim-markdown dependency
+"}}}
+"{{{milkypostman/vim-togglelist
 Plug 'milkypostman/vim-togglelist' " Location list
+"}}}
 " {{{ simeji/winresizer
 Plug 'simeji/winresizer' " Resize windows
 let g:winresizer_start_key='<C-T>'
 " }}}
+"{{{alvan/vim-closetag
 Plug 'alvan/vim-closetag', { 'for': 'html' } " Auto-close html tags
+"}}}
+"{{{tpope/vim-surround
 Plug 'tpope/vim-surround' " vim-surround
-" {{{ itchyny/lightline.vim
-Plug 'itchyny/lightline.vim' " Statusline
-let g:lightline = {
-      \ 'active': {
-      \   'right': [ [ 'gitbranch' ],
-      \              [ 'lineinfo' ],
-      \              [ 'percent' ],
-      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
-      \ },
-      \ 'component_function': {
-      \   'filename': 'LightlineFilename',
-      \   'gitbranch': 'fugitive#head'
-      \ }
-      \ }
-
-function! LightlineFilename()
-  let root = fnamemodify(get(b:, 'git_dir'), ':h')
-  let path = expand('%:p')
-  if path[:len(root)-1] ==# root
-    return path[len(root)+1:]
-  endif
-  return expand('%')
-endfunction
-" }}}
+"}}}
 " {{{ mhinz/vim-startify
 Plug 'mhinz/vim-startify' " Startup screen
 let g:startify_change_to_dir = 0
@@ -67,7 +62,9 @@ let g:ale_fixers = {
             \   'javascript': ['eslint'],
             \}
 "}}}
-Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': 'javascript'} " CocInstall coc-tsserver coc-json
+"{{{neoclide/coc.nvim
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['javascript', 'vue', 'typescript']} " CocInstall coc-tsserver coc-json
+"}}}
 "{{{ prabirshrestha/asyncomplete.vim
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'yami-beta/asyncomplete-omni.vim'
@@ -82,13 +79,11 @@ let g:asyncomplete_auto_completeopt = 0
 
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 "}}}
+"{{{morhetz/gruvbox
 Plug 'morhetz/gruvbox' " colors
-"{{{
-
 "}}}
 "{{{ omnisharp/omnisharp-vim
 Plug 'omnisharp/omnisharp-vim', { 'for': 'cs' } " C# completion
-let g:OmniSharp_server_stdio = 1 " Use the stdio OmniSharp-roslyn server
 let g:OmniSharp_typeLookupInPreview = 0 " Set the type lookup function to use the preview window instead of echoing it
 let g:OmniSharp_timeout = 5 " Timeout in seconds to wait for a response from the server
 let g:ale_linters = { 'cs': ['OmniSharp'] } " Tell ALE to use OmniSharp for linting C# files, and no other linters.
@@ -97,27 +92,46 @@ let g:OmniSharp_want_snippet=0
 let g:omnicomplete_fetch_full_documentation = 1
 let g:OmniSharp_selector_ui = 'fzf'
 "}}}
+"{{{ nickspoons/vim-sharpenup
+Plug 'nickspoons/vim-sharpenup'
+let g:sharpenup_map_prefix = ','
+let g:sharpenup_codeactions = 0
+"}}}
+"{{{ puremourning/vimspector
+Plug 'puremourning/vimspector'
+" visual debugger for vim that should have some c# capabilities
+"}}}
+"{{{christoomey/vim-tmux-navigator
 Plug 'christoomey/vim-tmux-navigator' " What it says
+"}}}
 "{{{ janko/vim-test
 Plug 'janko/vim-test'
 let g:test#csharp#runner='dotnettest'
 let test#strategy = "vimterminal"
 "}}}
+"{{{tpope/vim-dispatch
 Plug 'tpope/vim-dispatch'
+"}}}
 "{{{ Shougo/echodoc.vim
 Plug 'Shougo/echodoc.vim'
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#type = 'echo'
 "}}}
+"{{{junegunn/vim-peekaboo
 Plug 'junegunn/vim-peekaboo' " Peeks registers when you press \"
+"}}}
+"{{{editorconfig/editorconfig-vim
 Plug 'editorconfig/editorconfig-vim'
+"}}}
+"{{{ Goyo
 Plug 'junegunn/goyo.vim'
-"{{{ goyo settings.
 function! s:goyo_enter()
-    " set noshowmode
-    " set noshowcmd
+    set norelativenumber
+    set nonumber
     set scrolloff=999
     set nocursorline
+    set textwidth=0
+    colorscheme gruvbox
     Limelight
 endfunction
 
@@ -128,11 +142,9 @@ endfunction
 
 function! s:goyo_start()
     augroup linenumbers
-      autocmd!
+        autocmd!
     augroup END
-    set norelativenumber
-    set nonumber
-    Goyo
+    Goyo x80
 endfunction
 
 command! Z call <SID>goyo_start()
@@ -140,12 +152,56 @@ autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
 " autocmd! User GoyoLeave source ~/.vim/vimrc
 "}}}
+"{{{junegunn/limelight.vim
 Plug 'junegunn/limelight.vim'
-"{{{
-let g:limelight_conceal_ctermfg = 240
 "}}}
+"{{{tmadsen/vim-compiler-plugin-for-dotnet
 Plug 'tmadsen/vim-compiler-plugin-for-dotnet'
+"}}}
+"{{{tmadsen/vim-filetype-settings
 Plug 'tmadsen/vim-filetype-settings'
+"}}}
+"{{{NLKNguyen/papercolor-theme
+Plug 'NLKNguyen/papercolor-theme'
+"}}}
+"{{{alok/notational-fzf-vim
+Plug 'alok/notational-fzf-vim'
+let g:nv_search_paths = ['~/text/datamadsen', '~/text/drafts', '~/text/posts', '~/text/sundhed.dk' , '~/text/thoughts']
+"}}}
+"{{{tpope/vim-sensible
+Plug 'tpope/vim-sensible'
+"}}}
+"{{{davidoc/taskpaper.vim
+Plug 'davidoc/taskpaper.vim'
+"}}}
+"{{{junegunn/vim-easy-align
+Plug 'junegunn/vim-easy-align'
+"}}}
+"{{{vim-airline/vim-airline
+" Plug 'vim-airline/vim-airline'
+"}}}
+"{{{chaoren/vim-wordmotion
+" camelcasing word motions (hyggeNokNuHer requires 4w to go all the way through
+" the word
+Plug 'chaoren/vim-wordmotion'
+nmap cw ce
+nmap cW cE
+"}}}
+"{{{ airblade/vim-gitgutter
+Plug 'airblade/vim-gitgutter'
+let g:gitgutter_grep                    = 'rg'
+let g:gitgutter_map_keys                = 0
+let g:gitgutter_sign_added              = '▎'
+let g:gitgutter_sign_modified           = '▎'
+let g:gitgutter_sign_modified_removed   = '▌'
+let g:gitgutter_sign_removed            = '▎'
+let g:gitgutter_sign_removed_first_line = '▎'
+nmap [g <Plug>GitGutterPrevHunkzz
+nmap ]g <Plug>GitGutterNextHunkzz
+nmap <Leader>p <Plug>GitGutterPreviewHunk
+nmap <Leader>+ <Plug>GitGutterStageHunk
+nmap <Leader>- <Plug>GitGutterUndoHunk
+"}}}
 call plug#end()
 " }}}
 
@@ -167,8 +223,8 @@ colorscheme gruvbox
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_contrast_light='hard'
 "}}}
-set background=dark
 let g:airline_theme='one'
+set background=dark
 highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
 highlight nonText ctermbg=NONE
 " }}}
@@ -203,6 +259,11 @@ augroup linenumbers
 augroup END
 nnoremap <silent> <C-S> :<C-u>update<CR>
 
+augroup Formatting
+    autocmd!
+    autocmd BufNew,BufRead *.txt,*.mkd setlocal textwidth=0
+augroup END
+
 set showmatch " show matching '(' '{' '[' etc.
 set mat=2
 set incsearch
@@ -216,7 +277,8 @@ set mouse=a " Enable mouse in all modes
 " set ttymouse=xterm2 " Works with my mintty/tmux setup
 set ttyfast " We have a fast terminal connection
 
-set fo=tcrqnj
+" set fo=tcrqnj
+set fo=crqnj
 set autoindent
 set tabstop=4
 set softtabstop=4
@@ -241,6 +303,7 @@ command! Q q
 command! Qa qa
 command! Here split | lcd %:h | terminal ++curwin
 cmap w!! w !sudo tee > /dev/null %
+command! Text tcd ~/text
 " }}}
 
 " {{{ Toggle the color column
@@ -309,13 +372,13 @@ augroup END
 
 " {{{ trying without these settings.
 " unfold folds on buffer read
-" autocmd BufRead * normal zR
+autocmd BufRead * normal zR
 " }}}
 
 " {{{ asyncomplete sources
 call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
-	\ 'name': 'omni',
-	\ 'whitelist': ['*'],
-	\ 'completor': function('asyncomplete#sources#omni#completor')
-	\  }))
+            \ 'name': 'omni',
+            \ 'whitelist': ['*'],
+            \ 'completor': function('asyncomplete#sources#omni#completor')
+            \  }))
 " }}}
