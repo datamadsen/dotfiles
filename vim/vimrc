@@ -178,7 +178,7 @@ Plug 'davidoc/taskpaper.vim'
 Plug 'junegunn/vim-easy-align'
 "}}}
 "{{{vim-airline/vim-airline
-" Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline'
 "}}}
 "{{{chaoren/vim-wordmotion
 " camelcasing word motions (hyggeNokNuHer requires 4w to go all the way through
@@ -186,21 +186,6 @@ Plug 'junegunn/vim-easy-align'
 Plug 'chaoren/vim-wordmotion'
 nmap cw ce
 nmap cW cE
-"}}}
-"{{{ airblade/vim-gitgutter
-Plug 'airblade/vim-gitgutter'
-let g:gitgutter_grep                    = 'rg'
-let g:gitgutter_map_keys                = 0
-let g:gitgutter_sign_added              = '▎'
-let g:gitgutter_sign_modified           = '▎'
-let g:gitgutter_sign_modified_removed   = '▌'
-let g:gitgutter_sign_removed            = '▎'
-let g:gitgutter_sign_removed_first_line = '▎'
-nmap [g <Plug>GitGutterPrevHunkzz
-nmap ]g <Plug>GitGutterNextHunkzz
-nmap <Leader>p <Plug>GitGutterPreviewHunk
-nmap <Leader>+ <Plug>GitGutterStageHunk
-nmap <Leader>- <Plug>GitGutterUndoHunk
 "}}}
 call plug#end()
 " }}}
@@ -382,3 +367,14 @@ call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
             \ 'completor': function('asyncomplete#sources#omni#completor')
             \  }))
 " }}}
+
+"{{{ Strip trailing whitespace
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    keepp %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+autocmd FileType c,cpp,java,php,ruby,python,cs autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+"}}}
