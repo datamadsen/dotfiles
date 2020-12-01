@@ -5,23 +5,48 @@ let mapleader = " "
 " {{{ Plugins
 filetype off
 call plug#begin('$HOME/.vim/plugged')
-"{{{cohama/lexima.vim
 Plug 'cohama/lexima.vim' " auto close stuff
-"}}}
-"{{{ fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-fugitive' " Git wrapper
+Plug 'tpope/vim-commentary'
+Plug 'preservim/nerdtree'
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' } " Markdown
+Plug 'godlygeek/tabular', { 'for': 'markdown' } " vim-markdown dependency
+Plug 'milkypostman/vim-togglelist' " Location list
+Plug 'simeji/winresizer' " Resize windows
+Plug 'alvan/vim-closetag', { 'for': 'html' } " Auto-close html tags
+Plug 'tpope/vim-surround' " vim-surround
+Plug 'mhinz/vim-startify' " Startup screen
+Plug 'dense-analysis/ale', { 'for': 'cs' } " linter and more
+Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['javascript', 'vue', 'typescript']} " CocInstall coc-tsserver coc-json
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'morhetz/gruvbox' " colors
+Plug 'omnisharp/omnisharp-vim', { 'for': 'cs' } " C# development tool
+Plug 'nickspoons/vim-sharpenup'
+Plug 'puremourning/vimspector' " visual debugger for vim that should have some c# capabilities
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'janko/vim-test'
+Plug 'tpope/vim-dispatch'
+Plug 'junegunn/vim-peekaboo' " Peeks registers when you press \"
+Plug 'editorconfig/editorconfig-vim'
+Plug 'junegunn/limelight.vim'
+Plug 'tmadsen/vim-compiler-plugin-for-dotnet'
+Plug 'tmadsen/vim-filetype-settings'
+Plug 'alok/notational-fzf-vim'
+Plug 'tpope/vim-sensible'
+Plug 'itchyny/lightline.vim'
+call plug#end()
+filetype plugin indent on
+syntax on
+" }}}
+
+" {{{ Plugin configuration
+" {{{ fzf
 nmap <C-P> :FZF<CR>
 nmap <C-_> :Rg<CR>
-"}}}
-"{{{tpope/vim-fugitive
-Plug 'tpope/vim-fugitive' " Git wrapper
-"}}}
-"{{{tpope/vim-commentary
-Plug 'tpope/vim-commentary' " Comment stuff out/in
-"}}}
-"{{{ preservim/nerdtree
-Plug 'preservim/nerdtree'
+" }}}
+" {{{ NERDTree
 map <leader>P :NERDTreeToggleVCS<CR>
 map <leader>F :NERDTreeFind<CR>
 let g:NERDTreeWinSize = 50
@@ -29,33 +54,14 @@ let g:NERDTreeShowLineNumbers = 1
 let g:NERDTreeIgnore = ['bin', 'obj']
 let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '~'
-"}}}
-"{{{plasticboy/vim-markdown
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' } " Markdown
-"}}}
-"{{{godlygeek/tabular
-Plug 'godlygeek/tabular', { 'for': 'markdown' } " vim-markdown dependency
-"}}}
-"{{{milkypostman/vim-togglelist
-Plug 'milkypostman/vim-togglelist' " Location list
-"}}}
-" {{{ simeji/winresizer
-Plug 'simeji/winresizer' " Resize windows
+" }}}
+" {{{ winresizer
 let g:winresizer_start_key='<C-T>'
 " }}}
-"{{{alvan/vim-closetag
-Plug 'alvan/vim-closetag', { 'for': 'html' } " Auto-close html tags
-"}}}
-"{{{tpope/vim-surround
-Plug 'tpope/vim-surround' " vim-surround
-"}}}
-" {{{ mhinz/vim-startify
-Plug 'mhinz/vim-startify' " Startup screen
+" {{{ startify
 let g:startify_change_to_dir = 0
-"
 " }}}
-"{{{ w0rp/ale
-Plug 'dense-analysis/ale', { 'for': 'cs' } " linter and more
+"{{{ ale
 let g:ale_sign_error = '•'
 let g:ale_sign_warning = '•'
 let g:ale_sign_info = '·'
@@ -68,11 +74,7 @@ let g:ale_fixers = {
             \   'cs': ['OmniSharp']
             \}
 "}}}
-"{{{neoclide/coc.nvim
-Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['javascript', 'vue', 'typescript']} " CocInstall coc-tsserver coc-json
-"}}}
-"{{{ prabirshrestha/asyncomplete.vim
-Plug 'prabirshrestha/asyncomplete.vim'
+" {{{ asyncomplete
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
@@ -83,23 +85,8 @@ set completeopt=menuone,noinsert,noselect,popuphidden
 set completepopup=highlight:Pmenu,border:off
 
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-Plug 'yami-beta/asyncomplete-omni.vim'
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
-\ 'name': 'omni',
-\ 'allowlist': ['*'],
-\ 'blocklist': ['c', 'cpp', 'html'],
-\ 'completor': function('asyncomplete#sources#omni#completor'),
-\ 'config': {
-\   'show_source_kind': 0
-\ }
-\ }))
-"}}}
-"{{{ morhetz/gruvbox
-Plug 'morhetz/gruvbox' " colors
-"}}}
-"{{{ omnisharp/omnisharp-vim
-Plug 'omnisharp/omnisharp-vim', { 'for': 'cs' } " C# development tool
+" }}}
+" {{{ omnisharp
 let g:OmniSharp_server_stdio = 1
 let g:OmniSharp_typeLookupInPreview = 0 " Set the type lookup function to use the preview window instead of echoing it
 let g:OmniSharp_timeout = 5 " Timeout in seconds to wait for a response from the server
@@ -121,57 +108,19 @@ let g:OmniSharp_popup_mappings = {
 \ 'pageDown': ['<C-f>', '<PageDown>'],
 \ 'pageUp': ['<C-b>', '<PageUp>']
 \}
-"}}}
-"{{{ nickspoons/vim-sharpenup
-Plug 'nickspoons/vim-sharpenup'
+" }}}
+" {{{ sharpenup
 let g:sharpenup_map_prefix = ','
 let g:sharpenup_codeactions = 1
-"}}}
-"{{{ puremourning/vimspector
-Plug 'puremourning/vimspector'
-" visual debugger for vim that should have some c# capabilities
-"}}}
-"{{{christoomey/vim-tmux-navigator
-Plug 'christoomey/vim-tmux-navigator' " What it says
-"}}}
-"{{{ janko/vim-test
-Plug 'janko/vim-test'
+" }}}
+" {{{ vim-test
 let g:test#csharp#runner='dotnettest'
 let test#strategy = "vimterminal"
-"}}}
-"{{{tpope/vim-dispatch
-Plug 'tpope/vim-dispatch'
-"}}}
-"{{{ Shougo/echodoc.vim
-Plug 'Shougo/echodoc.vim'
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'echo'
-"}}}
-"{{{junegunn/vim-peekaboo
-Plug 'junegunn/vim-peekaboo' " Peeks registers when you press \"
-"}}}
-"{{{editorconfig/editorconfig-vim
-Plug 'editorconfig/editorconfig-vim'
-"}}}
-"{{{junegunn/limelight.vim
-Plug 'junegunn/limelight.vim'
-"}}}
-"{{{tmadsen/vim-compiler-plugin-for-dotnet
-Plug 'tmadsen/vim-compiler-plugin-for-dotnet'
-"}}}
-"{{{tmadsen/vim-filetype-settings
-Plug 'tmadsen/vim-filetype-settings'
-"}}}
-"{{{alok/notational-fzf-vim
-Plug 'alok/notational-fzf-vim'
-" let g:nv_search_paths = ['~/text/datamadsen', '~/text/drafts', '~/text/posts', '~/text/sundhed.dk' , '~/text/thoughts']
+" }}}
+" {{{ nv-fzf
 let g:nv_search_paths = ['~/']
-"}}}
-"{{{tpope/vim-sensible
-Plug 'tpope/vim-sensible'
-"}}}
-"{{{itchyny/lightline.vim
-Plug 'itchyny/lightline.vim'
+" }}}
+" {{{ lightline
 let g:lightline = {
 \ 'colorscheme': 'gruvbox',
 \ 'active': {
@@ -209,13 +158,7 @@ let g:lightline#ale#indicator_warnings = "\uf071 "
 let g:lightline#ale#indicator_errors = "\uf05e "
 let g:lightline#ale#indicator_ok = "\uf00c "
 " }}}
-
-"}}}
-call plug#end()
 " }}}
-
-filetype plugin indent on
-syntax on
 
 " {{{ Theme/Colors
 if has("gui_running")
@@ -346,7 +289,7 @@ augroup quickfix
 augroup END
 "}}}
 
-" {{{ 
+" {{{
 " unfold folds on buffer read
 autocmd BufRead * normal zR
 " }}}
@@ -361,3 +304,4 @@ endfun
 
 autocmd FileType c,cpp,java,php,ruby,python,cs autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 "}}}
+
