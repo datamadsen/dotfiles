@@ -55,11 +55,17 @@ let g:startify_change_to_dir = 0
 "
 " }}}
 "{{{ w0rp/ale
-Plug 'w0rp/ale', { 'for': 'cs' } " linter and more
+Plug 'dense-analysis/ale', { 'for': 'cs' } " linter and more
+let g:ale_sign_error = '•'
+let g:ale_sign_warning = '•'
+let g:ale_sign_info = '·'
+let g:ale_sign_style_error = '·'
+let g:ale_sign_style_warning = '·'
 let g:ale_fixers = {
             \   '*': ['remove_trailing_lines', 'trim_whitespace'],
             \   'typescript': ['tslint'],
             \   'javascript': ['eslint'],
+            \   'cs': ['OmniSharp']
             \}
 "}}}
 "{{{neoclide/coc.nvim
@@ -67,35 +73,59 @@ Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['javascript', 'vue', 'ty
 "}}}
 "{{{ prabirshrestha/asyncomplete.vim
 Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'yami-beta/asyncomplete-omni.vim'
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 
 let g:asyncomplete_auto_popup = 1
 
-set completeopt=noinsert,menuone,noselect
-let g:asyncomplete_auto_completeopt = 0
+set completeopt=menuone,noinsert,noselect,popuphidden
+set completepopup=highlight:Pmenu,border:off
 
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+Plug 'yami-beta/asyncomplete-omni.vim'
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+\ 'name': 'omni',
+\ 'allowlist': ['*'],
+\ 'blocklist': ['c', 'cpp', 'html'],
+\ 'completor': function('asyncomplete#sources#omni#completor'),
+\ 'config': {
+\   'show_source_kind': 0
+\ }
+\ }))
 "}}}
-"{{{morhetz/gruvbox
+"{{{ morhetz/gruvbox
 Plug 'morhetz/gruvbox' " colors
 "}}}
 "{{{ omnisharp/omnisharp-vim
-Plug 'omnisharp/omnisharp-vim', { 'for': 'cs' } " C# completion
+Plug 'omnisharp/omnisharp-vim', { 'for': 'cs' } " C# development tool
+let g:OmniSharp_server_stdio = 1
 let g:OmniSharp_typeLookupInPreview = 0 " Set the type lookup function to use the preview window instead of echoing it
 let g:OmniSharp_timeout = 5 " Timeout in seconds to wait for a response from the server
-let g:ale_linters = { 'cs': ['OmniSharp'] } " Tell ALE to use OmniSharp for linting C# files, and no other linters.
+let g:OmniSharp_highlighting = 3
 let g:OmniSharp_highlight_types = 2 " Update semantic highlighting on BufEnter and InsertLeave
-let g:OmniSharp_want_snippet=0
-let g:omnicomplete_fetch_full_documentation = 1
+let g:OmniSharp_want_snippet = 0
+let g:OmniSharp_completion_without_overloads = 1
+let g:omnicomplete_fetch_full_documentation = 0
 let g:OmniSharp_selector_ui = 'fzf'
+let g:OmniSharp_popup_position = 'peek'
+let g:OmniSharp_popup_options = {
+\ 'highlight': 'Normal',
+\ 'padding': [0, 0, 0, 0],
+\ 'border': [1]
+\}
+let g:OmniSharp_popup_mappings = {
+\ 'sigNext': '<C-n>',
+\ 'sigPrev': '<C-p>',
+\ 'pageDown': ['<C-f>', '<PageDown>'],
+\ 'pageUp': ['<C-b>', '<PageUp>']
+\}
 "}}}
 "{{{ nickspoons/vim-sharpenup
 Plug 'nickspoons/vim-sharpenup'
 let g:sharpenup_map_prefix = ','
-let g:sharpenup_codeactions = 0
+let g:sharpenup_codeactions = 1
 "}}}
 "{{{ puremourning/vimspector
 Plug 'puremourning/vimspector'
@@ -123,35 +153,6 @@ Plug 'junegunn/vim-peekaboo' " Peeks registers when you press \"
 "{{{editorconfig/editorconfig-vim
 Plug 'editorconfig/editorconfig-vim'
 "}}}
-"{{{ Goyo
-Plug 'junegunn/goyo.vim'
-function! s:goyo_enter()
-    set norelativenumber
-    set nonumber
-    set scrolloff=999
-    set nocursorline
-    set textwidth=0
-    colorscheme gruvbox
-    Limelight
-endfunction
-
-function! s:goyo_leave()
-    Limelight!
-    silent! source ~/.vim/vimrc
-endfunction
-
-function! s:goyo_start()
-    augroup linenumbers
-        autocmd!
-    augroup END
-    Goyo x80
-endfunction
-
-command! Z call <SID>goyo_start()
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-" autocmd! User GoyoLeave source ~/.vim/vimrc
-"}}}
 "{{{junegunn/limelight.vim
 Plug 'junegunn/limelight.vim'
 "}}}
@@ -161,31 +162,54 @@ Plug 'tmadsen/vim-compiler-plugin-for-dotnet'
 "{{{tmadsen/vim-filetype-settings
 Plug 'tmadsen/vim-filetype-settings'
 "}}}
-"{{{NLKNguyen/papercolor-theme
-Plug 'NLKNguyen/papercolor-theme'
-"}}}
 "{{{alok/notational-fzf-vim
 Plug 'alok/notational-fzf-vim'
-let g:nv_search_paths = ['~/text/datamadsen', '~/text/drafts', '~/text/posts', '~/text/sundhed.dk' , '~/text/thoughts']
+" let g:nv_search_paths = ['~/text/datamadsen', '~/text/drafts', '~/text/posts', '~/text/sundhed.dk' , '~/text/thoughts']
+let g:nv_search_paths = ['~/']
 "}}}
 "{{{tpope/vim-sensible
 Plug 'tpope/vim-sensible'
 "}}}
-"{{{davidoc/taskpaper.vim
-Plug 'davidoc/taskpaper.vim'
-"}}}
-"{{{junegunn/vim-easy-align
-Plug 'junegunn/vim-easy-align'
-"}}}
-"{{{vim-airline/vim-airline
-Plug 'vim-airline/vim-airline'
-"}}}
-"{{{chaoren/vim-wordmotion
-" camelcasing word motions (hyggeNokNuHer requires 4w to go all the way through
-" the word
-Plug 'chaoren/vim-wordmotion'
-nmap cw ce
-nmap cW cE
+"{{{itchyny/lightline.vim
+Plug 'itchyny/lightline.vim'
+let g:lightline = {
+\ 'colorscheme': 'gruvbox',
+\ 'active': {
+\   'right': [
+\     ['linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok'],
+\     ['lineinfo'], ['percent'],
+\     ['fileformat', 'fileencoding', 'filetype', 'sharpenup']
+\   ]
+\ },
+\ 'inactive': {
+\   'right': [['lineinfo'], ['percent'], ['sharpenup']]
+\ },
+\ 'component': {
+\   'sharpenup': sharpenup#statusline#Build()
+\ },
+\ 'component_expand': {
+\   'linter_checking': 'lightline#ale#checking',
+\   'linter_infos': 'lightline#ale#infos',
+\   'linter_warnings': 'lightline#ale#warnings',
+\   'linter_errors': 'lightline#ale#errors',
+\   'linter_ok': 'lightline#ale#ok'
+  \  },
+  \ 'component_type': {
+  \   'linter_checking': 'right',
+  \   'linter_infos': 'right',
+  \   'linter_warnings': 'warning',
+  \   'linter_errors': 'error',
+  \   'linter_ok': 'right'
+\  }
+\}
+" Use unicode chars for ale indicators in the statusline
+let g:lightline#ale#indicator_checking = "\uf110 "
+let g:lightline#ale#indicator_infos = "\uf129 "
+let g:lightline#ale#indicator_warnings = "\uf071 "
+let g:lightline#ale#indicator_errors = "\uf05e "
+let g:lightline#ale#indicator_ok = "\uf00c "
+" }}}
+
 "}}}
 call plug#end()
 " }}}
@@ -199,16 +223,14 @@ if has("gui_running")
     set guioptions-=r " remove right-hand-side scrollbar
     set guioptions-=L " remove left-hand-side scrollbar
     set guioptions-=m " remove menu
-    set guifont=BitstreamVeraSansMonoNerdFontComplete-Roman:h14
+    set guifont=Menlo-Regular:h13
 else
     set t_Co=256
 endif
 colorscheme gruvbox
-"{{{
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_contrast_light='hard'
-"}}}
-let g:airline_theme='one'
+" let g:airline_theme='base16_gruvbox_dark_hard'
 set background=dark
 highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
 highlight nonText ctermbg=NONE
@@ -256,10 +278,9 @@ set novisualbell
 set laststatus=2
 set nohlsearch " experimenting with navigating more by search
 set colorcolumn=81
-set diffopt+=vertical
+" set diffopt+=vertical
 set cursorline
 set mouse=a " Enable mouse in all modes
-" set ttymouse=xterm2 " Works with my mintty/tmux setup
 set ttyfast " We have a fast terminal connection
 
 " set fo=tcrqnj
@@ -280,16 +301,6 @@ set cmdheight=2
 highlight Pmenu ctermbg=238
 map <leader>h :set hlsearch! <CR> " toggle search highlighting
 "}}}
-
-" {{{ Remap commands that I mistype
-command! W w
-command! Wq wq
-command! Q q
-command! Qa qa
-command! Here split | lcd %:h | terminal ++curwin
-cmap w!! w !sudo tee > /dev/null %
-command! Text tcd ~/text
-" }}}
 
 " {{{ Toggle the color column
 let g:oldColorColumn = 0
@@ -327,26 +338,6 @@ if (executable("rg"))
 endif
 " }}}
 
-" {{{ Better movemment when text is wrapped
-function! ScreenMovement(movement)
-    if &wrap
-        return "g" . a:movement
-    else
-        return a:movement
-    endif
-endfunction
-onoremap <silent> <expr> j ScreenMovement("j")
-onoremap <silent> <expr> k ScreenMovement("k")
-onoremap <silent> <expr> 0 ScreenMovement("0")
-onoremap <silent> <expr> ^ ScreenMovement("^")
-onoremap <silent> <expr> $ ScreenMovement("$")
-nnoremap <silent> <expr> j ScreenMovement("j")
-nnoremap <silent> <expr> k ScreenMovement("k")
-nnoremap <silent> <expr> 0 ScreenMovement("0")
-nnoremap <silent> <expr> ^ ScreenMovement("^")
-nnoremap <silent> <expr> $ ScreenMovement("$")
-" }}}
-
 "{{{ automatically wrap quickfix area
 augroup quickfix
     autocmd!
@@ -355,17 +346,9 @@ augroup quickfix
 augroup END
 "}}}
 
-" {{{ trying without these settings.
+" {{{ 
 " unfold folds on buffer read
 autocmd BufRead * normal zR
-" }}}
-
-" {{{ asyncomplete sources
-call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
-            \ 'name': 'omni',
-            \ 'whitelist': ['*'],
-            \ 'completor': function('asyncomplete#sources#omni#completor')
-            \  }))
 " }}}
 
 "{{{ Strip trailing whitespace
