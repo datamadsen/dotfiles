@@ -4,6 +4,7 @@ alias im='vim'
 alias vimrc='vim ~/.vim/vimrc'
 alias :q='exit'
 alias :Q='exit'
+alias ibrew='arch -x86_64 brew'
 
 case `uname` in
   Darwin)
