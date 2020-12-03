@@ -1,11 +1,14 @@
 set nocompatible
 set encoding=utf8
+set hidden
 let mapleader = " "
 
 " {{{ Plugins
 filetype off
 call plug#begin('$HOME/.vim/plugged')
-Plug 'cohama/lexima.vim' " auto close stuff
+" Plug 'cohama/lexima.vim' " auto close stuff
+" Plug 'tmsvg/pear-tree'
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive' " Git wrapper
@@ -32,10 +35,10 @@ Plug 'junegunn/vim-peekaboo' " Peeks registers when you press \"
 Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/limelight.vim'
 Plug 'tmadsen/vim-compiler-plugin-for-dotnet'
-Plug 'tmadsen/vim-filetype-settings'
 Plug 'alok/notational-fzf-vim'
 Plug 'tpope/vim-sensible'
 Plug 'itchyny/lightline.vim'
+Plug 'tmadsen/vim-filetype-settings'
 call plug#end()
 filetype plugin indent on
 syntax on
@@ -80,22 +83,14 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 
 let g:asyncomplete_auto_popup = 1
-
-set completeopt=menuone,noinsert,noselect,popuphidden
-set completepopup=highlight:Pmenu,border:off
+let g:asyncomplete_auto_completeopt = 0
 
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 " }}}
 " {{{ omnisharp
-let g:OmniSharp_server_stdio = 1
-let g:OmniSharp_typeLookupInPreview = 0 " Set the type lookup function to use the preview window instead of echoing it
-let g:OmniSharp_timeout = 5 " Timeout in seconds to wait for a response from the server
-let g:OmniSharp_highlighting = 3
-let g:OmniSharp_highlight_types = 2 " Update semantic highlighting on BufEnter and InsertLeave
-let g:OmniSharp_want_snippet = 0
-let g:OmniSharp_completion_without_overloads = 1
-let g:omnicomplete_fetch_full_documentation = 0
 let g:OmniSharp_selector_ui = 'fzf'
+let g:OmniSharp_selector_findusages = 'fzf'
+let g:OmniSharp_completion_without_overloads = 1
 let g:OmniSharp_popup_position = 'peek'
 let g:OmniSharp_popup_options = {
 \ 'highlight': 'Normal',
@@ -173,13 +168,12 @@ endif
 colorscheme gruvbox
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_contrast_light='hard'
-" let g:airline_theme='base16_gruvbox_dark_hard'
 set background=dark
 highlight Normal ctermbg=NONE " http://stackoverflow.com/a/18224803/62802
 highlight nonText ctermbg=NONE
 " }}}
 
-"{{{ Vim UI
+"{{{ Vim settings
 set history=100
 set ffs=unix,dos,mac " support all three, in this order
 set viminfo+=! " make sure it can save viminfo
@@ -196,24 +190,8 @@ set noerrorbells
 set splitbelow
 set number
 set relativenumber
-augroup linenumbers
-    autocmd!
-    autocmd BufEnter *    :set relativenumber
-    autocmd BufLeave *    :set number norelativenumber
-    autocmd WinEnter *    :set relativenumber
-    autocmd WinLeave *    :set number norelativenumber
-    autocmd InsertEnter * :set number norelativenumber
-    autocmd InsertLeave * :set relativenumber
-    autocmd FocusLost *   :set number norelativenumber
-    autocmd FocusGained * :set relativenumber
-augroup END
-nnoremap <silent> <C-S> :<C-u>update<CR>
-
-augroup Formatting
-    autocmd!
-    autocmd BufNew,BufRead *.txt,*.mkd setlocal textwidth=0
-augroup END
-
+set completeopt=menuone,noinsert,noselect,popuphidden
+set completepopup=highlight:Pmenu,border:off
 set showmatch " show matching '(' '{' '[' etc.
 set mat=2
 set incsearch
@@ -242,8 +220,23 @@ set autowrite
 set smartcase
 set cmdheight=2
 highlight Pmenu ctermbg=238
-map <leader>h :set hlsearch! <CR> " toggle search highlighting
 "}}}
+
+" {{{ Line numbers
+augroup linenumbers
+    autocmd!
+    autocmd BufEnter *    :set relativenumber
+    autocmd BufLeave *    :set number norelativenumber
+    autocmd WinEnter *    :set relativenumber
+    autocmd WinLeave *    :set number norelativenumber
+    autocmd InsertEnter * :set number norelativenumber
+    autocmd InsertLeave * :set relativenumber
+    autocmd FocusLost *   :set number norelativenumber
+    autocmd FocusGained * :set relativenumber
+augroup END
+" }}}
+
+map <leader>h :set hlsearch! <CR> " toggle search highlighting
 
 " {{{ Toggle the color column
 let g:oldColorColumn = 0
@@ -304,4 +297,3 @@ endfun
 
 autocmd FileType c,cpp,java,php,ruby,python,cs autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 "}}}
-
