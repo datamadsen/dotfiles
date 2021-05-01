@@ -123,7 +123,6 @@ tcl-tk
 telnet
 the_silver_searcher
 tmux
-transmission-cli
 utf8proc
 vifm
 w3m
@@ -142,8 +141,6 @@ alfred
 bartender
 dropbox
 emacs
-font-bitstreamverasansmono-nerd-font
-font-hack-nerd-font
 hyperdock
 istat-menus
 itsycal
@@ -159,6 +156,4 @@ slack
 sonarr
 telegram
 tower
-transmission
 visual-studio-code
-whatsapp
