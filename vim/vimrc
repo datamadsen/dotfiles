@@ -14,8 +14,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive' " Git wrapper
 Plug 'tpope/vim-commentary'
 Plug 'preservim/nerdtree'
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' } " Markdown
-Plug 'godlygeek/tabular', { 'for': 'markdown' } " vim-markdown dependency
+" Plug 'plasticboy/vim-markdown', { 'for': 'markdown' } " Markdown
+" Plug 'godlygeek/tabular', { 'for': 'markdown' } " vim-markdown dependency
 Plug 'milkypostman/vim-togglelist' " Location list
 Plug 'simeji/winresizer' " Resize windows
 Plug 'alvan/vim-closetag', { 'for': 'html' } " Auto-close html tags
@@ -24,7 +24,8 @@ Plug 'mhinz/vim-startify' " Startup screen
 Plug 'dense-analysis/ale', { 'for': 'cs' } " linter and more
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'for': ['javascript', 'vue', 'typescript']} " CocInstall coc-tsserver coc-json
 Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'morhetz/gruvbox' " colors
+Plug 'yami-beta/asyncomplete-omni.vim'
+Plug 'gruvbox-community/gruvbox' " colors
 Plug 'omnisharp/omnisharp-vim', { 'for': 'cs' } " C# development tool
 Plug 'nickspoons/vim-sharpenup'
 Plug 'puremourning/vimspector' " visual debugger for vim that should have some c# capabilities
@@ -39,6 +40,9 @@ Plug 'alok/notational-fzf-vim'
 Plug 'tpope/vim-sensible'
 Plug 'itchyny/lightline.vim'
 Plug 'tmadsen/vim-filetype-settings'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'rafaqz/ranger.vim'
 call plug#end()
 filetype plugin indent on
 syntax on
@@ -48,6 +52,7 @@ syntax on
 " {{{ fzf
 nmap <C-P> :FZF<CR>
 nmap <C-_> :Rg<CR>
+nmap <leader>/ :BLines<CR>
 " }}}
 " {{{ NERDTree
 map <leader>P :NERDTreeToggleVCS<CR>
@@ -57,6 +62,17 @@ let g:NERDTreeShowLineNumbers = 1
 let g:NERDTreeIgnore = ['bin', 'obj']
 let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '~'
+" }}}
+" {{{ ranger
+map <leader>rr :RangerEdit<cr>
+map <leader>rv :RangerVSplit<cr>
+map <leader>rs :RangerSplit<cr>
+map <leader>rt :RangerTab<cr>
+map <leader>ri :RangerInsert<cr>
+map <leader>ra :RangerAppend<cr>
+map <leader>rc :set operatorfunc=RangerChangeOperator<cr>g@
+map <leader>rd :RangerCD<cr>
+map <leader>rld :RangerLCD<cr>
 " }}}
 " {{{ winresizer
 let g:winresizer_start_key='<C-T>'
@@ -76,6 +92,9 @@ let g:ale_fixers = {
             \   'javascript': ['eslint'],
             \   'cs': ['OmniSharp']
             \}
+let g:ale_linters = {
+\ 'cs': ['OmniSharp']
+\}
 "}}}
 " {{{ asyncomplete
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -87,9 +106,21 @@ let g:asyncomplete_auto_completeopt = 0
 
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 " }}}
+" {{{ asyncomplete-omni
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+ \ 'name': 'omni',
+ \ 'allowlist': ['*'],
+ \ 'blocklist': ['c', 'cpp', 'html'],
+ \ 'completor': function('asyncomplete#sources#omni#completor'),
+ \ 'config': {
+ \   'show_source_kind': 0
+ \ }
+ \ }))
+" }}}
 " {{{ omnisharp
 let g:OmniSharp_selector_ui = 'fzf'
 let g:OmniSharp_selector_findusages = 'fzf'
+let g:OmniSharp_fzf_options = { 'window': 'botright 7new' }
 let g:OmniSharp_completion_without_overloads = 1
 let g:OmniSharp_popup_position = 'peek'
 let g:OmniSharp_popup_options = {
@@ -202,6 +233,10 @@ set colorcolumn=81
 " set diffopt+=vertical
 set cursorline
 set mouse=a " Enable mouse in all modes
+if &term =~ '^screen'
+    " tmux knows the extended mouse mode
+    set ttymouse=xterm2
+endif
 set ttyfast " We have a fast terminal connection
 
 " set fo=tcrqnj
@@ -297,3 +332,8 @@ endfun
 
 autocmd FileType c,cpp,java,php,ruby,python,cs autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 "}}}
+
+" {{{ Markdown settings
+" au filetype markdown set formatoptions+=ro
+" au filetype markdown set comments=b:*,b:-,b:+,b:1.,n:>
+" }}}
