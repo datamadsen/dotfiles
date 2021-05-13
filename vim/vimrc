@@ -53,6 +53,7 @@ syntax on
 nmap <C-P> :FZF<CR>
 nmap <C-_> :Rg<CR>
 nmap <leader>/ :BLines<CR>
+nmap <C-B> :Buffers<CR>
 " }}}
 " {{{ NERDTree
 map <leader>P :NERDTreeToggleVCS<CR>
