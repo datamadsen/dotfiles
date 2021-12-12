@@ -115,7 +115,7 @@ prompt_pure_preprompt_render() {
 	local -a preprompt_parts
 
 	# Set the path.
-	preprompt_parts+=('%F{white}%n@%m %F{blue}%~%f')
+	preprompt_parts+=('%F{white}%n@%m %F{cyan}%~%f')
 
 	# Add git branch and dirty status info.
 	typeset -gA prompt_pure_vcs_info
@@ -586,7 +586,7 @@ prompt_pure_setup() {
 	PROMPT='%(12V.%F{242}%12v%f .)'
 
 	# prompt turns red if the previous command didn't exit with 0
-	PROMPT+='%(?.%F{blue}.%F{red})${prompt_pure_state[prompt]}%f '
+	PROMPT+='%(?.%F{cyan}.%F{red})${prompt_pure_state[prompt]}%f '
 
 	# Store prompt expansion symbols for in-place expansion via (%). For
 	# some reason it does not work without storing them in a variable first.
@@ -601,8 +601,8 @@ prompt_pure_setup() {
 	ps4_parts=(
 		depth 	  '%F{yellow}${(l:${(%)prompt_pure_debug_depth[1]}::+:)}%f'
 		compare   '${${(%)prompt_pure_debug_depth[2]}:#${(%)prompt_pure_debug_depth[3]}}'
-		main      '%F{blue}${${(%)prompt_pure_debug_depth[3]}:t}%f%F{242}:%I%f %F{242}@%f%F{blue}%N%f%F{242}:%i%f'
-		secondary '%F{blue}%N%f%F{242}:%i'
+		main      '%F{cyan}${${(%)prompt_pure_debug_depth[3]}:t}%f%F{242}:%I%f %F{242}@%f%F{cyan}%N%f%F{242}:%i%f'
+		secondary '%F{cyan}%N%f%F{242}:%i'
 		prompt 	  '%F{242}>%f '
 	)
 	# Combine the parts with conditional logic. First the `:+` operator is

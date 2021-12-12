@@ -22,6 +22,9 @@ prompt pure
 source ~/.aliases
 source ~/.ssh-start.sh
 
+d=~/dotfiles/dircolors/nord.dir_colors
+test -r $d && eval "$(dircolors $d)"
+
 # case insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
