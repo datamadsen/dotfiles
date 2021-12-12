@@ -1,2 +1,2 @@
 export PATH="/home/tmadsen/.local/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:$PATH"
-source "$HOME/.cargo/env"
+# source "$HOME/.cargo/env"
