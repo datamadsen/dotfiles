@@ -1,0 +1,22 @@
+only
+
+set wildmenu
+
+set wildstyle=popup
+
+set incsearch
+
+set dotfiles
+
+nnoremap <silent> q :quit<CR>
+
+nnoremap <silent> <f12> :if layoutis('only')
+                       \|    vsplit
+                       \|    execute 'wincmd H'
+                       \|    view!
+                       \|else
+                       \|    only
+                       \|endif<cr>
+
+set nohlsearch
+
