@@ -32,6 +32,8 @@ setw() {
    tmux set-window-option -gq "$option" "$value"
 }
 
+set-option -g status-interval 1
+
 set "status" "on"
 set "status-justify" "left"
 
@@ -84,5 +86,5 @@ date_format=$(get "@date_format" "%d/%m/%Y")
 set "status-right" "#[fg=$white,bg=$black,nounderscore,noitalics]${time_format}  ${date_format}  "
 set "status-left" "#[fg=$black,bg=$green,bold] #h: #S #{prefix_highlight}#[fg=$green,bg=$black,nobold,nounderscore,noitalics]"
 
-set "window-status-format" "#[fg=$black,bg=$black,nobold,nounderscore,noitalics]#[fg=$white,bg=$black]  #I: #W  #[fg=$black,bg=$black,nobold,nounderscore,noitalics]"
-set "window-status-current-format" "#[fg=$black,bg=$visual_grey,nobold,nounderscore,noitalics]#[fg=$white,bg=$visual_grey,nobold]  #I: #W  #[fg=$visual_grey,bg=$black,nobold,nounderscore,noitalics]"
+set "window-status-format" "#[fg=$white,bg=$black]  #I: #W #{?window_zoomed_flag,* ,}"
+set "window-status-current-format" "#[fg=$white,bg=$visual_grey,nobold]  #I: #W #{?window_zoomed_flag,* ,}"
