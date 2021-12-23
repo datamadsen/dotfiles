@@ -73,7 +73,7 @@ let g:closetag_filetypes = 'html,xhtml,phtml,js'
 " }}}
 
 " {{{ fzf
-nmap <C-P> :FZF<CR>
+nmap <leader>p :FZF<CR>
 nmap <C-_> :Rg<CR>
 nmap <leader>/ :BLines<CR>
 nmap <C-B> :Buffers<CR>
