@@ -267,8 +267,7 @@ if &term =~ '^screen'
 endif
 set ttyfast " We have a fast terminal connection
 
-" set fo=tcrqnj
-set fo=crqnj
+set fo=tcrqnj
 set autoindent
 set tabstop=4
 set softtabstop=4
