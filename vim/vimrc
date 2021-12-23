@@ -41,6 +41,7 @@ Plug 'gruvbox-community/gruvbox'
 Plug 'foxbunny/vim-amber'
 Plug 'vim-scripts/crt.vim'
 Plug 'n00bmind/retro-minimal'
+Plug 'tomasr/molokai'
 
 " dotnet
 Plug 'prabirshrestha/asyncomplete.vim', { 'for': 'cs' }
