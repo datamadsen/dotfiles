@@ -20,7 +20,6 @@ autoload -U promptinit; promptinit
 prompt pure
 
 source ~/.aliases
-source ~/.ssh-start.sh
 
 if [ -x "$(command -v dircolors)" ]; then
   d=~/dotfiles/dircolors/nord.dir_colors
@@ -149,3 +148,5 @@ alias f=vicd
 alias vim="stty stop '' -ixoff ; vim"
 # `Frozing' tty, so after any command terminal settings will be restored
 ttyctl -f
+
+source <(kubectl completion zsh)
