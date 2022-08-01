@@ -20,3 +20,4 @@ nnoremap <silent> <f12> :if layoutis('only')
 
 set nohlsearch
 
+colorscheme Default-256

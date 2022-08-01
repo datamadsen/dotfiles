@@ -9,6 +9,7 @@ call plug#begin('$HOME/.vim/plugged')
 Plug 'cohama/lexima.vim' " auto close stuff
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
 Plug 'tpope/vim-fugitive' " Git wrapper
 Plug 'tpope/vim-commentary'
 Plug 'preservim/nerdtree'
@@ -42,6 +43,8 @@ Plug 'foxbunny/vim-amber'
 Plug 'vim-scripts/crt.vim'
 Plug 'n00bmind/retro-minimal'
 Plug 'tomasr/molokai'
+Plug 'xolox/vim-colorscheme-switcher'
+Plug 'xolox/vim-misc'
 
 " dotnet
 Plug 'prabirshrestha/asyncomplete.vim', { 'for': 'cs' }
@@ -73,10 +76,13 @@ let g:closetag_filetypes = 'html,xhtml,phtml,js'
 " }}}
 
 " {{{ fzf
-nmap <leader>p :FZF<CR>
 nmap <C-_> :Rg<CR>
 nmap <leader>/ :BLines<CR>
 nmap <C-B> :Buffers<CR>
+" }}}
+" {{{ clap
+let g:clap_open_preview='never'
+nmap <leader>. :Clap files<CR>
 " }}}
 " {{{ NERDTree
 map <leader>P :NERDTreeToggleVCS<CR>
@@ -146,8 +152,10 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
  \ }))
 " }}}
 " {{{ omnisharp
-let g:OmniSharp_selector_ui = 'fzf'
-let g:OmniSharp_selector_findusages = 'fzf'
+let g:OmniSharp_server_use_mono = 0
+let g:OmniSharp_server_use_net6 = 1
+let g:OmniSharp_selector_ui = 'clap'
+let g:OmniSharp_selector_findusages = 'clap'
 let g:OmniSharp_fzf_options = { 'window': 'botright 7new' }
 let g:OmniSharp_completion_without_overloads = 1
 let g:OmniSharp_popup_position = 'peek'

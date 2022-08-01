@@ -3,5 +3,10 @@
             "html": "\\bclass\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\']",
             "javascriptreact": "(?:\\bclassName\\s*=\\s*[\\\"\\']([_a-zA-Z0-9\\s\\-\\:\\/]+)[\\\"\\'])|(?:\\btw\\s*`([_a-zA-Z0-9\\s\\-\\:\\/]*)`)"
     },
-    "tailwindCSS.headwind.runOnSave": false
+    "tailwindCSS.headwind.runOnSave": false,
+    "tsserver.enable": true,
+    "javascript.suggest.autoImports": true,
+    "typescript.suggest.autoImports": true,
+    "tsserver.enableJavascript": true,
+    "tsserver.npm": "/usr/local/bin/npm"
 }
