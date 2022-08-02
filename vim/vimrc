@@ -47,9 +47,9 @@ Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
 
 " dotnet
-Plug 'prabirshrestha/asyncomplete.vim', { 'for': 'cs' }
-Plug 'yami-beta/asyncomplete-omni.vim', { 'for': 'cs' }
-Plug 'omnisharp/omnisharp-vim', { 'for': 'cs' }
+Plug 'prabirshrestha/asyncomplete.vim', { 'for': ['cs', 'csproj'] }
+Plug 'yami-beta/asyncomplete-omni.vim', { 'for': ['cs', 'csproj'] }
+Plug 'omnisharp/omnisharp-vim', { 'for': ['cs', 'csproj'] }
 Plug 'nickspoons/vim-sharpenup'
 
 
