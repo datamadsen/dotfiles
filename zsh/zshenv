@@ -1,10 +1,16 @@
 export PATH="/home/tmadsen/.local/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
-export ASPNETCORE_ENVIRONMENT=localhost
+
+if uname -a | grep -q 'microsoft'; then
+    export ASPNETCORE_ENVIRONMENT=localhost-wsl
+else
+    export ASPNETCORE_ENVIRONMENT=localhost
+fi
 
 case `uname` in
   Darwin)
     export DOTNET_ROOT=/usr/local/share/dotnet
   ;;
 esac
+
 
 # source "$HOME/.cargo/env"
