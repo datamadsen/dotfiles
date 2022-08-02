@@ -3,8 +3,9 @@ export LANG=en_US.UTF-8
 export TERM="xterm-256color"
 fpath=( "$HOME/.utilities" $fpath )
 fpath=( ~/.zsh/completion $fpath)
+fpath=( ~/dotfiles/zsh/pure $fpath)
 
-setopt inc_append_history
+setopt share_history
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
