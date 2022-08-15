@@ -12,3 +12,4 @@ utilities/prompt_pure_setup
 *.swp
 vifm/vifminfo.json
 vifm/vifminfo
+zsh/pure/
