@@ -11,3 +11,4 @@ utilities/prompt_pure_setup
 .netrwhist
 *.swp
 vifm/vifminfo.json
+vifm/vifminfo
