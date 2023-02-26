@@ -28,5 +28,5 @@ dotnet_diagnostic.IDE0055.severity = none
 csharp_prefer_braces = when_multiline
 
 # Web Files
-[*.{htm,html,js,jsm,ts,tsx,css,sass,scss,less,svg,vue,pcss}]
+[*.{htm,html,js,jsm,ts,tsx,css,sass,scss,less,svg,vue,json,pcss}]
 indent_size = 2
