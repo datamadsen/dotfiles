@@ -6,7 +6,8 @@ let mapleader = " "
 " {{{ Plugins
 filetype off
 call plug#begin('$HOME/.vim/plugged')
-Plug 'cohama/lexima.vim' " auto close stuff
+" Plug 'cohama/lexima.vim' " auto close stuff but interferes with cr as chooser with the pum
+Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
 Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
@@ -79,19 +80,21 @@ let g:closetag_filetypes = 'html,xhtml,phtml,js'
 nmap <C-_> :Rg<CR>
 nmap <leader>/ :BLines<CR>
 nmap <C-B> :Buffers<CR>
+nmap <leader>. :Files<CR>
 " }}}
 " {{{ clap
 let g:clap_open_preview='never'
-nmap <leader>. :Clap files<CR>
+" nmap <leader>. :Clap files<CR>
 " }}}
 " {{{ NERDTree
 map <leader>P :NERDTreeToggleVCS<CR>
 map <leader>F :NERDTreeFind<CR>
-let g:NERDTreeWinSize = 50
-let g:NERDTreeShowLineNumbers = 1
-let g:NERDTreeIgnore = ['bin', 'obj']
-let g:NERDTreeDirArrowExpandable = '+'
-let g:NERDTreeDirArrowCollapsible = '~'
+" let g:NERDTreeWinSize = 50
+let g:NERDTreeShowLineNumbers = 0
+let g:NERDTreeIgnore = ['bin', 'obj', 'node_modules', 'dist']
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
+let g:NERDTreeMinimalUI=1
 " }}}
 " {{{ ranger
 map <leader>rr :RangerEdit<cr>
@@ -131,9 +134,9 @@ let g:ale_linters = {
 \}
 "}}}
 " {{{ asyncomplete
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_completeopt = 0
@@ -367,6 +370,6 @@ endfun
 autocmd FileType c,cpp,java,php,ruby,python,cs autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 "}}}
 
-"{{{ nice search and replace with confirmation 
+"{{{ nice search and replace with confirmation
 vnoremap <C-r> "hy:%s/<C-r>h//gc<left><left><left>
 "}}}
