@@ -298,14 +298,16 @@ highlight Pmenu ctermbg=238
 " {{{ Line numbers
 augroup linenumbers
     autocmd!
-    autocmd BufEnter *    :set relativenumber
-    autocmd BufLeave *    :set number norelativenumber
-    autocmd WinEnter *    :set relativenumber
-    autocmd WinLeave *    :set number norelativenumber
-    autocmd InsertEnter * :set number norelativenumber
-    autocmd InsertLeave * :set relativenumber
-    autocmd FocusLost *   :set number norelativenumber
-    autocmd FocusGained * :set relativenumber
+    autocmd BufEnter *    if &filetype !=# 'nerdtree' | set relativenumber | endif
+    autocmd WinEnter *    if &filetype !=# 'nerdtree' | set relativenumber | endif
+    autocmd InsertEnter * if &filetype !=# 'nerdtree' | set relativenumber | endif
+    autocmd FocusGained * if &filetype !=# 'nerdtree' | set relativenumber | endif
+
+    autocmd BufLeave *    if &filetype !=# 'nerdtree' | set number norelativenumber | endif
+    autocmd WinLeave *    if &filetype !=# 'nerdtree' | set number norelativenumber | endif
+    autocmd InsertLeave * if &filetype !=# 'nerdtree' | set number norelativenumber | endif
+    autocmd FocusLost *   if &filetype !=# 'nerdtree' | set number norelativenumber | endif
+
 augroup END
 " }}}
 
