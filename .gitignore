@@ -13,3 +13,8 @@ utilities/prompt_pure_setup
 vifm/vifminfo.json
 vifm/vifminfo
 zsh/pure/
+nvim/tags
+nvim/test.sh
+nvim/.luarc.json
+nvim/lazy-lock.json
+nvim/luac
