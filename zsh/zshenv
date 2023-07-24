@@ -1,3 +1,4 @@
+# export PATH="/usr/local/nvim-macos/bin:/home/tmadsen/.local/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
 export PATH="/home/tmadsen/.local/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
 
 if uname -a | grep -q 'microsoft'; then
