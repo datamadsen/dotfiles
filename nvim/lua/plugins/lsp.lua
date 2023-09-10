@@ -85,5 +85,19 @@ return {
   {
     'stevearc/aerial.nvim',
     opts = {}
-  }
+  },
+
+  -- Code action menu
+  { "weilbith/nvim-code-action-menu" },
+
+  -- {
+  --   'nvimdev/lspsaga.nvim',
+  --   config = function()
+  --       require('lspsaga').setup({})
+  --   end,
+  --   dependencies = {
+  --       'nvim-treesitter/nvim-treesitter', -- optional
+  --       'nvim-tree/nvim-web-devicons'     -- optional
+  --   }
+  -- }
 }
