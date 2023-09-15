@@ -33,6 +33,7 @@ dotnet_diagnostic.CA1707.severity = none
 dotnet_diagnostic.IDE0090.severity = none
 
 csharp_prefer_braces = when_multiline
+csharp_style_expression_bodied_methods = false ; Don't suggest expression body methods all the time.
 
 ; namespace declaration 160 =
 ; dotnet_diagnostic.IDE0160.severity = none
