@@ -1,4 +1,4 @@
-local command_center = require("command_center")
+-- local commander = require("commander")
 
 require('telescope').setup {
   defaults = {
@@ -26,15 +26,15 @@ require('telescope').setup {
     }
   },
   extensions = {
-    command_center = {
-      components = {
-        command_center.component.DESC,
-      },
-      sort_by = {
-        command_center.component.DESC,
-      },
-      auto_replace_desc_with_cmd = false,
-      prompt_title = 'Tims HyggeCommands'
-    }
+    -- commander = {
+    --   components = {
+    --     commander.component.DESC,
+    --   },
+    --   sort_by = {
+    --     commander.component.DESC,
+    --   },
+    --   auto_replace_desc_with_cmd = false,
+    --   prompt_title = 'Tims HyggeCommands'
+    -- }
   }
 }

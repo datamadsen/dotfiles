@@ -1,7 +1,6 @@
--- Setup command_center
-require("telescope").load_extension("command_center")
+-- Setup commander
 
-local command_center = require("command_center")
+local commander = require("commander")
 local commands = {
   {
     desc = "Test: Run nearest",
@@ -82,5 +81,5 @@ local commands = {
   }
 }
 
-command_center.remove(commands)
-command_center.add(commands)
+-- commander.remove(commands)
+commander.add(commands, {})

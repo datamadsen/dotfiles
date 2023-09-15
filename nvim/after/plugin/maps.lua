@@ -37,17 +37,13 @@ leader('fh', require('telescope.builtin').help_tags, '[F]ind [H]elp')
 leader('fw', require('telescope.builtin').grep_string, '[F]ind current [W]ord')
 leader('fg', require('telescope.builtin').live_grep, '[F]ind by [G]rep')
 leader('fd', require('telescope.builtin').diagnostics, '[F]ind [D]iagnostics')
-leader('ft', '<CMD>Telescope command_center<CR>', { desc = '[S]earch [T]ims Commands' })
+leader('ft', '<CMD>Telescope commander<CR>', '[F]ind [T]ims Commands')
 
 -- Diagnostic keymaps
 normal('[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
 normal(']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 leader('e', vim.diagnostic.open_float, "Open floating diagnostic message")
 leader('q', vim.diagnostic.setloclist, "Open diagnostics list")
-
--- Command center
-leader('.', '<CMD>Telescope command_center<CR>')
-leader('.', '<CMD>Telescope command_center<CR>')
 
 -- neo-tree
 leader('p', '<CMD>NeoTreeFloatToggle<CR>')
