@@ -20,6 +20,11 @@ return {
     opts = require('config.neotree')
   },
   {
+    "rcarriga/nvim-notify",
+    event = "VeryLazy",
+    opts = require('config.notify')
+  },
+  {
     "folke/noice.nvim",
     dependencies = {
       "MunifTanjim/nui.nvim",
