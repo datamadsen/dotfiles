@@ -18,7 +18,7 @@ function M.post()
   require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
 
   lsp.configure("omnisharp", {
-    cmd = { 'dotnet', '/Users/tmadsen/.cache/omnisharp-vim/omnisharp-roslyn/OmniSharp.dll' },
+    cmd = { 'dotnet', '/Users/tmadsen/.cache/omnisharp-osx-arm64-net6.0/OmniSharp.dll', '--languageserver' },
     enable_roslyn_analyzers = true,
     enable_import_completion = true,
     organize_imports_on_format = true,
