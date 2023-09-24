@@ -4,6 +4,10 @@ root = true
 dotnet_diagnostic.CS8019.severity = none
 dotnet_diagnostic.CS8933.severity = none
 
+[**/build/**.cs]
+dotnet_diagnostic.CS8019.severity = none
+dotnet_diagnostic.CS8933.severity = none
+
 [*]
 charset = utf-8
 indent_style = space
@@ -35,6 +39,15 @@ dotnet_diagnostic.IDE0055.severity = none
 dotnet_diagnostic.IDE0058.severity = none
 dotnet_diagnostic.CA1707.severity = none
 dotnet_diagnostic.IDE0090.severity = none
+
+; Don't prefer conditional if for return
+dotnet_diagnostic.IDE0046.severity = none
+
+; Don't complain about switch statements not having all cases
+dotnet_diagnostic.IDE0072.severity = none
+
+; Don't suggest using block for method if I have done it another way.
+dotnet_diagnostic.IDE0022.severity = none
 
 csharp_prefer_braces = when_multiline
 csharp_style_expression_bodied_methods = false ; Don't suggest expression body methods all the time.
