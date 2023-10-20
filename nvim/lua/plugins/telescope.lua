@@ -31,11 +31,7 @@ return {
   {
     -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
-    -- dir = "~/source/forks/telescope.nvim",
-    tag = '0.1.1',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    -- config = function()
-    -- end
   },
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
   -- Only load if `make` is available. Make sure you have the system
