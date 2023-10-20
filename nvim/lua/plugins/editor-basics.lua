@@ -34,7 +34,7 @@ return {
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    opts = require("config.indent-blanklines"),
+    main = 'ibl'
   },
   {
     -- Set lualine as statusline
