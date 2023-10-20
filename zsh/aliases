@@ -6,6 +6,7 @@ alias :q='exit'
 alias :Q='exit'
 alias ibrew='arch -x86_64 brew'
 alias mkdirdate='mkdir "$(date +"%Y-%m-%d")"'
+alias v='nvim'
 
 case `uname` in
   Darwin)
