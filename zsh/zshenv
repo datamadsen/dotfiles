@@ -1,5 +1,6 @@
 # export PATH="/usr/local/nvim-macos/bin:/home/tmadsen/.local/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
 export PATH="/home/tmadsen/.local/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
+export PATH="/Users/tmadsen/.local/share/bob/nvim-bin:$PATH"
 
 if uname -a | grep -q 'microsoft'; then
     export ASPNETCORE_ENVIRONMENT=localhost-wsl
@@ -15,3 +16,4 @@ esac
 
 
 # source "$HOME/.cargo/env"
+. "$HOME/.cargo/env"
