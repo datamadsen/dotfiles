@@ -61,7 +61,7 @@ normal('<F8>', require('dap').repl.open, { desc = "Debug: Repl" })
 -- code
 -- leader('ca', '<CMD>CodeActionMenu<CR>', "Actions") -- not so nice.
 leader('ca', vim.lsp.buf.code_action, "Actions")
-leader('cr', vim.lsp.buf.rename, "Rename")
+leader('cn', vim.lsp.buf.rename, "Rename")
 leader('ci', vim.lsp.buf.implementation, "Goto Implementation");
 leader('cd', vim.lsp.buf.definition, "Goto Definition");
 leader('cb', "<CMD>TroubleToggle document_diagnostics<CR>", "Buffer Diagnostics");
