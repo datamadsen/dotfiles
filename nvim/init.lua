@@ -19,5 +19,6 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   { import = 'plugins' },
   { import = 'plugins.editor' },
+  { import = 'plugins.ide' },
   { import = 'plugins.debugging' },
 }, {})
