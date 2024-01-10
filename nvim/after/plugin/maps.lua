@@ -21,9 +21,22 @@ normal("<C-u>", "<C-u>zz")
 normal('k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 normal('j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- Common Buffer stuff that we do all the time.
+leader('bp', '<cmd>BufferLineTogglePin<CR>', "[P]in Buffer")
+leader('bP', '<cmd>BufferLineGroupClose ungrouped<CR>', "Close Un[P]inned Buffers")
+leader('bw', '<CMD>w<CR>', '[W]rite Buffer')
+leader('bq', function() require('bufdelete').bufdelete(0, true) end, '[Q]uit Buffer')
+leader('bQ', '<CMD>BufferLineCloseOthers<CR>', '[Q]uit Other Buffer')
+leader('bo', 'zR', '[O]pen Buffer Folds')
+leader('bf', '<CMD>set foldlevel=1<CR>', '[F]old Buffer Folds')
+
+normal("]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer"})
+normal("[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer"})
+normal("<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer"})
+normal("<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer"})
+
 -- See `:help telescope.builtin`
-leader('?', require('telescope.builtin').oldfiles, '[?] Find recently opened files')
-leader('<space>', require('telescope.builtin').buffers, '[ ] Find existing buffers')
+leader('?', function() require('telescope.builtin').oldfiles() end, '[?] Find recently opened files')
 leader('/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
@@ -32,12 +45,13 @@ leader('/', function()
   })
 end, '[/] Fuzzily search in current buffer')
 
-leader('ff', require('telescope.builtin').find_files, '[F]ind [F]iles')
+leader('ff', function() require('telescope.builtin').find_files() end, '[F]ind [F]iles')
+leader('fb', function() require('telescope.builtin').buffers() end, '[F]ind [B]uffers')
 -- leader('fh', require('telescope.builtin').help_tags, '[F]ind [H]elp')
-leader('fw', require('telescope.builtin').grep_string, '[F]ind current [W]ord')
-leader('fg', require('telescope.builtin').live_grep, '[F]ind by [G]rep')
-leader('fd', require('telescope.builtin').diagnostics, '[F]ind [D]iagnostics')
-leader('fh', '<CMD>Telescope commander<CR>', '[F]ind [T]ims Commands')
+leader('fw', function() require('telescope.builtin').grep_string() end, '[F]ind current [W]ord')
+leader('fg', function() require('telescope.builtin').live_grep() end, '[F]ind by [G]rep')
+leader('fd', function() require('telescope.builtin').diagnostics() end, '[F]ind [D]iagnostics')
+leader('fh', '<CMD>Telescope commander<CR>', '[F]ind [H]ygge Commands')
 leader('ft', function () require('telescope.builtin').lsp_dynamic_workspace_symbols({ symbols='class', fname_width=0}) end , '[F]ind [T]ype')
 
 -- Diagnostic keymaps
@@ -48,25 +62,33 @@ leader('q', vim.diagnostic.setloclist, "Open diagnostics list")
 
 -- neo-tree
 leader('p', '<CMD>NeoTreeFloatToggle<CR>')
-leader('P', '<CMD>NeoTreeShowToggle<CR>')
+leader('P', '<CMD>NeoTreeFocusToggle<CR>')
 
--- debuggingr
-normal('<F5>', require('dap').continue, { desc = "Debug: Continue" })
-normal('<F9>', require('dap').toggle_breakpoint, { desc = "Debug: Toggle breakpoint" })
-normal('<F10>', require('dap').step_over, { desc = "Debug: Step over" })
-normal('<F11>', require('dap').step_into, { desc = "Debug: Step into" })
-normal('<F12>', require('dap').step_out, { desc = "Debug: Step out" })
-normal('<F8>', require('dap').repl.open, { desc = "Debug: Repl" })
+-- debugging
+normal('<F5>', function() require('dap').continue() end, { desc = "Debug: Continue" })
+normal('<F9>', function() require('dap').toggle_breakpoint() end, { desc = "Debug: Toggle breakpoint" })
+normal('<F10>', function() require('dap').step_over() end, { desc = "Debug: Step over" })
+normal('<F11>', function() require('dap').step_into() end, { desc = "Debug: Step into" })
+normal('<F12>', function() require('dap').step_out() end, { desc = "Debug: Step out" })
+normal('<F8>', function() require('dap').repl.open() end, { desc = "Debug: Repl" })
 
 -- code
--- leader('ca', '<CMD>CodeActionMenu<CR>', "Actions") -- not so nice.
-leader('ca', vim.lsp.buf.code_action, "Actions")
+leader('ca', function() require("actions-preview").code_actions() end, "Actions")
 leader('cn', vim.lsp.buf.rename, "Rename")
 leader('ci', vim.lsp.buf.implementation, "Goto Implementation");
 leader('cd', vim.lsp.buf.definition, "Goto Definition");
 leader('cb', "<CMD>TroubleToggle document_diagnostics<CR>", "Buffer Diagnostics");
 leader('cw', "<CMD>TroubleToggle workspace_diagnostics<CR>", "Workspace Diagnostics");
 leader('cr', "<CMD>TroubleToggle lsp_references<CR>", "References");
+leader('cm', "<CMD>FloatermNew --height=0.6 --width=0.8 --wintype=float --name=build --title=build --position=bottomright --autoclose=0 dotnet build<CR>", "Make");
+leader('ct', "<CMD>FloatermNew --height=0.6 --width=0.8 --wintype=float --name=adhoc --title=adhoc --position=bottomright --autoclose=2<CR>", "Terminal");
+
+-- copilot
+leader('cc', "<CMD>Copilot suggestion<CR>", "[C]opilot")
+leader('cp', "<CMD>Copilot panel<CR>", "Copilot [P]anel")
+leader('cP', "<CMD>Copilot panel refresh<CR>", "Copilot [P]anel Refresh")
+leader('cl', "<CMD>Copilot panel accept<CR>", "Copilot Panel Accept")
+
 normal(']d', function() vim.diagnostic.goto_next({ float = false }) end)
 normal('[d', function() vim.diagnostic.goto_prev({ float = false }) end)
 normal('<C-s>', "<CMD>Telescope lsp_document_symbols theme=dropdown previewer=false<CR>");
