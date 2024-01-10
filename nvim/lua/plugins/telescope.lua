@@ -1,6 +1,7 @@
 return {
   {
     "FeiyouG/commander.nvim",
+    commit = "9febde3150e29915b72c2ee8da500d396c8dba03",
     dependencies = { "nvim-telescope/telescope.nvim" },
     config = function()
       require("commander").setup({
