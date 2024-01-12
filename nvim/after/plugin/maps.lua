@@ -29,6 +29,17 @@ leader('bq', function() require('bufdelete').bufdelete(0, true) end, '[Q]uit Buf
 leader('bQ', '<CMD>BufferLineCloseOthers<CR>', '[Q]uit Other Buffer')
 leader('bo', 'zR', '[O]pen Buffer Folds')
 leader('bf', '<CMD>set foldlevel=1<CR>', '[F]old Buffer Folds')
+leader('bs', '<CMD>Spectre %<CR>', '[S]pectre in buffer')
+
+leader('b1', '<cmd>BufferLineGoToBuffer 1<CR>', "Go to 1")
+leader('b2', '<cmd>BufferLineGoToBuffer 2<CR>', "Go to 2")
+leader('b3', '<cmd>BufferLineGoToBuffer 3<CR>', "Go to 3")
+leader('b4', '<cmd>BufferLineGoToBuffer 4<CR>', "Go to 4")
+leader('b5', '<cmd>BufferLineGoToBuffer 5<CR>', "Go to 5")
+leader('b6', '<cmd>BufferLineGoToBuffer 6<CR>', "Go to 6")
+leader('b7', '<cmd>BufferLineGoToBuffer 7<CR>', "Go to 7")
+leader('b8', '<cmd>BufferLineGoToBuffer 8<CR>', "Go to 8")
+leader('b9', '<cmd>BufferLineGoToBuffer 9<CR>', "Go to 9")
 
 normal("]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer"})
 normal("[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer"})
@@ -80,8 +91,43 @@ leader('cd', vim.lsp.buf.definition, "Goto Definition");
 leader('cb', "<CMD>TroubleToggle document_diagnostics<CR>", "Buffer Diagnostics");
 leader('cw', "<CMD>TroubleToggle workspace_diagnostics<CR>", "Workspace Diagnostics");
 leader('cr', "<CMD>TroubleToggle lsp_references<CR>", "References");
-leader('cm', "<CMD>FloatermNew --height=0.6 --width=0.8 --wintype=float --name=build --title=build --position=bottomright --autoclose=0 dotnet build<CR>", "Make");
+leader('cm', function()
+  vim.cmd([[wa]])
+  vim.cmd([[FloatermNew --height=0.6 --width=0.8 --wintype=float --name=build --title=build --position=bottomright --autoclose=0 dotnet build]])
+end, "Make");
 leader('ct', "<CMD>FloatermNew --height=0.6 --width=0.8 --wintype=float --name=adhoc --title=adhoc --position=bottomright --autoclose=2<CR>", "Terminal");
+
+-- test
+leader('tn', function()
+  vim.cmd([[wa]])
+  require("neotest").run.run()
+end, "Run [N]earest");
+
+leader('td', function()
+  vim.cmd([[wa]])
+  require("neotest").run.run({strategy = "dap"})
+end, "[D]ebug Nearest");
+
+leader('tl', function()
+  vim.cmd([[wa]])
+  require("neotest").run.run_last()
+end, "Run [L]ast");
+
+leader('tf', function()
+  vim.cmd([[wa]])
+  require("neotest").run.run(vim.fn.expand("%"))
+end, "Run [F]ile");
+
+leader('ts', function()
+  vim.cmd([[wa]])
+  require("neotest").summary.toggle()
+end, "Toggle [S]ummary");
+
+leader('to', function()
+  vim.cmd([[wa]])
+  require("neotest").output.open({ enter = true })
+end, "[O]utput");
+
 
 -- copilot
 leader('cc', "<CMD>Copilot suggestion<CR>", "[C]opilot")
@@ -93,6 +139,10 @@ normal(']d', function() vim.diagnostic.goto_next({ float = false }) end)
 normal('[d', function() vim.diagnostic.goto_prev({ float = false }) end)
 normal('<C-s>', "<CMD>Telescope lsp_document_symbols theme=dropdown previewer=false<CR>");
 normal('<C-t>', "<CMD>Telescope lsp_workspace_symbols<CR>");
+
+normal(';;', ":", { desc = "command"})
+normal(';q', ":q", { desc = "quit"})
+normal(';w', "<CMD>w<CR>", { desc = "write"})
 
 -- Search and replace
 normal('<leader>so', '<cmd>lua require("spectre").open()<CR>', {

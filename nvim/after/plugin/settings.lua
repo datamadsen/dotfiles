@@ -1,8 +1,6 @@
 -- Set highlight on search
 vim.o.hlsearch = false
 
-vim.cmd [[ colorscheme tokyonight ]]
-
 -- Make line numbers default
 -- vim.wo.number = true
 
