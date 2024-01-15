@@ -7,6 +7,7 @@ alias :Q='exit'
 alias ibrew='arch -x86_64 brew'
 alias mkdirdate='mkdir "$(date +"%Y-%m-%d")"'
 alias v='nvim'
+alias vn='~/.local/bin/neovim-nightly/nvim-macos/bin/nvim'
 
 case `uname` in
   Darwin)

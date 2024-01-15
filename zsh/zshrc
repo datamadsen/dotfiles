@@ -10,8 +10,6 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
 
-tabs -2
-
 setopt prompt_subst
 autoload -U colors && colors
 autoload -U compinit && compinit
@@ -88,32 +86,10 @@ zle-keymap-select () {
     fi
 }
 
-# Use lf to switch directories and bind it to ctrl-o
-lfcd () {
-    tmp="$(mktemp)"
-    lf -last-dir-path="$tmp" "$@"
-    if [ -f "$tmp" ]; then
-        dir="$(cat "$tmp")"
-        rm -f "$tmp"
-        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
-    fi
-}
-bindkey -s '^o' 'lfcd\n'
-
-# Edit line in vim with ctrl-e:
-autoload edit-command-line; zle -N edit-command-line
-bindkey '^e' edit-command-line
-
-PATH="/home/tmadsen/.yarn/bin:/usr/lib/:/usr/local/lib${PATH+:}${PATH}"; export PATH;
-export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="/usr/local/lib/ruby/gems/2.6.0/bin:$PATH"
-export PATH="/home/tmadsen/go/bin:$PATH"
-export PATH="$(yarn global bin):$PATH"
 export FZF_COMPLETION_OPTS='-e'
 export FZF_DEFAULT_COMMAND='ag --ignore-dir={bin,obj,node_modules} -g ""'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 
 # Load zsh-syntax-highlighting; should be last.
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null # macos
@@ -146,8 +122,14 @@ alias f=vicd
 
 # Enable ctrl-s to save in vim mean we have to not freeze the terminal when
 # pressin c-s
-alias vim="stty stop '' -ixoff ; vim"
+# alias vim="stty stop '' -ixoff ; vim"
 # `Frozing' tty, so after any command terminal settings will be restored
-ttyctl -f
+# ttyctl -f
 
-source <(kubectl completion zsh)
+# source <(kubectl completion zsh)
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
