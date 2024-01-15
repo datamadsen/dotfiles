@@ -3,51 +3,6 @@
 local commander = require("commander")
 local commands = {
   {
-    desc = "Test: Run nearest",
-    cmd = function()
-      require('neotest').run.run()
-    end
-  },
-  {
-    desc = "Test: Debug nearest",
-    cmd = function()
-      vim.cmd "set number"
-      vim.cmd "set rnu"
-      vim.o.signcolumn = 'yes'
-      require("neotest").run.run({ strategy = "dap", suite = false })
-    end
-  },
-  {
-    desc = "Test: Run file",
-    cmd = function()
-      require("neotest").run.run(vim.fn.expand("%"))
-    end
-  },
-  {
-    desc = "Test: Summary",
-    cmd = function()
-      require('neotest').run.run()
-    end
-  },
-  {
-    desc = "Test: Output",
-    cmd = function()
-      require('neotest').output.open()
-    end
-  },
-  {
-    desc = "Toggle line numbers",
-    cmd = function()
-      vim.cmd "set number!"
-      vim.cmd "set rnu!"
-      if vim.o.signcolumn == 'no' then
-        vim.o.signcolumn = 'yes'
-      else
-        vim.o.signcolumn = 'no'
-      end
-    end
-  },
-  {
     desc = "Git",
     cmd = function()
       vim.cmd ":LazyGit"

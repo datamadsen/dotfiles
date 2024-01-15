@@ -14,6 +14,10 @@ end
 normal('<Space>', '<Nop>', { silent = true })
 visual('<Space>', '<Nop>', { silent = true })
 
+-- Something we do so often should not require two keys.
+-- normal("<CR>", ':')
+
+-- Center the screen when scrolling with C-d/u
 normal("<C-d>", "<C-d>zz")
 normal("<C-u>", "<C-u>zz")
 
@@ -56,8 +60,10 @@ leader('/', function()
   })
 end, '[/] Fuzzily search in current buffer')
 
+-- Find stuff
 leader('ff', function() require('telescope.builtin').find_files() end, '[F]ind [F]iles')
-leader('fb', function() require('telescope.builtin').buffers() end, '[F]ind [B]uffers')
+leader('fb', function() require("telescope.builtin").current_buffer_fuzzy_find({ sorter = require('telescope.sorters').get_substr_matcher({})}) end, '[F]ind in [B]uffers')
+leader('fB', function() require('telescope.builtin').buffers() end, '[F]ind in [B]uffers')
 -- leader('fh', require('telescope.builtin').help_tags, '[F]ind [H]elp')
 leader('fw', function() require('telescope.builtin').grep_string() end, '[F]ind current [W]ord')
 leader('fg', function() require('telescope.builtin').live_grep() end, '[F]ind by [G]rep')
@@ -90,6 +96,7 @@ leader('ci', vim.lsp.buf.implementation, "Goto Implementation");
 leader('cd', vim.lsp.buf.definition, "Goto Definition");
 leader('cb', "<CMD>TroubleToggle document_diagnostics<CR>", "Buffer Diagnostics");
 leader('cw', "<CMD>TroubleToggle workspace_diagnostics<CR>", "Workspace Diagnostics");
+normal('gr', "<CMD>Trouble lsp_references<CR>", { desc = "Go To References" });
 leader('cr', "<CMD>TroubleToggle lsp_references<CR>", "References");
 leader('cm', function()
   vim.cmd([[wa]])
@@ -139,10 +146,6 @@ normal(']d', function() vim.diagnostic.goto_next({ float = false }) end)
 normal('[d', function() vim.diagnostic.goto_prev({ float = false }) end)
 normal('<C-s>', "<CMD>Telescope lsp_document_symbols theme=dropdown previewer=false<CR>");
 normal('<C-t>', "<CMD>Telescope lsp_workspace_symbols<CR>");
-
-normal(';;', ":", { desc = "command"})
-normal(';q', ":q", { desc = "quit"})
-normal(';w', "<CMD>w<CR>", { desc = "write"})
 
 -- Search and replace
 normal('<leader>so', '<cmd>lua require("spectre").open()<CR>', {
