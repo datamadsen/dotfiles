@@ -92,38 +92,38 @@ normal('<F8>', function() require('dap').repl.open() end, { desc = "Debug: Repl"
 -- code
 leader('ca', function() require("actions-preview").code_actions() end, "Actions")
 leader('cn', vim.lsp.buf.rename, "Rename")
-leader('ci', vim.lsp.buf.implementation, "Goto Implementation");
-leader('cd', vim.lsp.buf.definition, "Goto Definition");
-leader('cb', "<CMD>TroubleToggle document_diagnostics<CR>", "Buffer Diagnostics");
-leader('cw', "<CMD>TroubleToggle workspace_diagnostics<CR>", "Workspace Diagnostics");
-normal('gr', "<CMD>Trouble lsp_references<CR>", { desc = "Go To References" });
-leader('cr', "<CMD>TroubleToggle lsp_references<CR>", "References");
+leader('ci', vim.lsp.buf.implementation, "Goto Implementation")
+leader('cd', vim.lsp.buf.definition, "Goto Definition")
+leader('cb', "<CMD>TroubleToggle document_diagnostics<CR>", "Buffer Diagnostics")
+leader('cw', "<CMD>TroubleToggle workspace_diagnostics<CR>", "Workspace Diagnostics")
+normal('gr', "<CMD>Trouble lsp_references<CR>", { desc = "Go To References" })
+leader('cr', "<CMD>TroubleToggle lsp_references<CR>", "References")
 leader('cm', function()
   vim.cmd([[wa]])
   vim.cmd([[FloatermNew --height=0.6 --width=0.8 --wintype=float --name=build --title=build --position=bottomright --autoclose=0 dotnet build]])
-end, "Make");
-leader('ct', "<CMD>FloatermNew --height=0.6 --width=0.8 --wintype=float --name=adhoc --title=adhoc --position=bottomright --autoclose=2<CR>", "Terminal");
+end, "Make")
+leader('ct', "<CMD>FloatermNew --height=0.6 --width=0.8 --wintype=float --name=adhoc --title=adhoc --position=bottomright --autoclose=2<CR>", "Terminal")
 
 -- test
 leader('tn', function()
   vim.cmd([[wa]])
   require("neotest").run.run()
-end, "Run [N]earest");
+end, "Run [N]earest")
 
 leader('td', function()
   vim.cmd([[wa]])
   require("neotest").run.run({strategy = "dap"})
-end, "[D]ebug Nearest");
+end, "[D]ebug Nearest")
 
 leader('tl', function()
   vim.cmd([[wa]])
   require("neotest").run.run_last()
-end, "Run [L]ast");
+end, "Run [L]ast")
 
 leader('tf', function()
   vim.cmd([[wa]])
   require("neotest").run.run(vim.fn.expand("%"))
-end, "Run [F]ile");
+end, "Run [F]ile")
 
 leader('ts', function()
   vim.cmd([[wa]])
