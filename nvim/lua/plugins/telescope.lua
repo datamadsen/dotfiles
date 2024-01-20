@@ -1,38 +1,5 @@
 return {
   {
-    "FeiyouG/commander.nvim",
-    commit = "9febde3150e29915b72c2ee8da500d396c8dba03",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = function()
-      require("commander").setup({
-        components = {
-          "DESC",
-          "KEYS",
-          "CAT",
-        },
-        sort_by = {
-          "DESC",
-          "KEYS",
-          "CAT",
-          "CMD"
-        },
-        integration = {
-          telescope = {
-            enable = true,
-          },
-          lazy = {
-            enable = true,
-            set_plugin_name_as_cat = true
-          }
-        },
-        auto_replace_desc_with_cmd = false,
-        separator = "",
-        prompt_title = "Hygge"
-      })
-    end,
-
-  },
-  {
     -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },

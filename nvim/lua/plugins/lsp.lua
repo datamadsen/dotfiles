@@ -29,7 +29,7 @@ return {
   },
   {
     "nvim-neotest/neotest",
-    keys = { "<leader>n" },
+    -- keys = { "<leader>n" },
     config = function()
       require("config.neotest").post()
     end,

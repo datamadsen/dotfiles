@@ -22,7 +22,7 @@ return {
         name = "launch - netcoredbg",
         request = "launch",
         program = function()
-          return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/dmm.webapi/bin/Debug/net8.0/dmm.webapi.dll', 'file')
+          return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/dma.bankbog/bin/Debug/net8.0/dma.bankbog.dll', 'file')
           -- return vim.fn.input('Hygge :) Path to dll ', vim.fn.getcwd() .. '/bin/Debug/', 'file')
         end,
         -- env = {
@@ -34,7 +34,7 @@ return {
         --   end
         -- },
         cwd = function () -- This is important in order to load the appsettings files correctly.
-          return vim.fn.getcwd() .. '/dmm.webapi/'
+          return vim.fn.getcwd() .. '/dma.bankbog/'
         end
       }
     }

@@ -1,14 +1,17 @@
--- local commander = require("commander")
-
+local actions = require('telescope.actions')
 require('telescope').setup {
   defaults = {
     mappings = {
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
+        ["<esc>"] = actions.close
       },
     },
-    -- path_display = "hidden",
+    layout_config = {
+      prompt_position = "top",
+      anchor = "NW"
+    },
   },
   pickers = {
     lsp_document_symbols = {
@@ -18,23 +21,14 @@ require('telescope').setup {
         return { prompt = prompt }
       end
     },
-    lsp_workspace_symbols = {
+    lsp_dynamic_workspace_symbols = {
       path_display = "hidden",
+      theme = "dropdown",
+      prompt_title = "Find Symbol",
+      previewer = false,
       on_input_filter_cb = function(prompt)
         return { prompt = prompt }
       end
     }
-  },
-  extensions = {
-    -- commander = {
-    --   components = {
-    --     commander.component.DESC,
-    --   },
-    --   sort_by = {
-    --     commander.component.DESC,
-    --   },
-    --   auto_replace_desc_with_cmd = false,
-    --   prompt_title = 'Tims HyggeCommands'
-    -- }
   }
 }
