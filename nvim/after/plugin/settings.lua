@@ -29,4 +29,8 @@ vim.o.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
+-- Save files before quitting?
 vim.o.confirm = true
+
+-- Show yourself
+vim.o.cursorline = true
