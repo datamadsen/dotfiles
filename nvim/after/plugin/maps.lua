@@ -50,12 +50,12 @@ wk.register({
   ["<leader>f"] = {
     name = "+ find",
     f    = { function() require('telescope.builtin').find_files() end, 'Files' },
-    b    = { function() require('telescope.builtin').buffers() end, 'Buffers' },
+    b    = { function() require('telescope.builtin').buffers({ sort_mru = true, ignore_current_buffer = false }) end, 'Buffers' },
     h    = { function() require('telescope.builtin').help_tags() end, 'Help' },
     w    = { function() require('telescope.builtin').grep_string() end, 'Grep for Word' },
     g    = { function() require('telescope.builtin').live_grep() end, 'Grep' },
     d    = { function() require('telescope.builtin').diagnostics() end, 'Diagnostics' },
-    t    = { function() require('telescope.builtin').lsp_dynamic_workspace_symbols({ symbols = 'class' }) end, '[F]ind [T]ype' }
+    t    = { function() require('telescope.builtin').lsp_dynamic_workspace_symbols({ symbols = { 'class', 'method' } }) end, '[F]ind [T]ype' }
   }
 })
 
@@ -93,7 +93,7 @@ wk.register({
       function()
         vim.cmd([[wa]])
         vim.cmd(
-        [[FloatermNew --height=0.6 --width=0.8 --wintype=float --name=build --title=build --position=bottomright --autoclose=0 dotnet build]])
+          [[FloatermNew --height=0.6 --width=0.8 --wintype=float --name=build --title=build --position=bottomright --autoclose=0 dotnet build]])
       end, "Make"
     },
     t = { "<CMD>FloatermNew --height=0.6 --width=0.8 --wintype=float --name=adhoc --title=adhoc --position=bottomright --autoclose=2<CR>", "Terminal" },
@@ -159,7 +159,7 @@ wk.register({
 -- Miscellaneous
 wk.register({
   ["<leader>m"] = {
-    name = "+ Miscellaneous",
+    name = "+ miscellaneous",
     f = {
       name = "+ folding",
       m = {
@@ -186,5 +186,6 @@ wk.register({
     },
     q = { "<cmd>wqa<cr>", "Write all and quit" },
     w = { "<cmd>wa<cr>", "Write all" },
+    y = { function() require("telescope").extensions.yank_history.yank_history({}) end, "Yank history" },
   }
 })
