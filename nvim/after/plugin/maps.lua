@@ -33,6 +33,18 @@ leader('/',
     })
   end, 'Fuzzy search')
 
+wk.register({
+  ["<leader>w"] = { "<cmd>w<cr>", "Write buffer" }
+})
+
+wk.register({
+  ["<leader>j"] = { function() require('telescope.builtin').find_files() end, 'Find Files' },
+})
+
+wk.register({
+  ["<leader>g"] = { function() require('telescope.builtin').live_grep() end, 'Grep' },
+})
+
 -- Common Buffer stuff that we do all the time.
 wk.register({
   ["<leader>b"] = {
