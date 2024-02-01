@@ -34,3 +34,18 @@ vim.o.confirm = true
 
 -- Show yourself
 vim.o.cursorline = true
+
+-- Not sure why, but suddenly clipboard tool was tmuxclipboard
+-- here we set it explicitly for mac's pbcopy and pbpaste
+vim.g.clipboard = {
+  name = 'pbcopy and pbpaste',
+  copy = {
+    ['+'] = { 'pbcopy', '-' },
+    ['*'] = { 'pbcopy', '-' },
+  },
+  paste = {
+    ['+'] = { 'pbpaste', '-' },
+    ['*'] = { 'pbpaste', '-' },
+  },
+  cache_enabled = 1
+}
