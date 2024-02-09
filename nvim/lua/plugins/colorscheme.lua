@@ -5,11 +5,7 @@ return {
   },
   {
     'navarasu/onedark.nvim',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd([[colorscheme onedark]])
-    end
+    lazy = true
   },
   {
     'folke/tokyonight.nvim',
@@ -18,5 +14,13 @@ return {
   {
     'rose-pine/neovim',
     event = "VeryLazy"
+  },
+  {
+    'EdenEast/nightfox.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd([[colorscheme nightfox]])
+    end
   }
 }
