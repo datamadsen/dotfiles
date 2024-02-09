@@ -49,3 +49,10 @@ vim.g.clipboard = {
   },
   cache_enabled = 1
 }
+
+-- use up/down for wildmenu instead of left/right.
+vim.cmd([[set wildcharm=<C-Z>]])
+vim.cmd([[cnoremap <expr> <up> wildmenumode() ? "\<left>" : "\<up>"]])
+vim.cmd([[cnoremap <expr> <down> wildmenumode() ? "\<right>" : "\<down>"]])
+vim.cmd([[cnoremap <expr> <left> wildmenumode() ? "\<up>" : "\<left>"]])
+vim.cmd([[cnoremap <expr> <right> wildmenumode() ? " \<bs>\<C-Z>" : "\<right>"]])
