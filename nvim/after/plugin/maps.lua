@@ -101,6 +101,7 @@ wk.register({
     b = { "<cmd>TroubleToggle document_diagnostics<cr>", "Buffer Diagnostics" },
     w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
     r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
+    ["."] = { "<cmd>LspRestart<cr>", "Restart LSP" },
     m = {
       function()
         vim.cmd([[wa]])
