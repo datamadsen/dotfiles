@@ -96,7 +96,7 @@ wk.register({
     name = "+ code",
     a = { function() require("actions-preview").code_actions() end, "Actions" },
     n = { vim.lsp.buf.rename, "Rename" },
-    i = { vim.lsp.buf.implementation, "Goto Implementation" },
+    i = { "<cmd>Telescope lsp_implementations<cr>", "Goto Implementation" },
     d = { vim.lsp.buf.definition, "Goto Definition" },
     b = { "<cmd>TroubleToggle document_diagnostics<cr>", "Buffer Diagnostics" },
     w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
