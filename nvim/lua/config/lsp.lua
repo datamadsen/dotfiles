@@ -1,12 +1,9 @@
 local M = {}
 
 function M.post()
-  local lsp = require('lsp-zero').preset('recommended')
-  -- local lsp = require('lsp-zero').preset({})
+  local lsp = require('lsp-zero')
 
   lsp.on_attach(function(client, bufnr)
-    lsp.default_keymaps({ buffer = bufnr })
-
     if client.server_capabilities.documentSymbolProvider then
       require('nvim-navic').attach(client, bufnr)
     end
