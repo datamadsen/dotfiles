@@ -13,8 +13,8 @@ return
     enable_git_status = true,
     enable_diagnostics = true,
     open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
-    sort_case_insensitive = false,                                   -- used when sorting files and directories in the tree
-    sort_function = nil,                                             -- use a custom function for sorting files and directories in the tree
+    sort_case_insensitive = false,                                     -- used when sorting files and directories in the tree
+    sort_function = nil,                                               -- use a custom function for sorting files and directories in the tree
     -- sort_function = function (a,b)
     --       if a.type == b.type then
     --           return a.path > b.path
@@ -75,7 +75,7 @@ return
       },
     },
     window = {
-      position = "left",
+      position = "right",
       width = 40,
       mapping_options = {
         noremap = true,
@@ -88,7 +88,7 @@ return
         },
         ["<2-LeftMouse>"] = "open",
         ["<cr>"] = "open",
-        ["<esc>"] = "revert_preview",
+        ["<esc>"] = "cancel", -- close preview or floating neo-tree window
         ["P"] = { "toggle_preview", config = { use_float = true } },
         ["l"] = "focus_preview",
         ["S"] = "open_split",
@@ -158,7 +158,7 @@ return
         },
       },
       follow_current_file = {
-        enabled = true,        -- This will find and focus the file in the active buffer every time
+        enabled = true,          -- This will find and focus the file in the active buffer every time
         --               -- the current file is changed while the tree is open.
         leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
       }
