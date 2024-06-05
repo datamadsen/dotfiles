@@ -6,6 +6,8 @@ return {
   { "nvim-pack/nvim-spectre" },
   { 'numToStr/Comment.nvim',     opts = {} },
   { 'folke/which-key.nvim' },
-  { 'petertriho/nvim-scrollbar', opts = {} },
+  -- { 'petertriho/nvim-scrollbar', opts = {} },
   { 'mbbill/undotree' },
+  { "nvim-neotest/nvim-nio" },
+  { "dstein64/nvim-scrollview" }
 }
