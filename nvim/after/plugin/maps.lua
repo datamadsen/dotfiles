@@ -200,5 +200,6 @@ wk.register({
     q = { "<cmd>wqa<cr>", "Write all and quit" },
     w = { "<cmd>wa<cr>", "Write all" },
     y = { function() require("telescope").extensions.yank_history.yank_history({}) end, "Yank history" },
+    r = { "<cmd>WinResizerStartResize<cr>", "Resize" },
   }
 })
