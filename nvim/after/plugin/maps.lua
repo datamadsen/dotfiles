@@ -88,19 +88,19 @@ normal('<F12>', function() require('dap').step_out() end, { desc = "Debug: Step 
 normal('<F8>', function() require('dap').repl.open() end, { desc = "Debug: Repl" })
 
 -- code
-normal('gr', "<cmd>TroubleToggle lsp_references<gr>", { desc = "Go To References" })
+normal('gr', "<cmd>Trouble lsp_references<cr>", { desc = "Go To References" })
+normal('gi', "<cmd>Telescope lsp_implementations<cr>", { desc = "Go To Implementations" })
 normal('<C-s>', "<CMD>Telescope lsp_document_symbols theme=dropdown previewer=false<CR>");
 normal('<C-t>', function() require('telescope.builtin').lsp_dynamic_workspace_symbols({ symbols = 'class' }) end)
 wk.register({
   ["<leader>c"] = {
     name = "+ code",
-    a = { function() require("actions-preview").code_actions() end, "Actions" },
-    n = { vim.lsp.buf.rename, "Rename" },
+    a = { vim.lsp.buf.code_action, "Actions" },
+    r = { vim.lsp.buf.rename, "Rename" },
     i = { "<cmd>Telescope lsp_implementations<cr>", "Goto Implementation" },
-    d = { vim.lsp.buf.definition, "Goto Definition" },
-    b = { "<cmd>TroubleToggle document_diagnostics<cr>", "Buffer Diagnostics" },
-    w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "Workspace Diagnostics" },
-    r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
+    d = { "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", "Buffer Diagnostics" },
+    D = { "<cmd>Trouble diagnostics toggle<cr>", "Workspace Diagnostics" },
+    u = { "<cmd>Trouble lsp_references<cr>", "Usages" },
     ["."] = { "<cmd>LspRestart<cr>", "Restart LSP" },
     m = {
       function()
