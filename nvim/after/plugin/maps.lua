@@ -33,42 +33,34 @@ leader('/',
     })
   end, 'Fuzzy search')
 
-wk.register({
-  ["<leader>w"] = { "<cmd>w<cr>", "Write buffer" }
-})
-
-wk.register({
-  ["<leader>j"] = { function() require('telescope.builtin').find_files() end, 'Find Files' },
-})
-
-wk.register({
-  ["<leader>g"] = { function() require('telescope.builtin').live_grep() end, 'Grep' },
+-- Root keymaps
+wk.add({
+  { "<leader>w", "<cmd>w<cr>", desc = "Write buffer" },
+  { "<leader>j", function() require('telescope.builtin').find_files() end, desc = 'Find Files' },
+  { "<leader>g", function() require('telescope.builtin').live_grep() end, desc = 'Grep' }
 })
 
 -- Common Buffer stuff that we do all the time.
-wk.register({
-  ["<leader>b"] = {
-    name = "+ buffer",
-    q = { "<cmd>%bd|e#<cr>", "Quit other buffers" },
-    Q = { "<cmd>bd<cr>", "Quit this buffer" },
-    w = { "<cmd>w<cr>", "Write" },
-    o = { "zR", "Open folds" },
-    f = { "zM", "Close folds" }
-  }
+wk.add({
+  {"<leader>b",  group = "+ Buffer", },
+  {"<leader>bq", "<cmd>%bd|e#<cr>", desc = "Quit other buffers" },
+  {"<leader>bQ", "<cmd>bd<cr>",     desc = "Quit this buffer" },
+  {"<leader>bw", "<cmd>w<cr>",      desc = "Write" },
+  {"<leader>bo", "zR",              desc = "Open folds" },
+  {"<leader>bf", "zM",              desc = "Close folds" },
 })
 
+
 -- Find stuff
-wk.register({
-  ["<leader>f"] = {
-    name = "+ find",
-    f    = { function() require('telescope.builtin').find_files() end, 'Files' },
-    b    = { function() require('telescope.builtin').buffers({ sort_mru = true, ignore_current_buffer = false }) end, 'Buffers' },
-    h    = { function() require('telescope.builtin').help_tags() end, 'Help' },
-    w    = { function() require('telescope.builtin').grep_string() end, 'Grep for Word' },
-    g    = { function() require('telescope.builtin').live_grep() end, 'Grep' },
-    d    = { function() require('telescope.builtin').diagnostics() end, 'Diagnostics' },
-    t    = { function() require('telescope.builtin').lsp_dynamic_workspace_symbols({ symbols = { 'class', 'method' } }) end, '[F]ind [T]ype' }
-  }
+wk.add({
+  {"<leader>f",  group = '+ Find' },
+  {"<leader>ff", function() require('telescope.builtin').find_files() end, desc = 'Files' },
+  {"<leader>fb", function() require('telescope.builtin').buffers({ sort_mru = true, ignore_current_buffer = false }) end, desc = 'Buffers' },
+  {"<leader>fh", function() require('telescope.builtin').help_tags() end, desc = 'Help' },
+  {"<leader>fw", function() require('telescope.builtin').grep_string() end, desc = 'Grep for Word' },
+  {"<leader>fg", function() require('telescope.builtin').live_grep() end, desc = 'Grep' },
+  {"<leader>fd", function() require('telescope.builtin').diagnostics() end, desc = 'Diagnostics' },
+  {"<leader>ft", function() require('telescope.builtin').lsp_dynamic_workspace_symbols({ symbols = { 'class', 'method' } }) end, desc = '[F]ind [T]ype' }
 })
 
 -- Diagnostic keymaps
@@ -88,118 +80,108 @@ normal('<F12>', function() require('dap').step_out() end, { desc = "Debug: Step 
 normal('<F8>', function() require('dap').repl.open() end, { desc = "Debug: Repl" })
 
 -- code
-normal('gr', "<cmd>Trouble lsp_references<cr>", { desc = "Go To References" })
+normal('gr', "<cmd>Telescope lsp_references<cr>", { desc = "Go To References" })
 normal('gi', "<cmd>Telescope lsp_implementations<cr>", { desc = "Go To Implementations" })
+normal('gd', "<cmd>Telescope lsp_definitions<cr>", { desc = "Go To Implementations" })
 normal('<C-s>', "<CMD>Telescope lsp_document_symbols theme=dropdown previewer=false<CR>");
 normal('<C-t>', function() require('telescope.builtin').lsp_dynamic_workspace_symbols({ symbols = 'class' }) end)
-wk.register({
-  ["<leader>c"] = {
-    name = "+ code",
-    a = { vim.lsp.buf.code_action, "Actions" },
-    r = { vim.lsp.buf.rename, "Rename" },
-    i = { "<cmd>Telescope lsp_implementations<cr>", "Goto Implementation" },
-    d = { "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", "Buffer Diagnostics" },
-    D = { "<cmd>Trouble diagnostics toggle<cr>", "Workspace Diagnostics" },
-    u = { "<cmd>Trouble lsp_references<cr>", "Usages" },
-    ["."] = { "<cmd>LspRestart<cr>", "Restart LSP" },
-    m = {
-      function()
-        vim.cmd([[wa]])
-        vim.cmd(
-          [[FloatermNew --height=0.6 --width=0.8 --wintype=float --name=build --title=build --position=bottomright --autoclose=0 dotnet build]])
-      end, "Make"
-    },
-    t = { "<CMD>FloatermNew --height=0.6 --width=0.8 --wintype=float --name=adhoc --title=adhoc --position=bottomright --autoclose=2<CR>", "Terminal" },
-    s = { "<cmd>FloatermToggle adhoc<cr>", "Toggle adhoc" },
-    c = { "<CMD>Copilot suggestion<CR>", "Copilot" },
-  }
+-- code
+wk.add({
+  { "<leader>c", group = "+ Code"},
+  { "<leader>ca", vim.lsp.buf.code_action, desc = "Actions" },
+  { "<leader>cr", vim.lsp.buf.rename, desc = "Rename" },
+  { "<leader>ci", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation" },
+  { "<leader>cd", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics" },
+  { "<leader>cD", "<cmd>Trouble diagnostics toggle<cr>", desc = "Workspace Diagnostics" },
+  { "<leader>cu", "<cmd>Trouble lsp_references<cr>", desc = "Usages" },
+  { "<leader>c.", "<cmd>LspRestart<cr>", desc = "Restart LSP" },
+  { "<leader>cm",
+    function()
+      vim.cmd([[wa]])
+      vim.cmd( [[FloatermNew --height=0.6 --width=0.8 --wintype=float --name=build --title=build --position=bottomright --autoclose=0 dotnet build]])
+    end, desc = "Make" },
+  { "<leader>ct", "<CMD>FloatermNew --height=0.6 --width=0.8 --wintype=float --name=adhoc --title=adhoc --position=bottomright --autoclose=2<CR>", desc = "Terminal" },
+  { "<leader>cs", "<cmd>FloatermToggle adhoc<cr>", desc = "Toggle adhoc" },
+  { "<leader>cc", "<CMD>Copilot suggestion<CR>", desc = "Copilot" },
 })
 
 -- testing
-wk.register({
-  ["<leader>t"] = {
-    name = "+ test",
-    n = {
+wk.add({
+  {"<leader>t", group = "+ Test"},
+  {"<leader>tn",
       function()
         vim.cmd([[wa]])
         require("neotest").run.run()
-      end, "Nearest"
+      end, desc = "Nearest"
     },
 
-    d = {
+    {"<leader>td",
       function()
         vim.cmd([[wa]])
         require("neotest").run.run({ strategy = "dap" })
-      end, "Debug" },
+      end, desc = "Debug" },
 
-    l = {
+    {"<leader>tl",
       function()
         vim.cmd([[wa]])
         require("neotest").run.run_last()
-      end, "Last" },
+      end, desc = "Last" },
 
-    f = {
+    {"<leader>tf",
       function()
         vim.cmd([[wa]])
         require("neotest").run.run(vim.fn.expand("%"))
-      end, "File" },
+      end, desc = "File" },
 
-    s = {
+    {"<leader>ts",
       function()
         vim.cmd([[wa]])
         require("neotest").summary.toggle()
-      end, "Summary" },
+      end, desc = "Summary" },
 
-    o = {
+    {"<leader>to",
       function()
         vim.cmd([[wa]])
         require("neotest").output.open({ enter = true })
-      end, "Output" },
-  }
+      end, desc = "Output" },
 })
 
 
 -- Search and replace
-wk.register({
-  ["<leader>s"] = {
-    name = "+ Search / Replace",
-    o = { function() require('spectre').open() end, "Open spectre" },
-    w = { function() require('spectre').open_visual({ select_word = true }) end, "Spectre word under cursor" },
-    f = { function() require('spectre').open_file_search({ select_word = true }) end, "Spectre word under cursor, file" },
-  }
+wk.add({
+  {"<leader>s", group = "+ Search / Replace"},
+  { "<leader>so", function() require('spectre').open() end, desc = "Open spectre" },
+  { "<leader>sw", function() require('spectre').open_visual({ select_word = true }) end, desc = "Spectre word under cursor" },
+  { "<leader>sf", function() require('spectre').open_file_search({ select_word = true }) end, desc = "Spectre word under cursor, file" },
 })
 
 -- Miscellaneous
-wk.register({
-  ["<leader>m"] = {
-    name = "+ miscellaneous",
-    f = {
-      name = "+ folding",
-      m = {
+wk.add({
+  { "<leader>m", group = "+ Misc"},
+  { "<leader>mf", group = "+ Folding"},
+  { "<leader>mfm",
         function()
           vim.cmd([[
                     set foldmethod=manual
                     set foldexpr=0
                 ]])
-        end, "Manual" },
-      t = {
+        end, desc = "Manual" },
+  { "<leader>mft",
         function()
           vim.cmd([[
                     set foldmethod=expr
                     set foldexpr=nvim_treesitter#foldexpr()
                 ]])
-        end, "Treesitter"
-      }
-    },
-    g = {
+        end, desc = "Treesitter"
+  },
+  { "<leader>mg",
       function()
         vim.cmd([[wa]])
         vim.cmd([[FloatermNew --height=0.8 --width=0.8 --title=git --wintype=float lazygit]])
-      end, "Git"
-    },
-    q = { "<cmd>wqa<cr>", "Write all and quit" },
-    w = { "<cmd>wa<cr>", "Write all" },
-    y = { function() require("telescope").extensions.yank_history.yank_history({}) end, "Yank history" },
-    r = { "<cmd>WinResizerStartResize<cr>", "Resize" },
-  }
+      end, desc = "Git"
+  },
+  { "<leader>mq", "<cmd>wqa<cr>", desc = "Write all and quit" },
+  { "<leader>mw", "<cmd>wa<cr>", desc = "Write all" },
+  { "<leader>my", function() require("telescope").extensions.yank_history.yank_history({}) end, desc = "Yank history" },
+  { "<leader>mr", "<cmd>WinResizerStartResize<cr>", desc = "Resize" },
 })
