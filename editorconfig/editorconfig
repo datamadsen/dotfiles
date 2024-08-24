@@ -49,6 +49,11 @@ dotnet_diagnostic.IDE0072.severity = none
 ; Don't suggest using block for method if I have done it another way.
 dotnet_diagnostic.IDE0022.severity = none
 
+; don't suggest anonymous functions to be static.
+dotnet_diagnostic.IDE0320.severity = none
+csharp_prefer_static_anonymous_function = false
+
+
 csharp_prefer_braces = when_multiline
 csharp_style_expression_bodied_methods = false ; Don't suggest expression body methods all the time.
 
