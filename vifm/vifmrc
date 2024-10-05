@@ -20,8 +20,9 @@ nnoremap <silent> <f12> :if layoutis('only')
 
 set nohlsearch
 
-colorscheme Default-256
+colorscheme matrix
 
 fileviewer */,.*/ tree -L 2 -I .git %c
 fileviewer * bat --color always --wrap never --pager never %c -p
 
+set vicmd=nvim
