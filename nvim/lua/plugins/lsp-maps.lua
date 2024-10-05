@@ -28,13 +28,6 @@ return {
             end,
             desc = "References",
           },
-          {
-            "gi",
-            function()
-              require("fzf-lua").lsp_implementation()
-            end,
-            desc = "Go To Implementation",
-          },
         },
       },
     },
