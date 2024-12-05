@@ -6,15 +6,26 @@ return {
 
       dap.adapters.netcoredbg = {
         type = "executable",
-        command = "/Users/tmadsen/.cache/netcoredbg/netcoredbg",
+        command = "/users/tmadsen/.cache/netcoredbg/netcoredbg",
         args = { "--interpreter=vscode" },
       }
 
-      -- We set an empty configuration for cs, because we are using launch.json files to
-      -- configure the ways we want to debug our applications. If we do not set an empty
-      -- configuration, we will get this default:
-      -- https://github.com/LazyVim/LazyVim/blob/12818a6cb499456f4903c5d8e68af43753ebc869/lua/lazyvim/plugins/extras/lang/omnisharp.lua#L85
-      dap.configurations.cs = nil
+      require("dap.ext.vscode").load_launchjs(nil, {
+        cs = { "netcoredbg" },
+      })
+
+      vim.keymap.set("n", "<F5>", function()
+        require("dap").continue()
+      end)
+      vim.keymap.set("n", "<F10>", function()
+        require("dap").step_over()
+      end) -- F10 for step over
+      vim.keymap.set("n", "<F11>", function()
+        require("dap").step_into()
+      end)
+      vim.keymap.set("n", "<F12>", function()
+        require("dap").step_out()
+      end)
     end,
   },
   {
