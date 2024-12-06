@@ -14,18 +14,11 @@ return {
         cs = { "netcoredbg" },
       })
 
-      vim.keymap.set("n", "<F5>", function()
-        require("dap").continue()
-      end)
-      vim.keymap.set("n", "<F10>", function()
-        require("dap").step_over()
-      end) -- F10 for step over
-      vim.keymap.set("n", "<F11>", function()
-        require("dap").step_into()
-      end)
-      vim.keymap.set("n", "<F12>", function()
-        require("dap").step_out()
-      end)
+      vim.keymap.set("n", "<F5>", require("dap").continue, { desc = "Continue" })
+      vim.keymap.set("n", "<F10>", require("dap").step_over, { desc = "Step over current line" })
+      vim.keymap.set("n", "<F11>", require("dap").step_into, { desc = "Step into current function" })
+      vim.keymap.set("n", "<F12>", require("dap").step_out, { desc = "Step out of current function" })
+      vim.keymap.set("n", "<S-F5>", require("dap").terminate, { desc = "Stop debugging" })
     end,
   },
   {
