@@ -5,7 +5,7 @@ export PATH="/home/tmadsen/.yarn/bin:$PATH"
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/lib/ruby/gems/2.6.0/bin:$PATH"
 export PATH="/home/tmadsen/go/bin:$PATH"
-export PATH="$(yarn global bin):$PATH"
+# export PATH="$(yarn global bin):$PATH"
 
 
 if uname -a | grep -q 'microsoft'; then
@@ -23,3 +23,5 @@ esac
 
 # source "$HOME/.cargo/env"
 . "$HOME/.cargo/env"
+
+source ~/.utilities/keys.sh
