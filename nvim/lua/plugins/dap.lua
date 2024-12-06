@@ -18,7 +18,10 @@ return {
       vim.keymap.set("n", "<F10>", require("dap").step_over, { desc = "Step over current line" })
       vim.keymap.set("n", "<F11>", require("dap").step_into, { desc = "Step into current function" })
       vim.keymap.set("n", "<F12>", require("dap").step_out, { desc = "Step out of current function" })
-      vim.keymap.set("n", "<S-F5>", require("dap").terminate, { desc = "Stop debugging" })
+      vim.keymap.set("n", "<S-F5>", function()
+        require("dap").terminate()
+        require("dapui").close()
+      end, { desc = "Stop debugging and close UI" })
     end,
   },
   {
