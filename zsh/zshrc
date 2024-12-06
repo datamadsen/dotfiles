@@ -107,19 +107,6 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
 
-# Set working directory after quitting vifm
-vicd()
-{
-    local dst="$(command vifm --choose-dir - "$@")"
-    if [ -z "$dst" ]; then
-        echo 'Directory picking cancelled/failed'
-        return 1
-    fi
-    cd "$dst"
-}
-alias f=vicd
-
-
 # Enable ctrl-s to save in vim mean we have to not freeze the terminal when
 # pressin c-s
 # alias vim="stty stop '' -ixoff ; vim"
@@ -144,3 +131,6 @@ esac
 
 export EDITOR="nvim"
 export VISUAL="nvim"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/tmadsen/.cache/lm-studio/bin"
