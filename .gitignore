@@ -18,3 +18,5 @@ nvim/test.sh
 nvim/.luarc.json
 nvim/lazy-lock.json
 nvim/luac
+utilities/keys.sh
+zsh/keys.sh
