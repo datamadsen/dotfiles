@@ -22,7 +22,7 @@ return {
       anthropic = function()
         return require("codecompanion.adapters").extend("anthropic", {
           env = {
-            api_key = ":-P",
+            api_key = "cmd:echo $ANTHROPIC_API_KEY",
           },
         })
       end,
