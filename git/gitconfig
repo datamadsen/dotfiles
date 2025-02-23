@@ -53,6 +53,8 @@
   prune-branches = !git remote prune origin && git branch -vv | grep ': gone' | awk '{print $1}' | xargs git branch -d
   nuke = !sh -c 'git branch -D $1 && git push origin :$1' -
   squash-since = !"f() { git reset $(git merge-base ${1} $(git branch --show-current)); }; f"
+  wip = "!git commit --all --message 'WIP'"
+  mw = "!git co $1 && git pull && git co - && git merge $1"
 
 [push]
   default = simple
