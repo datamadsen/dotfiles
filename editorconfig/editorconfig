@@ -53,12 +53,16 @@ dotnet_diagnostic.IDE0022.severity = none
 dotnet_diagnostic.IDE0320.severity = none
 csharp_prefer_static_anonymous_function = false
 
-
 csharp_prefer_braces = when_multiline
 csharp_style_expression_bodied_methods = false ; Don't suggest expression body methods all the time.
 
-csharp_object_initializer_style = line_break
-
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
 
 # Web Files
 [*.{htm,html,js,jsm,ts,tsx,css,sass,scss,less,svg,vue,json,pcss}]
