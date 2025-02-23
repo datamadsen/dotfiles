@@ -57,6 +57,8 @@ csharp_prefer_static_anonymous_function = false
 csharp_prefer_braces = when_multiline
 csharp_style_expression_bodied_methods = false ; Don't suggest expression body methods all the time.
 
+csharp_object_initializer_style = line_break
+
 
 # Web Files
 [*.{htm,html,js,jsm,ts,tsx,css,sass,scss,less,svg,vue,json,pcss}]
