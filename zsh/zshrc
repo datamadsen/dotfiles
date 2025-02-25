@@ -98,22 +98,29 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/nul
 source ~/dotfiles/zsh/fzf-tab/fzf-tab.plugin.zsh
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
+
 # set descriptions format to enable group support
 zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
+#
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# preview directory's content with exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 -a --color=always $realpath'
+
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
 
-# Enable ctrl-s to save in vim mean we have to not freeze the terminal when
-# pressin c-s
-# alias vim="stty stop '' -ixoff ; vim"
-# `Frozing' tty, so after any command terminal settings will be restored
-# ttyctl -f
-
-# source <(kubectl completion zsh)
+zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --color=light
+# Enable preview window for fzf-tab
+zstyle ':fzf-tab:complete:*:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 ${(Q)realpath}'
+# Use bat for text files
+zstyle ':fzf-tab:complete:*:*' fzf-preview '
+if [[ -f $realpath ]]; then
+    bat --color=always --line-range=:500 --theme=base16 "$realpath"
+elif [[ -d $realpath ]]; then
+    # ls -la --color=always "$realpath"
+    eza -1 -a --color=always $realpath
+else
+    echo "Unknown file type"
+fi'
 
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
