@@ -48,4 +48,7 @@ font-thicken = true
 
 macos-titlebar-style = hidden
 
-theme = nightfox
+theme = rose-pine-dawn
+# theme = Alabaster
+# theme = vimbones
+# theme = dayfox
