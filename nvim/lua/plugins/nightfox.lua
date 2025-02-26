@@ -12,11 +12,11 @@ return {
     },
   },
 
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      -- colorscheme = "nightfox",
-      colorscheme = "dayfox",
-    },
-  },
+  -- {
+  --   "LazyVim/LazyVim",
+  --   opts = {
+  --     -- colorscheme = "nightfox",
+  --     colorscheme = "dayfox",
+  --   },
+  -- },
 }
