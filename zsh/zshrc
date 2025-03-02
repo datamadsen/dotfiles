@@ -95,7 +95,7 @@ export FZF_DEFAULT_OPTS="
 	--color=spinner:#ea9d34,info:#56949f
 	--color=pointer:#907aa9,marker:#b4637a,prompt:#797593"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source ~/.fzf.zsh
 
 # Load zsh-syntax-highlighting; should be last.
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null # macos
