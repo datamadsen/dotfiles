@@ -7,4 +7,5 @@ cd vim && ./install.sh && cd ..
 cd git && ./install.sh && cd ..
 cd ghostty && ./install.sh && cd ..
 cd lazygit && ./install.sh && cd ..
+cd fzf && ./install.sh && cd ..
 ln -s $(pwd)/vifm ~/.vifm
