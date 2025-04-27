@@ -47,7 +47,6 @@
   unstage = reset HEAD --
   dc = diff --cached
   b = branch -a -vv
-  push-to-remote = "!git push -u origin $(git symbolic-ref --short HEAD)"
   unstage = reset HEAD --
   lastmessage = "!git log -1 --pretty=%B"
   prune-branches = !git remote prune origin && git branch -vv | grep ': gone' | awk '{print $1}' | xargs git branch -d
@@ -58,6 +57,7 @@
 
 [push]
   default = simple
+  autoSetupRemote = true
 
 [diff]
   tool = vimdiff
