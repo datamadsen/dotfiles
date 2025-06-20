@@ -86,15 +86,6 @@ zle-keymap-select () {
     fi
 }
 
-export FZF_COMPLETION_OPTS='-e'
-export FZF_DEFAULT_COMMAND='ag --ignore-dir={bin,obj,node_modules} -g ""'
-export FZF_DEFAULT_OPTS="
-	--color=fg:#797593,bg:#faf4ed,hl:#d7827e
-	--color=fg+:#575279,bg+:#f2e9e1,hl+:#d7827e
-	--color=border:#dfdad9,header:#286983,gutter:#faf4ed
-	--color=spinner:#ea9d34,info:#56949f
-	--color=pointer:#907aa9,marker:#b4637a,prompt:#797593"
-
 source ~/.fzf.zsh
 
 # Load zsh-syntax-highlighting; should be last.
@@ -114,7 +105,12 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
 
-zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --color=light
+# rose pine
+# zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --color=light
+
+# Tokyonight
+zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --color=dark
+
 # Enable preview window for fzf-tab
 zstyle ':fzf-tab:complete:*:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 ${(Q)realpath}'
 # Use bat for text files
@@ -131,8 +127,9 @@ fi'
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
+# Volta? 
+# export VOLTA_HOME="$HOME/.volta"
+# export PATH="$VOLTA_HOME/bin:$PATH"
 
 # pnpm
 export PNPM_HOME="/Users/tmadsen/Library/pnpm"
@@ -147,3 +144,9 @@ export VISUAL="nvim"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/tmadsen/.cache/lm-studio/bin"
+alias claude="/Users/tmadsen/.claude/local/claude"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/tmadsen/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions

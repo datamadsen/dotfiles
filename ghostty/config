@@ -48,8 +48,11 @@ font-thicken = true
 
 macos-titlebar-style = hidden
 
-theme = rose-pine-dawn
+# theme = catppuccin-latte
+## favorite theme = rose-pine-dawn
+theme = tokyonight_night
 # theme = rose-pine
 # theme = Alabaster
 # theme = vimbones
 # theme = dayfox
+

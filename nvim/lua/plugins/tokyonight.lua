@@ -12,4 +12,7 @@ return {
       }
     end,
   },
+  config = function()
+    vim.cmd("colorscheme tokyonight-night")
+  end,
 }
