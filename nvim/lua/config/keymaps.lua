@@ -4,3 +4,5 @@
 vim.keymap.set("n", "<leader>ac", "<cmd>CodeCompanionChat<cr>", { desc = "Open CodeCompanion Chat" })
 
 vim.keymap.set("n", "<leader>gw", "<cmd>wa | !git wip<cr>", { desc = "WIP commit" })
+vim.keymap.set("n", "<leader>gP", "<cmd>!git push<cr>", { desc = "Push" })
+vim.keymap.set("n", "<leader>gp", "<cmd>!git push<cr>", { desc = "Pull" })
