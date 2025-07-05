@@ -24,4 +24,8 @@ ln -s "$(pwd)/pure.zsh" ~/.utilities/prompt_pure_setup
 ln -s "$(pwd)/async.zsh" ~/.utilities/async
 ln -s "$(pwd)/keys.sh" ~/.utilities/keys.sh
 
+# Create zsh history directory
+echo "[zsh] Create history directory"
+mkdir -p ~/.cache/zsh
+
 echo "[zsh] Done - remember to source ~/.zshrc"

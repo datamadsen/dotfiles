@@ -3,7 +3,7 @@
 # Remove symlink
 echo "[fzf] Remove symlinks"
 rm ~/.fzf.zsh
-rm ~/.fzf/
+rm ~/.fzf
 
 # Create symlink
 echo "[fzf] Create symlinks"

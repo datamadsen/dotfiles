@@ -106,10 +106,10 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':fzf-tab:*' switch-group ',' '.'
 
 # rose pine
-# zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --color=light
+zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --color=light
 
 # Tokyonight
-zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --color=dark
+# zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --color=dark
 
 # Enable preview window for fzf-tab
 zstyle ':fzf-tab:complete:*:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 ${(Q)realpath}'
@@ -124,9 +124,9 @@ else
     echo "Unknown file type"
 fi'
 
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # Volta? 
 # export VOLTA_HOME="$HOME/.volta"
 # export PATH="$VOLTA_HOME/bin:$PATH"
@@ -144,9 +144,13 @@ export VISUAL="nvim"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/tmadsen/.cache/lm-studio/bin"
-alias claude="/Users/tmadsen/.claude/local/claude"
+# alias claude="/Users/tmadsen/.claude/local/claude"
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/tmadsen/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+# . "$HOME/.atuin/bin/env"
+#
+# eval "$(atuin init zsh)"

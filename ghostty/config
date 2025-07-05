@@ -42,17 +42,17 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-font-family = BlexMono Nerd Font Mono
-font-size = 16
-font-thicken = true
-
 macos-titlebar-style = hidden
+gtk-titlebar = false
 
 # theme = catppuccin-latte
-## favorite theme = rose-pine-dawn
-theme = tokyonight_night
+## favorite light theme
+theme = rose-pine-dawn
+## Favorite dark theme
+#theme = tokyonight_night
 # theme = rose-pine
 # theme = Alabaster
 # theme = vimbones
 # theme = dayfox
 
+keybind = shift+enter=text:\n
