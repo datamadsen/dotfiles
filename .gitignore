@@ -20,3 +20,6 @@ nvim/lazy-lock.json
 nvim/luac
 utilities/keys.sh
 zsh/keys.sh
+
+# API keys and secrets
+api_keys
