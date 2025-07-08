@@ -12,13 +12,15 @@ themes/
 │   ├── bat.conf            # Syntax highlighter theme
 │   ├── btop.theme          # System monitor theme
 │   ├── fzf-tab.zsh         # Tab completion colors
-│   └── neovim.lua          # Editor theme
+│   ├── neovim.lua          # Editor theme
+│   └── tmux.conf           # Terminal multiplexer theme
 ├── tokyonight-night/        # Dark theme
 │   ├── alacritty.toml
 │   ├── bat.conf
 │   ├── btop.theme
 │   ├── fzf-tab.zsh
-│   └── neovim.lua
+│   ├── neovim.lua
+│   └── tmux.conf
 └── current -> rose-pine-dawn/  # Symlink to active theme
 ```
 
@@ -30,7 +32,7 @@ themes/
 
 ## Integration Strategies
 
-### 1. Symlink-Based (Alacritty, Neovim, Btop)
+### 1. Symlink-Based (Alacritty, Neovim, Btop, Tmux)
 - **How it works**: Main config imports/sources from `themes/current/app.extension`
 - **Benefits**: Clean, no file copying, automatic updates
 - **Example**: `~/.config/alacritty/alacritty.toml` imports `~/dotfiles/themes/current/alacritty.toml`
@@ -68,6 +70,7 @@ theme-switch list
    - `btop.theme` - Full btop color configuration
    - `fzf-tab.zsh` - `zstyle ':fzf-tab:*' fzf-flags --color=light/dark`
    - `neovim.lua` - LazyVim plugin configuration
+   - `tmux.conf` - TPM theme plugin configuration
 3. Use `theme-switch new-theme-name` to activate
 
 ## Application-Specific Notes
@@ -96,6 +99,12 @@ theme-switch list
 - **Reload**: Immediate via function sourcing
 - **Integration**: Sourced in `~/dotfiles/zsh/zshrc`
 - **Fallback**: Basic styling if theme file missing
+
+### Tmux
+- **Reload**: Immediate via `tmux source-file` command
+- **Config location**: `~/dotfiles/tmux/tmux.conf`
+- **Theme plugins**: Managed via TPM (rose-pine/tmux, fabioluciano/tmux-tokyo-night)
+- **Integration**: Sources from `~/dotfiles/themes/current/tmux.conf`
 
 ## Installation
 

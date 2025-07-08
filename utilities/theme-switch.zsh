@@ -69,6 +69,14 @@ theme-switch() {
             source "$theme_path/fzf-tab.zsh"
         fi
         
+        # Reload tmux configuration if tmux is running
+        if [ -f "$theme_path/tmux.conf" ]; then
+            if command -v tmux >/dev/null 2>&1 && tmux list-sessions >/dev/null 2>&1; then
+                tmux source-file ~/.tmux.conf 2>/dev/null || true
+                echo "  - tmux: Configuration reloaded"
+            fi
+        fi
+        
         echo "Switched to theme: $theme_name"
     }
 

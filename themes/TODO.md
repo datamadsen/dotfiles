@@ -10,13 +10,13 @@
 - [x] **Neovim integration** - Symlink-based theme.lua plugin
 - [x] **Btop integration** - Symlink-based current.theme
 - [x] **fzf-tab integration** - Function-based sourcing with immediate effect
+- [x] **tmux integration** - TPM-based theme plugins with automatic reload
 - [x] **fzf integration** - Interactive theme picker (completed)
 
 ## Remaining Work 🚧
 
 ### Application Integration
 
-- [ ] **Tmux integration** - Add tmux theme files and symlink approach
 - [ ] **Dircolors integration** - Theme-aware LS_COLORS
 - [ ] **Git integration** - Theme-aware git diff colors (optional)
 
@@ -57,6 +57,7 @@
 - [x] btop.theme
 - [x] fzf-tab.zsh
 - [x] neovim.lua
+- [x] tmux.conf
 
 ### tokyonight-night (Dark Theme)  
 
@@ -65,6 +66,7 @@
 - [x] btop.theme  
 - [x] fzf-tab.zsh
 - [x] neovim.lua
+- [x] tmux.conf
 
 ## Integration Methods Used
 
