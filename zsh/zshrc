@@ -105,11 +105,13 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # switch group using `,` and `.`
 zstyle ':fzf-tab:*' switch-group ',' '.'
 
-# rose pine
-zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --color=light
-
-# Tokyonight
-# zstyle ':fzf-tab:*' fzf-flags --style=full --height=90% --color=dark
+# Source fzf-tab theme from current theme
+if [ -f ~/dotfiles/themes/current/fzf-tab.zsh ]; then
+    source ~/dotfiles/themes/current/fzf-tab.zsh
+else
+    # Fallback if no theme-specific config exists
+    zstyle ':fzf-tab:*' fzf-flags --style=full --height=90%
+fi
 
 # Enable preview window for fzf-tab
 zstyle ':fzf-tab:complete:*:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 ${(Q)realpath}'
@@ -146,6 +148,9 @@ export VISUAL="nvim"
 if [ -f ~/dotfiles/api_keys ]; then
     source ~/dotfiles/api_keys
 fi
+
+# Source theme switcher function
+source ~/dotfiles/utilities/theme-switch.zsh
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/tmadsen/.cache/lm-studio/bin"

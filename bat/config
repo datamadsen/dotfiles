@@ -1,0 +1,12 @@
+# Bat configuration file
+# Theme is managed by theme switcher
+# Import theme-specific settings
+
+# Show line numbers, Git modifications and file header
+--style="numbers,changes,header"
+
+# Use italic text on the terminal
+--italic-text=always
+
+# Set tab width to 4 spaces
+--tabs=4

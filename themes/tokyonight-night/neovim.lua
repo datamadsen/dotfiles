@@ -1,3 +1,4 @@
+-- Neovim theme configuration for tokyonight-night
 return {
   "folke/tokyonight.nvim",
   opts = {
