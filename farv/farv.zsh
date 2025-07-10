@@ -69,10 +69,13 @@ farv() {
         ln -sf "$theme_path" "$CURRENT_LINK"
         
         # Touch the main alacritty config to trigger reload
-        touch "$HOME/.config/alacritty/alacritty.toml" 2>/dev/null || touch "$HOME/dotfiles/alacritty/alacritty.toml"
+        if [ -f "$HOME/.config/alacritty/alacritty.toml" ]; then
+            touch "$HOME/.config/alacritty/alacritty.toml"
+            echo "  - alacritty"
+        fi
         
         # Update bat config by copying theme-specific config and appending base config
-        if [ -f "$theme_path/bat.conf" ]; then
+        if [ -f "$theme_path/bat.conf" ] && [ -f "$HOME/.config/bat/config" ]; then
             local bat_config="$HOME/.config/bat/config"
             local base_bat_config="$HOME/dotfiles/bat/config"
             local temp_config="/tmp/bat_config_$$"
@@ -86,24 +89,27 @@ farv() {
             
             # Move to final location
             mv "$temp_config" "$bat_config"
+            echo "  - bat"
         fi
         
         # Update btop theme with symlink
-        if [ -f "$theme_path/btop.theme" ]; then
+        if [ -f "$theme_path/btop.theme" ] && [ -f "$HOME/.config/btop/btop.conf" ]; then
             mkdir -p "$HOME/.config/btop/themes"
             ln -sf "$theme_path/btop.theme" "$HOME/.config/btop/themes/current.theme"
+            echo "  - btop"
         fi
         
         # Update fzf-tab theme in current shell
-        if [ -f "$theme_path/fzf-tab.zsh" ]; then
+        if [ -f "$theme_path/fzf-tab.zsh" ] && typeset -f _fzf_tab_complete >/dev/null 2>&1; then
             source "$theme_path/fzf-tab.zsh"
+            echo "  - fzf-tab"
         fi
         
         # Reload tmux configuration if tmux is running
         if [ -f "$theme_path/tmux.conf" ]; then
             if command -v tmux >/dev/null 2>&1 && tmux list-sessions >/dev/null 2>&1; then
                 tmux source-file ~/.tmux.conf 2>/dev/null || true
-                echo "  - tmux: Configuration reloaded"
+                echo "  - tmux"
             fi
         fi
         
@@ -120,12 +126,12 @@ farv() {
                     if [ -L "$theme_symlink" ] && [[ "$(readlink "$theme_symlink")" == *"/.farv/"* ]]; then
                         # Update existing farv theme symlink
                         ln -sf "$theme_path/neovim.lua" "$theme_symlink"
-                        echo "  - neovim: Theme configuration updated"
+                        echo "  - neovim"
                     elif [ ! -e "$theme_symlink" ]; then
                         # Create new theme symlink if it doesn't exist
                         mkdir -p "$nvim_plugins_dir"
                         ln -sf "$theme_path/neovim.lua" "$theme_symlink"
-                        echo "  - neovim: Theme configuration linked"
+                        echo "  - neovim"
                     fi
                 fi
             fi
