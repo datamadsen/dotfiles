@@ -1,4 +1,3 @@
-# Omarchy-inspired theme switcher function
 # Usage: farv [theme-name|list]
 
 farv() {
@@ -186,7 +185,6 @@ _farv() {
     for theme_dir in "$themes_dir/themes/light"/*/; do
         if [ -d "$theme_dir" ] && [ "$theme_dir" != "$themes_dir/themes/light/*/" ]; then
             local theme_name=$(basename "$theme_dir")
-            themes+=("$theme_name")
             themes+=("$theme_name (light)")
         fi
     done
@@ -195,13 +193,9 @@ _farv() {
     for theme_dir in "$themes_dir/themes/dark"/*/; do
         if [ -d "$theme_dir" ] && [ "$theme_dir" != "$themes_dir/themes/dark/*/" ]; then
             local theme_name=$(basename "$theme_dir")
-            themes+=("$theme_name")
             themes+=("$theme_name (dark)")
         fi
     done
-    
-    # Add special commands
-    themes+=("list" "ls")
     
     _describe 'themes' themes
 }
