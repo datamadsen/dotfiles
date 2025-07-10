@@ -1,1 +1,0 @@
-/home/tmadsen/dotfiles/themes/current/neovim.lua

@@ -1,0 +1,1 @@
+/home/tmadsen/.farv/themes/light/rose-pine-dawn/neovim.lua
