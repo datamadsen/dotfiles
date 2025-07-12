@@ -137,6 +137,15 @@ farv() {
             fi
         fi
         
+        # Update wallpaper using swaybg if on Hyprland
+        if [ -f "$theme_path/background.png" ]; then
+            if command -v swaybg >/dev/null 2>&1 && [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
+                pkill -x swaybg
+                (setsid swaybg -i "$theme_path/background.png" -m fill >/dev/null 2>&1 &)
+                echo "  - wallpaper"
+            fi
+        fi
+        
         echo "Switched to theme: $theme_name"
     }
 
