@@ -1,5 +1,5 @@
 echo "[nvim] Remove symlink"
-rm ~/.config/nvim
+rm -rf ~/.config/nvim
 
 echo "[nvim] Create symlink"
 ln -s $(pwd)/ ~/.config/nvim
