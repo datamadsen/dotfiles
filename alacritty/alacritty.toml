@@ -13,5 +13,11 @@ bindings = [
 { key = "F11", action = "ToggleFullscreen" }
 ]
 
+[font]
+normal = { family = "CaskaydiaMono Nerd Font", style = "Regular" }
+bold = { family = "CaskaydiaMono Nerd Font", style = "Bold" }
+italic = { family = "CaskaydiaMono Nerd Font", style = "Italic" }
+size = 11
+
 [general]
 import = ["~/.farv/current/alacritty.toml"]
