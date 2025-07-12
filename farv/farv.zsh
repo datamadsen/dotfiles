@@ -137,6 +137,14 @@ farv() {
             fi
         fi
         
+        # Reload waybar if running
+        if [ -f "$theme_path/waybar.css" ]; then
+            if command -v waybar >/dev/null 2>&1 && pgrep -x waybar >/dev/null 2>&1; then
+                pkill -SIGUSR2 waybar 2>/dev/null || true
+                echo "  - waybar"
+            fi
+        fi
+        
         # Update wallpaper using swaybg if on Hyprland
         if [ -f "$theme_path/background.png" ]; then
             if command -v swaybg >/dev/null 2>&1 && [ -n "$HYPRLAND_INSTANCE_SIGNATURE" ]; then
