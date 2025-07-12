@@ -6,6 +6,8 @@ fpath=( ~/.zsh/completion $fpath)
 fpath=( ~/dotfiles/zsh/pure $fpath)
 
 setopt share_history
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_ALL_DUPS
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
@@ -90,6 +92,7 @@ zle-keymap-select () {
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null # macos
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null #ubuntu
 
+source <(fzf --zsh)
 source ~/dotfiles/zsh/fzf-tab/fzf-tab.plugin.zsh
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
@@ -163,3 +166,5 @@ compinit
 # Source farv theme switcher function
 source ~/.farv/farv.zsh
 
+eval "$(zoxide init zsh)"
+source ~/.zsh_functions
