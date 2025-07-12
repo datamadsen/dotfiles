@@ -1,5 +1,5 @@
 echo "[alacritty] Remove symlink"
-rm ~/.config/alacritty
+rm -rf ~/.config/alacritty
 
 echo "[alacritty] Create symlink"
 ln -s $(pwd)/ ~/.config/alacritty
