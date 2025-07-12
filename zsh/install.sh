@@ -8,6 +8,7 @@ rm ~/.zshrc
 rm ~/.git-prompt.sh
 rm ~/.ssh-start.sh
 rm ~/.aliases
+rm ~/.zsh_functions
 rm ~/.utilities/prompt_pure_setup
 rm ~/.utilities/async
 rm ~/.utilities/keys.sh
@@ -17,6 +18,7 @@ echo "[zsh] Create symlinks"
 ln -s "$(pwd)/zlogin" ~/.zlogin
 ln -s "$(pwd)/zshenv" ~/.zshenv
 ln -s "$(pwd)/zshrc" ~/.zshrc
+ln -s "$(pwd)/zsh_functions" ~/.zsh_functions
 ln -s "$(pwd)/git-prompt.sh" ~/.git-prompt.sh
 ln -s "$(pwd)/aliases" ~/.aliases
 ln -s "$(pwd)/ssh-start.sh" ~/.ssh-start.sh
