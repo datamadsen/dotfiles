@@ -1,3 +1,4 @@
+cd alacritty && ./install.sh && cd ..
 cd utilities && ./install.sh && cd ..
 cd zsh && ./install.sh && cd ..
 cd tmux && ./install.sh && cd ..
