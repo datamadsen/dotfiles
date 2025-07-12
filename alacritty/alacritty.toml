@@ -1,4 +1,3 @@
-import = ["~/.farv/current/alacritty.toml"]
 
 [env]
 TERM = "xterm-256color"
@@ -13,3 +12,6 @@ opacity = 0.98
 bindings = [
 { key = "F11", action = "ToggleFullscreen" }
 ]
+
+[general]
+import = ["~/.farv/current/alacritty.toml"]
