@@ -154,6 +154,38 @@ farv() {
             fi
         fi
         
+        # Apply GTK theme settings with fallback
+        local theme_category
+        if [[ "$theme_path" == *"/light/"* ]]; then
+            theme_category="light"
+        elif [[ "$theme_path" == *"/dark/"* ]]; then
+            theme_category="dark"
+        fi
+
+        if [ -n "$theme_category" ]; then
+            local gtk_script=""
+            
+            # First priority: theme-specific gtk.sh
+            local theme_specific_script="$theme_path/gtk.sh"
+            if [ -f "$theme_specific_script" ] && [ -x "$theme_specific_script" ]; then
+                gtk_script="$theme_specific_script"
+            else
+                # Fallback: category-level gtk.sh
+                local category_script="$THEMES_DIR/themes/$theme_category/gtk.sh"
+                if [ -f "$category_script" ] && [ -x "$category_script" ]; then
+                    gtk_script="$category_script"
+                fi
+            fi
+            
+            # Execute the selected GTK script
+            if [ -n "$gtk_script" ]; then
+                # Check if we're in a GNOME/GTK environment
+                if [ -n "$XDG_CURRENT_DESKTOP" ] && command -v gsettings >/dev/null 2>&1; then
+                    "$gtk_script" >/dev/null 2>&1 && echo "  - gtk"
+                fi
+            fi
+        fi
+        
         echo "Switched to theme: $theme_name"
     }
 

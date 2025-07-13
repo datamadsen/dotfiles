@@ -1,6 +1,6 @@
 # Omarchy-Inspired Theme System
 
-This dotfiles repository uses an omarchy-inspired theme system that provides coordinated theming across multiple applications with a single command.
+This dotfiles repository uses an omarchy-inspired theme system that provides coordinated theming across multiple applications with a single command, including GTK applications.
 
 ## Architecture
 
@@ -9,19 +9,23 @@ This dotfiles repository uses an omarchy-inspired theme system that provides coo
 ```
 themes/
 ├── light/
+│   ├── gtk.sh               # Light GTK theme commands
 │   └── rose-pine-dawn/      # Light theme
 │       ├── alacritty.toml   # Terminal colors
 │       ├── bat.conf         # Syntax highlighter theme
 │       ├── btop.theme       # System monitor theme
 │       ├── fzf-tab.zsh      # Tab completion colors
+│       ├── gtk.sh           # Optional: theme-specific GTK commands
 │       ├── neovim.lua       # Editor theme
 │       └── tmux.conf        # Terminal multiplexer theme
 ├── dark/
+│   ├── gtk.sh               # Dark GTK theme commands
 │   └── tokyonight-night/    # Dark theme
 │       ├── alacritty.toml
 │       ├── bat.conf
 │       ├── btop.theme
 │       ├── fzf-tab.zsh
+│       ├── gtk.sh           # Optional: theme-specific GTK commands
 │       ├── neovim.lua
 │       └── tmux.conf
 └── current -> light/rose-pine-dawn/  # Symlink to active theme
@@ -153,6 +157,28 @@ fi
 ```bash
 # Theme plugins are loaded via themes/current/tmux.conf
 source-file ~/.farv/current/tmux.conf
+```
+
+### GTK Applications
+
+- **Reload**: Immediate via gsettings
+- **Config location**: `themes/{light|dark}/gtk.sh` (fallback) or `themes/{category}/{theme-name}/gtk.sh` (theme-specific)
+- **Requirements**: GNOME/GTK desktop environment with gsettings
+- **Settings managed**: color-scheme, gtk-theme, icon-theme, cursor-theme
+
+**Fallback Logic:**
+1. **First priority**: Check for theme-specific `gtk.sh` in individual theme directory
+2. **Fallback**: Use category-level `gtk.sh` in `themes/light/` or `themes/dark/`
+3. **Skip**: If neither exists, skip GTK configuration
+
+**Example category-level gtk.sh:**
+```bash
+#!/bin/bash
+# Light theme GTK settings
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-light'
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita'
+gsettings set org.gnome.desktop.interface icon-theme 'Adwaita'
+gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
 ```
 
 ## Installation
