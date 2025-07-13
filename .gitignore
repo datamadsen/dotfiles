@@ -26,4 +26,4 @@ api_keys
 farv/current
 
 # Don't care about this changing all the time.
- nvim/lua/plugins/farv.lua
+nvim/lua/plugins/farv.lua
