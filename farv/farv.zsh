@@ -154,6 +154,12 @@ farv() {
             fi
         fi
         
+        # Update clipboard wofi styling
+        if [ -f "$theme_path/wofi-clipboard.css" ]; then
+            cp "$theme_path/wofi-clipboard.css" "$CURRENT_LINK/"
+            echo "  - clipboard"
+        fi
+        
         # Apply GTK theme settings with fallback
         local theme_category
         if [[ "$theme_path" == *"/light/"* ]]; then
