@@ -1,1 +1,1 @@
-/home/tmadsen/.farv/themes/dark/tokyonight-night/neovim.lua
+/home/tmadsen/.farv/themes/light/rose-pine-dawn/neovim.lua
