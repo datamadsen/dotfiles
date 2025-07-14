@@ -31,10 +31,10 @@ match(\$0, /^([0-9]+)\s(\[\[\s)?binary.*(jpg|jpeg|png|bmp)/, grp) {
     next
 }
 {
-    # Show clean text without ID, but keep original for decoding
+    # Show clean text without ID
     display_text = \$0
     sub(/^[0-9]+\s/, "", display_text)
-    print display_text"\t"\$0
+    print display_text
 }
 EOF
 
@@ -46,7 +46,6 @@ choice=$(gawk <<<"$cliphist_list" "$prog" | wofi \
   -Dimage_size=200 \
   --width=1000 \
   --height=700 \
-  --dynamic-lines \
   --prompt="Clipboard History")
 
 # stop execution if nothing selected in wofi menu
@@ -55,13 +54,17 @@ choice=$(gawk <<<"$cliphist_list" "$prog" | wofi \
 if [[ "$choice" == img:* ]]; then
   # For images, extract clipboard ID and find original entry
   clip_id=$(basename "$choice" | cut -d. -f1)
-  original_entry=$(grep -E "^$clip_id[[:space:]]" <<<"$cliphist_list")
+  original_entry=$(grep -E "^${clip_id}[[:space:]]" <<<"$cliphist_list")
   if [ -n "$original_entry" ]; then
     cliphist decode <<<"$original_entry"
   fi
 else
-  # For text, get the original entry with ID (after the tab)
-  original_entry=$(cut -f2- <<<"$choice")
-  cliphist decode <<<"$original_entry"
+  # For text, find the original entry by matching the display text
+  original_entry=$(grep -F " $choice" <<<"$cliphist_list")
+  if [ -n "$original_entry" ]; then
+    cliphist decode <<<"$original_entry"
+  else
+    # Fallback: output the choice as-is
+    echo "$choice"
+  fi
 fi | wl-copy && sleep 0.1 && wtype -M shift -k Insert -m shift
-
