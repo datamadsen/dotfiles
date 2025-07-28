@@ -42,17 +42,16 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-macos-titlebar-style = hidden
-gtk-titlebar = false
+# macos-titlebar-style = hidden
+# gtk-titlebar = false
 
-# theme = catppuccin-latte
-## favorite light theme
-theme = rose-pine-dawn
-## Favorite dark theme
-#theme = tokyonight_night
-# theme = rose-pine
-# theme = Alabaster
-# theme = vimbones
-# theme = dayfox
+font-family = "CaskaydiaMono Nerd Font"
+font-size = 12
+
+window-padding-y = 5,0
 
 keybind = shift+enter=text:\n
+keybind = shift+insert=paste_from_clipboard
+
+# theme is controlled via farv.
+config-file = ~/.farv/current/ghostty
