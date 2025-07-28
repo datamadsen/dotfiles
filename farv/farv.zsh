@@ -160,6 +160,31 @@ farv() {
             echo "  - clipboard"
         fi
         
+        # Update Ghostty theme if Ghostty is installed
+        if [ -f "$theme_path/ghostty" ] && command -v ghostty >/dev/null 2>&1; then
+            # Reload Ghostty configuration if running
+            if pgrep -x ghostty &> /dev/null; then
+              ghostty_addresses=$(hyprctl clients -j | jq -r '.[] | select(.class == "com.mitchellh.ghostty") | .address')
+              
+              if [[ -n "$ghostty_addresses" ]]; then
+                # Save current active window
+                current_window=$(hyprctl activewindow -j | jq -r '.address')
+                
+                # Focus each ghostty window and send reload key combo
+                while IFS= read -r address; do
+                  # hyprctl dispatch focuswindow "address:$address"
+                  hyprctl dispatch sendshortcut "CTRL SHIFT, comma, address:$address"
+                done <<< "$ghostty_addresses"
+                
+                # Return focus to original window
+                if [[ -n "$current_window" ]]; then
+                  hyprctl dispatch focuswindow "address:$current_window"
+                fi
+              fi
+            fi
+            echo "  - ghostty"
+        fi
+        
         # Apply GTK theme settings with fallback
         local theme_category
         if [[ "$theme_path" == *"/light/"* ]]; then
