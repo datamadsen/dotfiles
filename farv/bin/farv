@@ -163,7 +163,7 @@ EOF
 # Show help information
 show_help() {
   cat <<'EOF'
-farv - A  friend in rice
+farv - A  friend in rice is a friend that's nice :-)
 
 USAGE:
     farv [THEME]                     Switch to specified theme
