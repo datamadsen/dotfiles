@@ -13,147 +13,148 @@ has_command() { command -v "$1" >/dev/null 2>&1; }
 
 # Function to list available themes
 list_themes() {
-    echo "Available themes:"
-    # List light themes
-    for theme_dir in "$THEMES_DIR/light"/*/; do
-        if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/light/*/" ]; then
-            local theme_name=$(basename "$theme_dir")
-            local full_path="themes/light/$theme_name"
-            if [ "$(readlink "$CURRENT_LINK")" = "$THEMES_DIR/$full_path" ]; then
-                echo "  * $theme_name (light) (current)"
-            else
-                echo "    $theme_name (light)"
-            fi
-        fi
-    done
-    # List dark themes
-    for theme_dir in "$THEMES_DIR/dark"/*/; do
-        if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/dark/*/" ]; then
-            local theme_name=$(basename "$theme_dir")
-            local full_path="themes/dark/$theme_name"
-            if [ "$(readlink "$CURRENT_LINK")" = "$THEMES_DIR/$full_path" ]; then
-                echo "  * $theme_name (dark) (current)"
-            else
-                echo "    $theme_name (dark)"
-            fi
-        fi
-    done
+  echo "Available themes:"
+  # List light themes
+  for theme_dir in "$THEMES_DIR/light"/*/; do
+    if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/light/*/" ]; then
+      local theme_name=$(basename "$theme_dir")
+      local full_path="themes/light/$theme_name"
+      if [ "$(readlink "$CURRENT_LINK")" = "$THEMES_DIR/$full_path" ]; then
+        echo "  * $theme_name (light) (current)"
+      else
+        echo "    $theme_name (light)"
+      fi
+    fi
+  done
+  # List dark themes
+  for theme_dir in "$THEMES_DIR/dark"/*/; do
+    if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/dark/*/" ]; then
+      local theme_name=$(basename "$theme_dir")
+      local full_path="themes/dark/$theme_name"
+      if [ "$(readlink "$CURRENT_LINK")" = "$THEMES_DIR/$full_path" ]; then
+        echo "  * $theme_name (dark) (current)"
+      else
+        echo "    $theme_name (dark)"
+      fi
+    fi
+  done
 }
 
 # Function to generate completion themes
 generate_completions() {
-    # Add light themes
-    for theme_dir in "$THEMES_DIR/light"/*/; do
-        if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/light/*/" ]; then
-            local theme_name=$(basename "$theme_dir")
-            echo "$theme_name (light)"
-        fi
-    done
-    # Add dark themes
-    for theme_dir in "$THEMES_DIR/dark"/*/; do
-        if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/dark/*/" ]; then
-            local theme_name=$(basename "$theme_dir")
-            echo "$theme_name (dark)"
-        fi
-    done
+  # Add light themes
+  for theme_dir in "$THEMES_DIR/light"/*/; do
+    if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/light/*/" ]; then
+      local theme_name=$(basename "$theme_dir")
+      echo "$theme_name (light)"
+    fi
+  done
+  # Add dark themes
+  for theme_dir in "$THEMES_DIR/dark"/*/; do
+    if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/dark/*/" ]; then
+      local theme_name=$(basename "$theme_dir")
+      echo "$theme_name (dark)"
+    fi
+  done
 }
 
 # Function to find theme path
 find_theme_path() {
-    local theme_input="$1"
-    local theme_name theme_path
-    
-    # Check if input includes category (e.g., "rose-pine-dawn (light)")
-    if [[ "$theme_input" == *" (light)" ]]; then
-        theme_name="${theme_input%% \(light\)}"
-        theme_path="$THEMES_DIR/light/$theme_name"
-    elif [[ "$theme_input" == *" (dark)" ]]; then
-        theme_name="${theme_input%% \(dark\)}"
-        theme_path="$THEMES_DIR/dark/$theme_name"
+  local theme_input="$1"
+  local theme_name theme_path
+
+  # Check if input includes category (e.g., "rose-pine-dawn (light)")
+  if [[ "$theme_input" == *" (light)" ]]; then
+    theme_name="${theme_input%% \(light\)}"
+    theme_path="$THEMES_DIR/light/$theme_name"
+  elif [[ "$theme_input" == *" (dark)" ]]; then
+    theme_name="${theme_input%% \(dark\)}"
+    theme_path="$THEMES_DIR/dark/$theme_name"
+  else
+    # Try to find theme in both light and dark directories
+    theme_name="$theme_input"
+    if [ -d "$THEMES_DIR/light/$theme_name" ]; then
+      theme_path="$THEMES_DIR/light/$theme_name"
+    elif [ -d "$THEMES_DIR/dark/$theme_name" ]; then
+      theme_path="$THEMES_DIR/dark/$theme_name"
     else
-        # Try to find theme in both light and dark directories
-        theme_name="$theme_input"
-        if [ -d "$THEMES_DIR/light/$theme_name" ]; then
-            theme_path="$THEMES_DIR/light/$theme_name"
-        elif [ -d "$THEMES_DIR/dark/$theme_name" ]; then
-            theme_path="$THEMES_DIR/dark/$theme_name"
-        else
-            theme_path=""
-        fi
+      theme_path=""
     fi
-    
-    echo "$theme_path"
+  fi
+
+  echo "$theme_path"
 }
 
 # Function to switch theme
 switch_theme() {
-    local theme_input="$1"
-    local theme_path=$(find_theme_path "$theme_input")
-    
-    if [ ! -d "$theme_path" ]; then
-        echo "Error: Theme '$theme_input' not found"
-        echo ""
-        list_themes
-        return 1
+  local theme_input="$1"
+  local theme_path=$(find_theme_path "$theme_input")
+
+  if [ ! -d "$theme_path" ]; then
+    echo "Error: Theme '$theme_input' not found"
+    echo ""
+    list_themes
+    return 1
+  fi
+
+  # Update symlink with absolute path
+  rm -f "$CURRENT_LINK"
+  ln -sf "$theme_path" "$CURRENT_LINK"
+
+  # Run all available handlers
+  for handler in "$HANDLERS_DIR"/*.sh; do
+    if [ -f "$handler" ] && [ -x "$handler" ]; then
+      "$handler" "$theme_path"
     fi
-    
-    # Update symlink with absolute path
-    rm -f "$CURRENT_LINK"
-    ln -sf "$theme_path" "$CURRENT_LINK"
-    
-    # Run all available handlers
-    for handler in "$HANDLERS_DIR"/*.sh; do
-        if [ -f "$handler" ] && [ -x "$handler" ]; then
-            "$handler" "$theme_path"
-        fi
-    done
-    
-    local theme_name=$(basename "$theme_path")
-    echo "Switched to theme: $theme_name"
+  done
+
+  local theme_name=$(basename "$theme_path")
+  echo "Switched to theme: $theme_name"
 }
 
 # Interactive theme selection using fzf
 interactive_selection() {
-    if has_command fzf; then
-        local themes=()
-        # Add light themes
-        for theme_dir in "$THEMES_DIR/light"/*/; do
-            if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/light/*/" ]; then
-                local theme_name=$(basename "$theme_dir")
-                themes+=("$theme_name (light)")
-            fi
-        done
-        # Add dark themes
-        for theme_dir in "$THEMES_DIR/dark"/*/; do
-            if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/dark/*/" ]; then
-                local theme_name=$(basename "$theme_dir")
-                themes+=("$theme_name (dark)")
-            fi
-        done
-        
-        local selected_theme=$(printf '%s\n' "${themes[@]}" | fzf --prompt="Select theme: " --height=10 --border)
-        if [[ -n "$selected_theme" ]]; then
-            switch_theme "$selected_theme"
-        fi
-    else
-        echo "Usage: farv [theme-name|list]"
-        echo ""
-        list_themes
+  if has_command fzf; then
+    local themes=()
+    # Add light themes
+    for theme_dir in "$THEMES_DIR/light"/*/; do
+      if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/light/*/" ]; then
+        local theme_name=$(basename "$theme_dir")
+        themes+=("$theme_name (light)")
+      fi
+    done
+    # Add dark themes
+    for theme_dir in "$THEMES_DIR/dark"/*/; do
+      if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/dark/*/" ]; then
+        local theme_name=$(basename "$theme_dir")
+        themes+=("$theme_name (dark)")
+      fi
+    done
+
+    local selected_theme=$(printf '%s\n' "${themes[@]}" | fzf --prompt="Select theme: " --height=10 --border)
+    if [[ -n "$selected_theme" ]]; then
+      switch_theme "$selected_theme"
     fi
+  else
+    echo "Usage: farv [theme-name|list]"
+    echo ""
+    list_themes
+  fi
 }
 
 # Main logic
 case "${1:-}" in
-    "--complete")
-        generate_completions
-        ;;
-    "list"|"ls")
-        list_themes
-        ;;
-    "")
-        interactive_selection
-        ;;
-    *)
-        switch_theme "$1"
-        ;;
+"--complete")
+  generate_completions
+  ;;
+"list" | "ls")
+  list_themes
+  ;;
+"")
+  interactive_selection
+  ;;
+*)
+  switch_theme "$1"
+  ;;
 esac
+
