@@ -142,10 +142,122 @@ interactive_selection() {
   fi
 }
 
+# Generate zsh completion script
+generate_zsh_completion() {
+    cat << 'EOF'
+#compdef farv
+
+_farv() {
+    local context state line
+    _arguments \
+        '1: :->themes' \
+        '*: :->themes'
+    
+    case $state in
+        themes)
+            local -a themes
+            while IFS= read -r line; do
+                themes+=("$line")
+            done < <(farv --complete 2>/dev/null)
+            _describe 'themes' themes
+            ;;
+    esac
+}
+
+compdef _farv farv
+EOF
+}
+
+# Generate bash completion script
+generate_bash_completion() {
+    cat << 'EOF'
+_farv() {
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    
+    if [[ ${cur} == -* ]]; then
+        opts="--help -h --generate-completion --complete list ls"
+        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+        return 0
+    fi
+    
+    local themes=$(farv --complete 2>/dev/null)
+    COMPREPLY=( $(compgen -W "${themes}" -- ${cur}) )
+    return 0
+}
+
+complete -F _farv farv
+EOF
+}
+
+# Generate fish completion script
+generate_fish_completion() {
+    cat << 'EOF'
+function __farv_complete_themes
+    farv --complete 2>/dev/null
+end
+
+complete -c farv -f -a '(__farv_complete_themes)' -d 'Available themes'
+complete -c farv -s l -l list -d 'List available themes'
+complete -c farv -l help -d 'Show help'
+EOF
+}
+
+# Show help information
+show_help() {
+    cat << 'EOF'
+farv - Cross-shell theme manager
+
+USAGE:
+    farv [THEME]                    Switch to specified theme
+    farv                            Interactive theme selection (requires fzf)
+    farv list                       List all available themes
+    farv --help                     Show this help message
+    farv --generate-completion SHELL Generate completion script for shell
+    farv --complete                 List themes for completion (internal use)
+
+EXAMPLES:
+    farv rose-pine-dawn             Switch to rose-pine-dawn theme
+    farv "tokyonight-night (dark)"  Switch using full theme name with category
+    farv list                       Show all available themes
+    farv                            Open interactive theme selector
+
+COMPLETION SETUP:
+    # Automatic (recommended)
+    Run the installer which detects your shell and sets up completion
+
+    # Manual setup
+    farv --generate-completion zsh > ~/.local/share/zsh/site-functions/_farv
+    farv --generate-completion bash > ~/.bash_completion.d/farv
+    farv --generate-completion fish > ~/.config/fish/completions/farv.fish
+
+SUPPORTED SHELLS:
+    zsh, bash, fish
+
+For more information, visit: https://github.com/your-repo/farv
+EOF
+}
+
 # Main logic
 case "${1:-}" in
+"--help" | "-h")
+  show_help
+  ;;
 "--complete")
   generate_completions
+  ;;
+"--generate-completion")
+  case "${2:-}" in
+    "zsh") generate_zsh_completion ;;
+    "bash") generate_bash_completion ;;
+    "fish") generate_fish_completion ;;
+    *) 
+      echo "Usage: farv --generate-completion {zsh|bash|fish}"
+      exit 1
+      ;;
+  esac
   ;;
 "list" | "ls")
   list_themes
