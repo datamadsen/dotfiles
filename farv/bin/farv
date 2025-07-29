@@ -13,43 +13,14 @@ has_command() { command -v "$1" >/dev/null 2>&1; }
 
 # Function to list available themes
 list_themes() {
-  echo "Available themes:"
   # List light themes
-  for theme_dir in "$THEMES_DIR/light"/*/; do
-    if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/light/*/" ]; then
-      local theme_name=$(basename "$theme_dir")
-      local full_path="themes/light/$theme_name"
-      if [ "$(readlink "$CURRENT_LINK")" = "$THEMES_DIR/$full_path" ]; then
-        echo "  * $theme_name (light) (current)"
-      else
-        echo "    $theme_name (light)"
-      fi
-    fi
-  done
-  # List dark themes
-  for theme_dir in "$THEMES_DIR/dark"/*/; do
-    if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/dark/*/" ]; then
-      local theme_name=$(basename "$theme_dir")
-      local full_path="themes/dark/$theme_name"
-      if [ "$(readlink "$CURRENT_LINK")" = "$THEMES_DIR/$full_path" ]; then
-        echo "  * $theme_name (dark) (current)"
-      else
-        echo "    $theme_name (dark)"
-      fi
-    fi
-  done
-}
-
-# Function to generate completion themes
-generate_completions() {
-  # Add light themes
   for theme_dir in "$THEMES_DIR/light"/*/; do
     if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/light/*/" ]; then
       local theme_name=$(basename "$theme_dir")
       echo "$theme_name (light)"
     fi
   done
-  # Add dark themes
+  # List dark themes
   for theme_dir in "$THEMES_DIR/dark"/*/; do
     if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/dark/*/" ]; then
       local theme_name=$(basename "$theme_dir")
@@ -115,23 +86,7 @@ switch_theme() {
 # Interactive theme selection using fzf
 interactive_selection() {
   if has_command fzf; then
-    local themes=()
-    # Add light themes
-    for theme_dir in "$THEMES_DIR/light"/*/; do
-      if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/light/*/" ]; then
-        local theme_name=$(basename "$theme_dir")
-        themes+=("$theme_name (light)")
-      fi
-    done
-    # Add dark themes
-    for theme_dir in "$THEMES_DIR/dark"/*/; do
-      if [ -d "$theme_dir" ] && [ "$theme_dir" != "$THEMES_DIR/dark/*/" ]; then
-        local theme_name=$(basename "$theme_dir")
-        themes+=("$theme_name (dark)")
-      fi
-    done
-
-    local selected_theme=$(printf '%s\n' "${themes[@]}" | fzf --prompt="Select theme: " --height=10 --border)
+    local selected_theme=$(list_themes | fzf --prompt="Select theme: " --height=10 --border)
     if [[ -n "$selected_theme" ]]; then
       switch_theme "$selected_theme"
     fi
@@ -144,7 +99,7 @@ interactive_selection() {
 
 # Generate zsh completion script
 generate_zsh_completion() {
-    cat << 'EOF'
+  cat <<'EOF'
 #compdef farv
 
 _farv() {
@@ -158,7 +113,7 @@ _farv() {
             local -a themes
             while IFS= read -r line; do
                 themes+=("$line")
-            done < <(farv --complete 2>/dev/null)
+            done < <(farv list 2>/dev/null)
             _describe 'themes' themes
             ;;
     esac
@@ -170,7 +125,7 @@ EOF
 
 # Generate bash completion script
 generate_bash_completion() {
-    cat << 'EOF'
+  cat <<'EOF'
 _farv() {
     local cur prev opts
     COMPREPLY=()
@@ -178,12 +133,12 @@ _farv() {
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     
     if [[ ${cur} == -* ]]; then
-        opts="--help -h --generate-completion --complete list ls"
+        opts="--help -h --generate-completion list ls"
         COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
         return 0
     fi
     
-    local themes=$(farv --complete 2>/dev/null)
+    local themes=$(farv list 2>/dev/null)
     COMPREPLY=( $(compgen -W "${themes}" -- ${cur}) )
     return 0
 }
@@ -194,9 +149,9 @@ EOF
 
 # Generate fish completion script
 generate_fish_completion() {
-    cat << 'EOF'
+  cat <<'EOF'
 function __farv_complete_themes
-    farv --complete 2>/dev/null
+    farv list 2>/dev/null
 end
 
 complete -c farv -f -a '(__farv_complete_themes)' -d 'Available themes'
@@ -207,22 +162,21 @@ EOF
 
 # Show help information
 show_help() {
-    cat << 'EOF'
-farv - Cross-shell theme manager
+  cat <<'EOF'
+farv - A  friend in rice
 
 USAGE:
-    farv [THEME]                    Switch to specified theme
-    farv                            Interactive theme selection (requires fzf)
-    farv list                       List all available themes
-    farv --help                     Show this help message
+    farv [THEME]                     Switch to specified theme
+    farv                             Interactive theme selection (requires fzf)
+    farv list                        List all available themes
+    farv --help                      Show this help message
     farv --generate-completion SHELL Generate completion script for shell
-    farv --complete                 List themes for completion (internal use)
 
 EXAMPLES:
-    farv rose-pine-dawn             Switch to rose-pine-dawn theme
-    farv "tokyonight-night (dark)"  Switch using full theme name with category
-    farv list                       Show all available themes
-    farv                            Open interactive theme selector
+    farv rose-pine-dawn              Switch to rose-pine-dawn theme
+    farv "tokyonight-night (dark)"   Switch using full theme name with category
+    farv list                        Show all available themes
+    farv                             Open interactive theme selector
 
 COMPLETION SETUP:
     # Automatic (recommended)
@@ -232,11 +186,6 @@ COMPLETION SETUP:
     farv --generate-completion zsh > ~/.local/share/zsh/site-functions/_farv
     farv --generate-completion bash > ~/.bash_completion.d/farv
     farv --generate-completion fish > ~/.config/fish/completions/farv.fish
-
-SUPPORTED SHELLS:
-    zsh, bash, fish
-
-For more information, visit: https://github.com/your-repo/farv
 EOF
 }
 
@@ -245,18 +194,15 @@ case "${1:-}" in
 "--help" | "-h")
   show_help
   ;;
-"--complete")
-  generate_completions
-  ;;
 "--generate-completion")
   case "${2:-}" in
-    "zsh") generate_zsh_completion ;;
-    "bash") generate_bash_completion ;;
-    "fish") generate_fish_completion ;;
-    *) 
-      echo "Usage: farv --generate-completion {zsh|bash|fish}"
-      exit 1
-      ;;
+  "zsh") generate_zsh_completion ;;
+  "bash") generate_bash_completion ;;
+  "fish") generate_fish_completion ;;
+  *)
+    echo "Usage: farv --generate-completion {zsh|bash|fish}"
+    exit 1
+    ;;
   esac
   ;;
 "list" | "ls")
@@ -269,4 +215,3 @@ case "${1:-}" in
   switch_theme "$1"
   ;;
 esac
-
