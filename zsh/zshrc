@@ -163,13 +163,10 @@ compinit
 #
 # eval "$(atuin init zsh)"
 
-# Source farv theme switcher function
-source ~/.farv/farv.zsh
-
 eval "$(zoxide init zsh)"
 source ~/.zsh_functions
 
-# Auto-start Hyprland on TTY1 if available
-if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" = 1 ] && command -v Hyprland >/dev/null 2>&1; then
-    exec Hyprland
-fi
+# # Auto-start Hyprland on TTY1 if available
+# if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" = 1 ] && command -v Hyprland >/dev/null 2>&1; then
+    # exec Hyprland
+# fi
