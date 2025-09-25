@@ -54,4 +54,4 @@ keybind = shift+enter=text:\n
 keybind = shift+insert=paste_from_clipboard
 
 # theme is controlled via farv.
-config-file = ~/.farv/current/ghostty
+config-file = ~/.config/farv/current/ghostty
