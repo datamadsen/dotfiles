@@ -3,116 +3,263 @@
 # System paths
 FARV_SYSTEM_DIR="/usr/share/farv"
 FARV_SYSTEM_THEMES="$FARV_SYSTEM_DIR/themes"
-FARV_SYSTEM_HANDLERS="$FARV_SYSTEM_DIR/handlers"
 
 # User paths (XDG compliant)
 FARV_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/farv"
 FARV_USER_THEMES="$FARV_CONFIG_HOME/themes"
-FARV_USER_HANDLERS="$FARV_CONFIG_HOME/handlers"
 FARV_CURRENT_LINK="$FARV_CONFIG_HOME/current"
 
-# Utility functions
-log_action() { echo "  - $1"; }
-is_running() { pgrep -x "$1" >/dev/null 2>&1; }
-has_command() { command -v "$1" >/dev/null 2>&1; }
+# Source utility functions
+source "$FARV_SYSTEM_DIR/lib/utils.sh"
 
 # Function to discover themes with search priority
 discover_themes() {
-    local category="$1"  # light or dark
-    local themes=()
-    local seen_themes=()
-    
-    # User themes first (higher priority)
-    if [ -d "$FARV_USER_THEMES/$category" ]; then
-        for theme_dir in "$FARV_USER_THEMES/$category"/*/; do
-            if [ -d "$theme_dir" ] && [ "$theme_dir" != "$FARV_USER_THEMES/$category/*/" ]; then
-                local theme_name=$(basename "$theme_dir")
-                themes+=("$theme_name ($category) [user]")
-                seen_themes+=("$theme_name")
-            fi
-        done
-    fi
-    
-    # System themes second (only if not overridden by user)
-    if [ -d "$FARV_SYSTEM_THEMES/$category" ]; then
-        for theme_dir in "$FARV_SYSTEM_THEMES/$category"/*/; do
-            if [ -d "$theme_dir" ] && [ "$theme_dir" != "$FARV_SYSTEM_THEMES/$category/*/" ]; then
-                local theme_name=$(basename "$theme_dir")
-                # Only add if not already found in user themes
-                if [[ ! " ${seen_themes[@]} " =~ " $theme_name " ]]; then
-                    themes+=("$theme_name ($category)")
-                fi
-            fi
-        done
-    fi
-    
-    printf '%s\n' "${themes[@]}"
+  local category="$1" # light or dark
+  local themes=()
+  local seen_themes=()
+
+  # User themes first (higher priority)
+  if [ -d "$FARV_USER_THEMES/$category" ]; then
+    for theme_dir in "$FARV_USER_THEMES/$category"/*/; do
+      if [ -d "$theme_dir" ] && [ "$theme_dir" != "$FARV_USER_THEMES/$category/*/" ]; then
+        local theme_name=$(basename "$theme_dir")
+        themes+=("$theme_name ($category) [user]")
+        seen_themes+=("$theme_name")
+      fi
+    done
+  fi
+
+  # System themes second (only if not overridden by user)
+  if [ -d "$FARV_SYSTEM_THEMES/$category" ]; then
+    for theme_dir in "$FARV_SYSTEM_THEMES/$category"/*/; do
+      if [ -d "$theme_dir" ] && [ "$theme_dir" != "$FARV_SYSTEM_THEMES/$category/*/" ]; then
+        local theme_name=$(basename "$theme_dir")
+        # Only add if not already found in user themes
+        if [[ ! " ${seen_themes[@]} " =~ " $theme_name " ]]; then
+          themes+=("$theme_name ($category)")
+        fi
+      fi
+    done
+  fi
+
+  printf '%s\n' "${themes[@]}"
 }
 
 # Function to list available themes
 list_themes() {
-    discover_themes "light"
-    discover_themes "dark"
+  discover_themes "light"
+  discover_themes "dark"
 }
 
-# Function to resolve theme path with search priority
+# Function to get search paths in priority order (highest to lowest)
+get_search_paths() {
+  local category="$1"
+  local theme_name="$2"
+
+  # Priority order (first match wins):
+  # 1. User theme-specific (highest priority)
+  # 2. System theme-specific
+  # 3. User category-level
+  # 4. System category-level
+  # 5. User global
+  # 6. System global (lowest priority)
+
+  local paths=(
+    "$FARV_USER_THEMES/$category/$theme_name"
+    "$FARV_SYSTEM_THEMES/$category/$theme_name"
+    "$FARV_USER_THEMES/$category"
+    "$FARV_SYSTEM_THEMES/$category"
+    "$FARV_USER_THEMES"
+    "$FARV_SYSTEM_THEMES"
+  )
+
+  printf '%s\n' "${paths[@]}"
+}
+
+# Function to resolve file path using layering system
+resolve_file_path() {
+  local category="$1"
+  local theme_name="$2"
+  local filename="$3"
+
+  while IFS= read -r search_path; do
+    local file_path="$search_path/$filename"
+    if [ -f "$file_path" ] && [ ! -x "$file_path" ]; then
+      echo "$file_path"
+      return 0
+    fi
+  done < <(get_search_paths "$category" "$theme_name")
+
+  return 1
+}
+
+# Function to discover all unique filenames in theme hierarchy
+discover_theme_files() {
+  local category="$1"
+  local theme_name="$2"
+  local files=()
+
+  while IFS= read -r search_path; do
+    if [ -d "$search_path" ]; then
+      for file in "$search_path"/*; do
+        if [ -f "$file" ] && [ ! -x "$file" ]; then
+          local filename=$(basename "$file")
+          # Add to array if not already present
+          if [[ ! " ${files[@]} " =~ " $filename " ]]; then
+            files+=("$filename")
+          fi
+        fi
+      done
+    fi
+  done < <(get_search_paths "$category" "$theme_name")
+
+  printf '%s\n' "${files[@]}"
+}
+
+# Function to discover executable scripts in priority order
+discover_theme_scripts() {
+  local category="$1"
+  local theme_name="$2"
+  local scripts=()
+  local seen_scripts=()
+
+  while IFS= read -r search_path; do
+    if [ -d "$search_path" ]; then
+      for script in "$search_path"/*; do
+        if [ -f "$script" ] && [ -x "$script" ]; then
+          local script_name=$(basename "$script")
+          # Only add if not already seen (higher priority wins)
+          if [[ ! " ${seen_scripts[@]} " =~ " $script_name " ]]; then
+            scripts+=("$script")
+            seen_scripts+=("$script_name")
+          fi
+        fi
+      done
+    fi
+  done < <(get_search_paths "$category" "$theme_name")
+
+  printf '%s\n' "${scripts[@]}"
+}
+
+# Function to resolve theme path (for theme existence checking)
 resolve_theme_path() {
-    local theme_name="$1"
-    local category="$2"  # light or dark
-    
-    # Check user themes first (higher priority)
-    local user_path="$FARV_USER_THEMES/$category/$theme_name"
-    if [ -d "$user_path" ]; then
-        echo "$user_path"
+  local theme_name="$1"
+  local category="$2"
+
+  # Check if theme exists in any location
+  while IFS= read -r search_path; do
+    if [ -d "$search_path" ]; then
+      # For theme-specific paths, check if it's the right theme
+      if [[ "$search_path" == *"/$category/$theme_name" ]]; then
+        echo "$search_path"
         return 0
+      fi
     fi
-    
-    # Fall back to system themes
-    local system_path="$FARV_SYSTEM_THEMES/$category/$theme_name"
-    if [ -d "$system_path" ]; then
-        echo "$system_path"
-        return 0
-    fi
-    
-    return 1
+  done < <(get_search_paths "$category" "$theme_name")
+
+  return 1
 }
 
 # Function to find theme path
 find_theme_path() {
-    local theme_input="$1"
-    local theme_name theme_path
+  local theme_input="$1"
+  local theme_name theme_path
 
-    # Check if input includes category and user/system indicator
-    if [[ "$theme_input" == *" (light) [user]" ]]; then
-        theme_name="${theme_input%% \(light\) \[user\]}"
-        theme_path="$FARV_USER_THEMES/light/$theme_name"
-    elif [[ "$theme_input" == *" (dark) [user]" ]]; then
-        theme_name="${theme_input%% \(dark\) \[user\]}"
-        theme_path="$FARV_USER_THEMES/dark/$theme_name"
-    elif [[ "$theme_input" == *" (light)" ]]; then
-        theme_name="${theme_input%% \(light\)}"
-        theme_path=$(resolve_theme_path "$theme_name" "light")
-    elif [[ "$theme_input" == *" (dark)" ]]; then
-        theme_name="${theme_input%% \(dark\)}"
-        theme_path=$(resolve_theme_path "$theme_name" "dark")
-    else
-        # Try to find theme in both light and dark directories, prioritizing user themes
-        theme_name="$theme_input"
-        theme_path=$(resolve_theme_path "$theme_name" "light")
-        if [ -z "$theme_path" ]; then
-            theme_path=$(resolve_theme_path "$theme_name" "dark")
-        fi
+  # Check if input includes category and user/system indicator
+  if [[ "$theme_input" == *" (light) [user]" ]]; then
+    theme_name="${theme_input%% \(light\) \[user\]}"
+    theme_path="$FARV_USER_THEMES/light/$theme_name"
+  elif [[ "$theme_input" == *" (dark) [user]" ]]; then
+    theme_name="${theme_input%% \(dark\) \[user\]}"
+    theme_path="$FARV_USER_THEMES/dark/$theme_name"
+  elif [[ "$theme_input" == *" (light)" ]]; then
+    theme_name="${theme_input%% \(light\)}"
+    theme_path=$(resolve_theme_path "$theme_name" "light")
+  elif [[ "$theme_input" == *" (dark)" ]]; then
+    theme_name="${theme_input%% \(dark\)}"
+    theme_path=$(resolve_theme_path "$theme_name" "dark")
+  else
+    # Try to find theme in both light and dark directories, prioritizing user themes
+    theme_name="$theme_input"
+    theme_path=$(resolve_theme_path "$theme_name" "light")
+    if [ -z "$theme_path" ]; then
+      theme_path=$(resolve_theme_path "$theme_name" "dark")
     fi
+  fi
 
-    echo "$theme_path"
+  echo "$theme_path"
 }
 
-# Function to switch theme
+# Function to apply theme using new layering system
+apply_theme() {
+  local theme_name="$1"
+  local theme_category="$2"
+
+  # Create directories
+  mkdir -p "$FARV_CONFIG_HOME/current"
+
+  # 1. Clear current symlinks
+  rm -rf "$FARV_CONFIG_HOME/current/*"
+
+  # 2. Discover all files in theme hierarchy
+  local files
+  readarray -t files < <(discover_theme_files "$theme_category" "$theme_name")
+
+  # 3. For each unique filename, resolve and symlink highest priority version
+  for filename in "${files[@]}"; do
+    local resolved_path=$(resolve_file_path "$theme_category" "$theme_name" "$filename")
+    if [ -n "$resolved_path" ]; then
+      ln -sf "$resolved_path" "$FARV_CONFIG_HOME/current/$filename"
+    fi
+  done
+
+  # 4. Discover and execute all scripts in priority order
+  local scripts
+  readarray -t scripts < <(discover_theme_scripts "$theme_category" "$theme_name")
+
+  for script in "${scripts[@]}"; do
+    if [ -x "$script" ]; then
+      echo "  - $(basename "$script")"
+      "$script" "$(dirname "$script")" "$theme_name" "$theme_category" "$FARV_CONFIG_HOME/current"
+    fi
+  done
+}
+
+# Function to switch theme (main entry point)
 switch_theme() {
   local theme_input="$1"
-  local theme_path=$(find_theme_path "$theme_input")
+  local theme_name theme_category
 
-  if [ ! -d "$theme_path" ]; then
+  # Parse theme input to extract name and category
+  if [[ "$theme_input" == *" (light) [user]" ]]; then
+    theme_name="${theme_input%% \(light\) \[user\]}"
+    theme_category="light"
+  elif [[ "$theme_input" == *" (dark) [user]" ]]; then
+    theme_name="${theme_input%% \(dark\) \[user\]}"
+    theme_category="dark"
+  elif [[ "$theme_input" == *" (light)" ]]; then
+    theme_name="${theme_input%% \(light\)}"
+    theme_category="light"
+  elif [[ "$theme_input" == *" (dark)" ]]; then
+    theme_name="${theme_input%% \(dark\)}"
+    theme_category="dark"
+  else
+    # Try to find theme in both categories
+    theme_name="$theme_input"
+    if resolve_theme_path "$theme_name" "light" >/dev/null; then
+      theme_category="light"
+    elif resolve_theme_path "$theme_name" "dark" >/dev/null; then
+      theme_category="dark"
+    else
+      echo "Error: Theme '$theme_input' not found"
+      echo ""
+      list_themes
+      return 1
+    fi
+  fi
+
+  # Verify theme exists
+  if ! resolve_theme_path "$theme_name" "$theme_category" >/dev/null; then
     echo "Error: Theme '$theme_input' not found"
     echo ""
     list_themes
@@ -122,59 +269,9 @@ switch_theme() {
   # Create user config directory if it doesn't exist
   mkdir -p "$FARV_CONFIG_HOME"
 
-  # Update symlink with absolute path
-  rm -f "$FARV_CURRENT_LINK"
-  ln -sf "$theme_path" "$FARV_CURRENT_LINK"
-
-  # Run all available handlers with priority system
-  execute_handlers "$theme_path"
-
-  local theme_name=$(basename "$theme_path")
+  echo "Applying theme: $theme_name ($theme_category)"
+  apply_theme "$theme_name" "$theme_category"
   echo "Switched to theme: $theme_name"
-}
-
-# Function to discover handlers with user override support
-discover_handlers() {
-    local handlers=()
-    local seen_handlers=()
-    
-    # Get all available handlers from both locations
-    # User handlers first (can override system handlers)
-    if [ -d "$FARV_USER_HANDLERS" ]; then
-        for handler_path in "$FARV_USER_HANDLERS"/*.sh; do
-            if [ -f "$handler_path" ]; then
-                local handler_name=$(basename "$handler_path")
-                handlers+=("$handler_path")
-                seen_handlers+=("$handler_name")
-            fi
-        done
-    fi
-    
-    # System handlers second (only if not overridden by user)
-    if [ -d "$FARV_SYSTEM_HANDLERS" ]; then
-        for handler_path in "$FARV_SYSTEM_HANDLERS"/*.sh; do
-            if [ -f "$handler_path" ]; then
-                local handler_name=$(basename "$handler_path")
-                # Only add if not already found in user handlers
-                if [[ ! " ${seen_handlers[@]} " =~ " $handler_name " ]]; then
-                    handlers+=("$handler_path")
-                fi
-            fi
-        done
-    fi
-    
-    printf '%s\n' "${handlers[@]}"
-}
-
-# Function to execute handlers
-execute_handlers() {
-    local theme_path="$1"
-    
-    while IFS= read -r handler_path; do
-        if [ -f "$handler_path" ] && [ -x "$handler_path" ]; then
-            "$handler_path" "$theme_path"
-        fi
-    done < <(discover_handlers)
 }
 
 # Interactive theme selection using fzf

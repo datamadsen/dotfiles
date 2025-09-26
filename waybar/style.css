@@ -16,7 +16,6 @@
   margin-right: 3px;
 }
 
-#custom-dropbox,
 #cpu,
 #battery,
 #network,
@@ -36,4 +35,4 @@ tooltip label {
   padding: 2px;
 }
 
-@import "../../.farv/current/waybar.css";
+@import "../../.config/farv/current/waybar.css";

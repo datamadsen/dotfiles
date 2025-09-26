@@ -31,18 +31,20 @@ match(\$0, /^([0-9]+)\s(\[\[\s)?binary.*(jpg|jpeg|png|bmp)/, grp) {
     next
 }
 {
-    # Show clean text without ID
-    display_text = \$0
-    sub(/^[0-9]+\s/, "", display_text)
-    print display_text
+    # Wrap clipboard ID in HTML span for styling
+    match(\$0, /^([0-9]+)\s(.*)/, grp)
+    clip_id = grp[1]
+    content = grp[2]
+    print "<span alpha=\"1\">" clip_id "</span> " content
 }
 EOF
 
 choice=$(gawk <<<"$cliphist_list" "$prog" | wofi \
   --dmenu \
-  --style="$HOME/.farv/current/wofi-clipboard.css" \
+  --style="$XDG_CONFIG_HOME/farv/current/wofi-clipboard.css" \
   --cache-file=/dev/null \
   --allow-images \
+  --parse-markup=true \
   -Dimage_size=200 \
   --width=1000 \
   --height=700 \
@@ -59,12 +61,15 @@ if [[ "$choice" == img:* ]]; then
     cliphist decode <<<"$original_entry"
   fi
 else
-  # For text, find the original entry by matching the display text
-  original_entry=$(grep -F " $choice" <<<"$cliphist_list")
-  if [ -n "$original_entry" ]; then
-    cliphist decode <<<"$original_entry"
+  # For text entries, extract clipboard ID from HTML markup
+  if [[ "$choice" =~ \<span\ alpha=\"1\"\>([0-9]+)\</span\>\ (.*) ]]; then
+    clip_id="${BASH_REMATCH[1]}"
+    original_entry=$(grep -E "^${clip_id}[[:space:]]" <<<"$cliphist_list")
+    if [ -n "$original_entry" ]; then
+      cliphist decode <<<"$original_entry"
+    fi
   else
-    # Fallback: output the choice as-is
-    echo "$choice"
+    # Fallback for entries without HTML markup
+    cliphist decode <<<"$choice"
   fi
 fi | wl-copy && sleep 0.1 && wtype -M shift -k Insert -m shift

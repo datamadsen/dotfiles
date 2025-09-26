@@ -3,6 +3,7 @@ export LANG=en_US.UTF-8
 export TERM="xterm-256color"
 fpath=( "$HOME/.utilities" $fpath )
 fpath=( ~/.zsh/completion $fpath)
+fpath=( ~/.local/share/zsh/site-functions $fpath)
 fpath=( ~/dotfiles/zsh/pure $fpath)
 
 setopt share_history
@@ -164,7 +165,8 @@ compinit
 # eval "$(atuin init zsh)"
 
 # Source farv theme switcher function
-source ~/.farv/farv.zsh
+# source ~/.farv/farv.zsh
+# export PATH="$PATH:$HOME/.farv/bin"
 
 eval "$(zoxide init zsh)"
 source ~/.zsh_functions
@@ -173,3 +175,5 @@ source ~/.zsh_functions
 if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" = 1 ] && command -v Hyprland >/dev/null 2>&1; then
     exec Hyprland
 fi
+
+export PATH="$PATH:$HOME/.local/bin"

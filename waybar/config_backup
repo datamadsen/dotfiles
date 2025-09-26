@@ -4,15 +4,16 @@
   "spacing": 0,
   "height": 36,
   "modules-left": [
+    "clock"
+  ],
+  "modules-center": [
     "hyprland/workspaces"
   ],
-  "modules-center": [],
   "modules-right": [
     "network",
     "pulseaudio",
     "cpu",
-    "battery",
-    "clock"
+    "battery"
   ],
   "wlr/taskbar": {
     "format": "{icon}   {title:.25}",
