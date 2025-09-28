@@ -1,0 +1,1 @@
+/home/tmadsen/.config/farv/current/neovim.lua
