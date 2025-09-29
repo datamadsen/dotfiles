@@ -6,15 +6,16 @@
   "modules-left": [
     "hyprland/workspaces"
   ],
-  "modules-center": [
-    "clock"
-  ],
+  // "modules-center": [
+  // "clock"
+  // ],
   "modules-right": [
-    "bluetooth",
+    // "bluetooth",
     "network",
     "pulseaudio",
     "cpu",
-    "battery"
+    "battery",
+    "clock"
   ],
   "hyprland/workspaces": {
     "on-click": "activate",
@@ -117,14 +118,22 @@
     "on-click": "blueberry"
   },
   "pulseaudio": {
-    "format": "",
+    // "format": "",
+    "format": "{icon}",
     "format-muted": "󰝟",
     "scroll-step": 5,
-    "on-click": "pavucontrol",
+    "on-click": "alacritty --class=Wiremix -e wiremix",
     "tooltip-format": "Playing at {volume}%",
     "on-click-right": "pamixer -t",
     "ignored-sinks": [
       "Easy Effects Sink"
-    ]
+    ],
+    "format-icons": {
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    }
   }
 }
