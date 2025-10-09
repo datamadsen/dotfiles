@@ -5,3 +5,4 @@
 -- disable line numers
 vim.opt.number = false
 vim.opt.relativenumber = false
+vim.opt.laststatus = 2
