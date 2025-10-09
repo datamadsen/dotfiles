@@ -1,3 +1,5 @@
+@import "../../.config/farv/current/waybar.css";
+
 * {
   border: none;
   border-radius: 0;
@@ -36,4 +38,4 @@ tooltip label {
   padding: 2px;
 }
 
-@import "../../.config/farv/current/waybar.css";
+
