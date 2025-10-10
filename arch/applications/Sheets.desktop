@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Sheets
+Comment=Sheets
+Exec=chromium --new-window --ozone-platform=wayland --app="https://docs.google.com/spreadsheets/u/0" --name="Sheets" --class="Sheets"
+Terminal=false
+Type=Application
+Icon=/home/tmadsen/.local/share/applications/icons/Sheets.png
+StartupNotify=true

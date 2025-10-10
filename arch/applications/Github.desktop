@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Github
+Comment=Github
+Exec=chromium --new-window --ozone-platform=wayland --app="https://github.com/datamadsen" --name="Github" --class="Github"
+Terminal=false
+Type=Application
+Icon=/home/tmadsen/.local/share/applications/icons/Github.png
+StartupNotify=true

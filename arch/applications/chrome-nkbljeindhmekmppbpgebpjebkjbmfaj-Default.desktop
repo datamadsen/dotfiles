@@ -1,0 +1,28 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Fastmail
+MimeType=x-scheme-handler/mailto
+Exec=/usr/bin/chromium --profile-directory=Default --app-id=nkbljeindhmekmppbpgebpjebkjbmfaj %U
+Icon=chrome-nkbljeindhmekmppbpgebpjebkjbmfaj-Default
+NoDisplay=true
+StartupWMClass=crx_nkbljeindhmekmppbpgebpjebkjbmfaj
+Actions=Calendar;Compose;Contacts;Mail
+
+[Desktop Action Calendar]
+Name=Calendar
+Exec=/usr/bin/chromium --profile-directory=Default --app-id=nkbljeindhmekmppbpgebpjebkjbmfaj --app-launch-url-for-shortcuts-menu-item=https://app.fastmail.com/calendar/
+
+[Desktop Action Compose]
+Name=Compose
+Exec=/usr/bin/chromium --profile-directory=Default --app-id=nkbljeindhmekmppbpgebpjebkjbmfaj --app-launch-url-for-shortcuts-menu-item=https://app.fastmail.com/mail/Inbox/compose
+
+[Desktop Action Contacts]
+Name=Contacts
+Exec=/usr/bin/chromium --profile-directory=Default --app-id=nkbljeindhmekmppbpgebpjebkjbmfaj --app-launch-url-for-shortcuts-menu-item=https://app.fastmail.com/contacts/
+
+[Desktop Action Mail]
+Name=Mail
+Exec=/usr/bin/chromium --profile-directory=Default --app-id=nkbljeindhmekmppbpgebpjebkjbmfaj --app-launch-url-for-shortcuts-menu-item=https://app.fastmail.com/mail/Inbox

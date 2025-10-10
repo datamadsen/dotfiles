@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Toggl
+Comment=Toggl
+Exec=chromium --new-window --ozone-platform=wayland --app="https://track.toggl.com/" --name="Toggl" --class="Toggl"
+Terminal=false
+Type=Application
+Icon=/home/tmadsen/.local/share/applications/icons/Toggl.png
+StartupNotify=true

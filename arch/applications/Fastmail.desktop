@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Fastmail
+Comment=Fastmail
+Exec=chromium --new-window --ozone-platform=wayland --app="https://app.fastmail.com/" --name="Fastmail" --class="Fastmail"
+Terminal=false
+Type=Application
+Icon=/home/tmadsen/.local/share/applications/icons/Fastmail.png
+StartupNotify=true

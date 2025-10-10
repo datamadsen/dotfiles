@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Drive
+Comment=Drive
+Exec=chromium --new-window --ozone-platform=wayland --app="https://drive.google.com" --name="Drive" --class="Drive"
+Terminal=false
+Type=Application
+Icon=/home/tmadsen/.local/share/applications/icons/Drive.png
+StartupNotify=true

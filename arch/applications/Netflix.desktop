@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Netflix
+Comment=Netflix
+Exec=chromium --new-window --ozone-platform=wayland --app="https://netflix.com" --name="Netflix" --class="Netflix"
+Terminal=false
+Type=Application
+Icon=/home/tmadsen/.local/share/applications/icons/Netflix.png
+StartupNotify=true

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Amplenote
+Comment=Amplenote
+Exec=chromium --new-window --ozone-platform=wayland --app="https://www.amplenote.com/notes/" --name="Amplenote" --class="Amplenote"
+Terminal=false
+Type=Application
+Icon=/home/tmadsen/.local/share/applications/icons/Amplenote.png
+StartupNotify=true

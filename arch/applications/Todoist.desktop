@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Todoist
+Comment=Todoist
+Exec=chromium --new-window --ozone-platform=wayland --app="https://app.todoist.com/" --name="Todoist" --class="Todoist"
+Terminal=false
+Type=Application
+Icon=/home/tmadsen/.local/share/applications/icons/Todoist.png
+StartupNotify=true
