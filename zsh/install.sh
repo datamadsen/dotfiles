@@ -1,4 +1,5 @@
 #!/bin/sh
+chsh --shell $(which zsh)
 
 # Remove symlink
 echo "[zsh] Remove symlinks"
