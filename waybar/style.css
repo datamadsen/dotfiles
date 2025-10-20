@@ -20,6 +20,10 @@
   margin-right: 3px;
 }
 
+#workspaces button.active {
+  border-bottom: 2px solid @text;
+}
+
 #custom-dropbox,
 #cpu,
 #battery,
