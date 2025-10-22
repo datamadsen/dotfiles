@@ -1,0 +1,14 @@
+# Mako notification daemon configuration
+
+# Include farv theme colors
+include=~/.config/farv/current/mako.conf
+
+# Appearance
+font=CaskaydiaMono Nerd Font Propo 12
+border-size=2
+border-radius=12
+padding=15
+margin=10
+
+# Format: show app name, summary, and body
+format=<b>%a</b>\n<b>%s</b>\n%b
