@@ -12,8 +12,9 @@ case `uname` in
     alias ctags="`brew --prefix`/bin/ctags"
   ;;
   Linux)
+  alias l='eza -lh --group-directories-first --icons=auto'
   alias ls='eza -lh --group-directories-first --icons=auto'
-  alias lsa='ls -a'
+  alias la='l -a'
   alias lt='eza --tree --level=2 --long --icons --git'
   alias ltt='eza --tree --level=3 --long --icons --git'
   alias lta='lt -a'
@@ -42,9 +43,10 @@ function yazi_cwd() {
     fi
     rm -f -- "$tmp"
 }
-alias f='yazi_cwd'
 
-alias l='lazygit'
+alias g='lazygit'
+alias f='yazi_cwd'
+alias d='lazydocker'
 
 # Directories
 alias ..='cd ..'
