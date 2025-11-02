@@ -10,6 +10,7 @@
   // "clock"
   // ],
   "modules-right": [
+    "custom/trackpad",
     // "bluetooth",
     "network",
     "pulseaudio",
@@ -134,5 +135,12 @@
         ""
       ]
     }
+  },
+  "custom/trackpad": {
+    "exec": "~/.config/waybar/trackpad-status.sh",
+    "return-type": "json",
+    "interval": 1,
+    "on-click": "~/.config/hypr/scripts/trackpad-toggle.sh",
+    "tooltip": true
   }
 }
