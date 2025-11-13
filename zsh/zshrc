@@ -3,7 +3,6 @@ export LANG=en_US.UTF-8
 export TERM="xterm-256color"
 fpath=( "$HOME/.utilities" $fpath )
 fpath=( ~/.zsh/completion $fpath)
-fpath=( ~/dotfiles/zsh/pure $fpath)
 
 setopt share_history
 setopt HIST_FIND_NO_DUPS
@@ -19,8 +18,8 @@ autoload -U select-word-style
 select-word-style bash
 autoload -U promptinit; promptinit
 
-# Use minimal prompt on defiant, Pure on all other machines
-if [[ $HOST == "defiant" ]]; then
+# Use minimal prompt on defiant when in tmux, Pure otherwise
+if [[ $HOST == "defiant" ]] && [[ -n $TMUX ]]; then
     source ~/dotfiles/zsh/ps1-prompt.zsh
 else
     prompt pure
