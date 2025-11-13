@@ -18,7 +18,13 @@ autoload -U compinit && compinit
 autoload -U select-word-style
 select-word-style bash
 autoload -U promptinit; promptinit
-prompt pure
+
+# Use minimal prompt on defiant, Pure on all other machines
+if [[ $HOST == "defiant" ]]; then
+    source ~/dotfiles/zsh/ps1-prompt.zsh
+else
+    prompt pure
+fi
 
 source ~/.aliases
 
