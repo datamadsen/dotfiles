@@ -27,3 +27,5 @@ farv/current
 
 # Don't care about this changing all the time.
 nvim/lua/plugins/farv.lua
+
+tmux/plugins
