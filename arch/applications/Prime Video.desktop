@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Prime Video
+Comment=Prime Video
+Exec=chromium --new-window --ozone-platform=wayland --app="http://primevideo.com" --name="Prime Video" --class="Prime Video"
+Terminal=false
+Type=Application
+Icon=/home/tmadsen/.local/share/applications/icons/Prime Video.png
+StartupNotify=true
