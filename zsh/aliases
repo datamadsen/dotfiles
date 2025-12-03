@@ -15,8 +15,8 @@ case `uname` in
   alias l='eza -lh --group-directories-first --icons=auto'
   alias ls='eza -lh --group-directories-first --icons=auto'
   alias la='l -a'
-  alias lt='eza --tree --level=2 --long --icons --git'
-  alias ltt='eza --tree --level=3 --long --icons --git'
+  alias lt='eza --tree --level=2 --long --icons --git --group-directories-last'
+  alias ltt='eza --tree --level=3 --long --icons --git --group-directories-last'
   alias lta='lt -a'
 
   alias cd="zd"
