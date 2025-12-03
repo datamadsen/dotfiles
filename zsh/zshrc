@@ -18,12 +18,7 @@ autoload -U select-word-style
 select-word-style bash
 autoload -U promptinit; promptinit
 
-# Use minimal prompt on defiant and enterprise when in tmux, Pure otherwise
-if [[ ($HOST == "defiant" || $HOST == "enterprise") ]] && [[ -n $TMUX ]]; then
-    source ~/dotfiles/zsh/ps1-prompt.zsh
-else
-    prompt pure
-fi
+prompt pure
 
 source ~/.aliases
 
