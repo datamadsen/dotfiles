@@ -1,0 +1,67 @@
+# Nunchux Configuration
+#
+# Copy to: ~/.config/nunchux/config
+# Fallback: ~/.nunchuxrc
+
+[settings]
+icon_running = ●
+icon_stopped = ○
+menu_width = 60%
+menu_height = 50%
+popup_width = 90%
+popup_height = 90%
+just_enabled = true
+npm_enabled = false
+fzf_prompt =
+fzf_pointer = ▶
+fzf_border = rounded
+fzf_border_label =  nunchux
+fzf_colors = fg+:white:bold,bg+:-1,hl:cyan,hl+:cyan:bold,pointer:cyan,marker:green,header:gray,border:gray
+
+[btop]
+cmd = btop
+status = load=$(cut -d' ' -f1 /proc/loadavg); \
+         ram=$(awk '/MemAvailable/{printf "%.0f", $2/1024/1024}' /proc/meminfo); \
+         disk=$(df /home --output=avail 2>/dev/null | tail -1 | awk '{printf "%.0f", $1/1024/1024}'); \
+         bat=$(acpi -b 2>/dev/null | head -1); \
+         if [[ "$bat" == *Discharging* ]]; then bstat="| $(echo "$bat" | grep -oP '\d+:\d+(?=:\d+)') left"; \
+         elif [[ "$bat" == *Charging* ]]; then bstat="| $(echo "$bat" | grep -oP '\d+:\d+(?=:\d+)') until full"; \
+         else bstat=''; fi; \
+         echo "load: $load | ram: ${ram}GB free | /home: ${disk}GB free $bstat"
+
+[git]
+cmd = lazygit
+status = changed=$(git status -s 2>/dev/null | grep -v "^??" | wc -l | tr -d " "); \
+         untracked=$(git status -s 2>/dev/null | grep "^??" | wc -l | tr -d " "); \
+         ahead=$(git rev-list --count @{u}..HEAD 2>/dev/null || echo 0); \
+         behind=$(git rev-list --count HEAD..@{u} 2>/dev/null || echo 0); \
+         parts=(); \
+         [[ $changed -gt 0 ]] && parts+=("${changed} changed"); \
+         [[ $untracked -gt 0 ]] && parts+=("${untracked} untracked"); \
+         [[ $ahead -gt 0 ]] && parts+=("↑${ahead}"); \
+         [[ $behind -gt 0 ]] && parts+=("↓${behind}"); \
+         if [[ ${#parts[@]} -gt 0 ]]; then IFS=", "; echo "(${parts[*]})"; fi
+
+[docker]
+cmd = lazydocker
+status = n=$(docker ps -q 2>/dev/null | wc -l | tr -d ' '); [[ $n -gt 0 ]] && echo "($n running)"
+
+[files]
+cmd = nvim -c 'terminal yazi' -c 'startinsert' -c 'autocmd TermClose * qa!'
+status = echo "($(tmux display-message -p '#{pane_current_path}' | sed "s|$HOME|~|"))"
+height = 50
+width = 60
+
+[notes]
+cmd = nvim ~/notes
+width = 80
+height = 60
+status = mins=$(( ($(date +%s) - $(stat -c %Y ~/notes 2>/dev/null || echo 0)) / 60 )); [[ $mins -lt 60 ]] && echo "(${mins}m ago)" || echo "($(($mins/60))h ago)"
+
+[todos]
+cmd = nvim ~/todos.md
+width = 70
+height = 50
+status = n=$(wc -l < ~/todos.md 2>/dev/null || echo 0); echo "($n lines)"
+
+# vim: ft=dosini
