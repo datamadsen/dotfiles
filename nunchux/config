@@ -48,7 +48,7 @@ cmd = lazydocker
 status = n=$(docker ps -q 2>/dev/null | wc -l | tr -d ' '); [[ $n -gt 0 ]] && echo "($n running)"
 
 [files]
-cmd = nvim -c 'terminal yazi' -c 'startinsert' -c 'autocmd TermClose * qa!'
+cmd = nvim --clean -c 'set laststatus=0 cmdheight=0 noshowmode noruler signcolumn=no nonumber' -c 'terminal yazi' -c 'startinsert' -c 'autocmd TermClose * qa!'
 status = echo "($(tmux display-message -p '#{pane_current_path}' | sed "s|$HOME|~|"))"
 height = 50
 width = 60
