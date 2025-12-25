@@ -1,3 +1,6 @@
+-- It is annoying to see problems in all markdown files.
+vim.diagnostic.enable(false)
+
 vim.o.textwidth = 80
 -- Leader 1 for _italic_
 vim.cmd([[nnoremap <Leader>1 ciw_<C-r>"_<Esc>]])
