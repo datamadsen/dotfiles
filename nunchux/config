@@ -17,7 +17,7 @@ fzf_pointer = ▶
 fzf_border = rounded
 fzf_border_label =  nunchux
 fzf_colors = fg+:white:bold,bg+:-1,hl:cyan,hl+:cyan:bold,pointer:cyan,marker:green,header:gray,border:gray
-cache_ttl = 60
+cache_ttl = 3600
 
 # A few words about cache_ttl
 # ----------------------------
@@ -34,9 +34,6 @@ cache_ttl = 60
 # - In a directory browser: controls that browser (default: 300 for dir browsers)
 #
 # Set to 0 to disable caching entirely for that menu.
-
-[nonworking]
-cmd = lkjdf
 
 [git]
 cmd = lazygit
@@ -74,12 +71,6 @@ width = 70
 height = 50
 status = echo "(~/todos.md: $(lines ~/todos.md), $(ago ~/todos.md))"
 
-# [config]
-# cmd = nvim ~/.config/nunchux/config
-# width = 80
-# height = 70
-# status = echo "($(ago ~/.config/nunchux/config))"
-
 [config]
 directory = ~/dotfiles
 depth = 2
@@ -104,7 +95,7 @@ status = next=$(calcurse -r7 2>/dev/null | awk '/^[0-9]/{d=$1;getline;if(/->/)t=
 
 [todoist]
 cmd = terminalist
-desc = Tick things off
+desc = Tick things off with terminalist
 width = 80
 height = 70
 
@@ -130,7 +121,7 @@ status = load=$(cut -d' ' -f1 /proc/loadavg); \
          echo "󰍛 $load | 󰘚 ${ram}GB | 󰋜 ${disk}GB $wstat$bstat"
 
 [system/btop]
-cmd = btop
+cmd = ~/.config/tmux/btop-tmux.sh
 desc = Task manager
 
 [system/impala]
