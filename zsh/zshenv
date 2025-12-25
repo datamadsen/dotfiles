@@ -34,3 +34,4 @@ case `uname` in
   ;;
 esac
 
+source ~/.config/tokens.sh
