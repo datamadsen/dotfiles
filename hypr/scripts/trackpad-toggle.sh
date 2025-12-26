@@ -14,26 +14,39 @@ else
     current_state="true"
 fi
 
-# Toggle the state
-if [ "$current_state" = "true" ]; then
-    new_state="false"
-    notify-send -e -u normal "Trackpad" "Disabled" -t 2000
-
-    # Save current cursor position
-    hyprctl cursorpos > "$CURSOR_POS_FILE"
-
-    # Move cursor way off screen
-    hyprctl dispatch movecursor 10000 10000
-else
-    new_state="true"
-    notify-send -e -u normal "Trackpad" "Enabled" -t 2000
-
-    # Restore cursor position
-    if [ -f "$CURSOR_POS_FILE" ]; then
-        saved_pos=$(cat "$CURSOR_POS_FILE" | tr -d ',' | awk '{print $1, $2}')
-        hyprctl dispatch movecursor $saved_pos
-    fi
-fi
+# Handle explicit enable/disable arguments (used by workspace daemon)
+case "$1" in
+    enable)
+        [ "$current_state" = "true" ] && exit 0
+        new_state="true"
+        if [ -f "$CURSOR_POS_FILE" ]; then
+            saved_pos=$(cat "$CURSOR_POS_FILE" | tr -d ',' | awk '{print $1, $2}')
+            hyprctl dispatch movecursor $saved_pos
+        fi
+        ;;
+    disable)
+        [ "$current_state" = "false" ] && exit 0
+        new_state="false"
+        hyprctl cursorpos > "$CURSOR_POS_FILE"
+        hyprctl dispatch movecursor 10000 10000
+        ;;
+    *)
+        # Toggle behavior (original)
+        if [ "$current_state" = "true" ]; then
+            new_state="false"
+            notify-send -e -u normal "Trackpad" "Disabled" -t 2000
+            hyprctl cursorpos > "$CURSOR_POS_FILE"
+            hyprctl dispatch movecursor 10000 10000
+        else
+            new_state="true"
+            notify-send -e -u normal "Trackpad" "Enabled" -t 2000
+            if [ -f "$CURSOR_POS_FILE" ]; then
+                saved_pos=$(cat "$CURSOR_POS_FILE" | tr -d ',' | awk '{print $1, $2}')
+                hyprctl dispatch movecursor $saved_pos
+            fi
+        fi
+        ;;
+esac
 
 # Apply the new state
 hyprctl keyword "device[$TRACKPAD]:enabled" "$new_state"
