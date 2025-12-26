@@ -21,4 +21,12 @@ sudo cp "$(pwd)/default.conf" /etc/keyd/default.conf
 echo "[keyd] Reload keyd configuration"
 sudo keyd reload
 
+# Install libinput quirks for disable-while-typing compatibility
+# keyd's virtual keyboard needs to be marked as "internal" so libinput
+# associates it with the touchpad for disable-while-typing to work
+echo "[keyd] Installing libinput quirks for trackpad disable-while-typing"
+sudo mkdir -p /etc/libinput
+sudo cp "$(pwd)/libinput-keyd.quirks" /etc/libinput/local-overrides.quirks
+
 echo "[keyd] Done"
+echo "[keyd] Note: A reboot may be required for trackpad disable-while-typing to work"
