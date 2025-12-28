@@ -10,14 +10,13 @@ menu_width = 60%
 menu_height = 50%
 popup_width = 90%
 popup_height = 90%
-just_enabled = true
-npm_enabled = false
 fzf_prompt =
 fzf_pointer = ▶
 fzf_border = rounded
 fzf_border_label =  nunchux
 fzf_colors = fg+:white:bold,bg+:-1,hl:cyan,hl+:cyan:bold,pointer:cyan,marker:green,header:gray,border:gray
 cache_ttl = 3600
+# plugin_icon_just =
 
 # A few words about cache_ttl
 # ----------------------------
