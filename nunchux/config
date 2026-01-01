@@ -1,40 +1,38 @@
-# Nunchux Configuration
-#
-# Copy to: ~/.config/nunchux/config
-# Fallback: ~/.nunchuxrc
-
 [settings]
 icon_running = ●
 icon_stopped = ○
-menu_width = 60%
+
 menu_height = 50%
-popup_width = 90%
+max_menu_height = 40
+
+menu_width = 60%
+max_menu_width = 90
+
 popup_height = 90%
+max_popup_height = 50
+popup_width = 90%
+max_popup_width = 160
+
 fzf_prompt =
 fzf_pointer = ▶
 fzf_border = rounded
-fzf_border_label =  nunchux
+fzf_border_label = nunchux
 fzf_colors = fg+:white:bold,bg+:-1,hl:cyan,hl+:cyan:bold,pointer:cyan,marker:green,header:gray,border:gray
 cache_ttl = 3600
-# plugin_icon_just =
+primary_key = enter
+secondary_key = tab
 
-# A few words about cache_ttl
-# ----------------------------
-# Nunchux caches menus to make them open instantly. When you open a menu,
-# you see the cached version right away while fresh data loads in the background.
-# Once ready, the menu hot-swaps to show updated info.
-#
-# cache_ttl controls how long (in seconds) a cache is considered "fresh enough"
-# to show instantly. After this time, the menu builds from scratch (with the
-# nice streaming effect where items appear one by one).
-#
-# - In [settings]: sets the default for main menu and all submenus (default: 60)
-# - In a submenu like [system]: overrides just that submenu
-# - In a directory browser: controls that browser (default: 300 for dir browsers)
-#
-# Set to 0 to disable caching entirely for that menu.
+[app:env]
+cmd = bash -c 'printenv | sort; echo; echo "Press any key to exit..."; read -n1'
+desc = Show environment variables
 
-[git]
+[app:env-file]
+cmd = bash -c 'f=$(tmux show-environment NUNCHUX_ENV_FILE 2>/dev/null | cut -d= -f2); nvim -R "$f"'
+desc = View saved environment file
+status = f=$(tmux show-environment NUNCHUX_ENV_FILE 2>/dev/null | cut -d= -f2); echo "($f, $(ago $f))"
+
+[app:git]
+order = 10
 cmd = lazygit
 status = cd "$(tmux display-message -p '#{pane_current_path}')"; \
          changed=$(git status -s 2>/dev/null | grep -vc '^??' | tr -d ' '); \
@@ -47,12 +45,15 @@ status = cd "$(tmux display-message -p '#{pane_current_path}')"; \
          [[ $ahead -gt 0 ]] && parts+=("↑${ahead}"); \
          [[ $behind -gt 0 ]] && parts+=("↓${behind}"); \
          if [[ ${#parts[@]} -gt 0 ]]; then IFS=", "; echo "(${parts[*]})"; else echo "(all up to date)"; fi
+shortcut = ctrl-g
 
-[docker]
+[app:docker]
+order = 20
 cmd = lazydocker
 status = n=$(docker ps -q 2>/dev/null | wc -l | tr -d ' '); [[ $n -gt 0 ]] && echo "($n running)"
 
-[files]
+[app:files]
+order = 30
 cmd = nvim --clean -c 'set laststatus=0 cmdheight=0 noshowmode noruler signcolumn=no nonumber' -c 'terminal yazi --cwd-file={tmp}' -c 'startinsert' -c 'autocmd TermClose * qa!'
 status = echo "($(tmux display-message -p '#{pane_current_path}' | sed "s|$HOME|~|"))"
 height = 50
@@ -64,13 +65,15 @@ on_exit = cwd=$(cat {tmp} 2>/dev/null); \
   fi; \
   rm -f {tmp}
 
-[todos]
+[app:todos]
+order = 40
 cmd = nvim ~/todos.md
 width = 70
 height = 50
 status = echo "(~/todos.md: $(lines ~/todos.md), $(ago ~/todos.md))"
 
-[config]
+[dirbrowser:config]
+order = 1
 directory = ~/dotfiles
 depth = 2
 sort = modified-folder
@@ -78,36 +81,44 @@ sort_direction = descending
 width = 90
 height = 80
 cache_ttl = 300
+shortcut = ctrl-c
 
-[notes]
+[app:notes]
+order = 60
 cmd = bash -c 'f=$(nearest notes.md) && exec nvim "$f" || { echo "No notes.md found"; sleep 2; }'
 width = 80
 height = 60
 status = f=$(nearest notes.md) && echo "(${f/#$HOME/\~}: $(lines "$f"), $(ago "$f"))"
 on_exit = true
+shortcut = ctrl-n
 
-[calendar]
+[app:calendar]
+order = 3
 cmd = calcurse
 width = 80
 height = 70
 status = next=$(calcurse -r7 2>/dev/null | awk '/^[0-9]/{d=$1;getline;if(/->/)t=$2;getline;m=$0;gsub(/^[[:space:]]+/,"",m);if(length(m)>40)m=substr(m,1,40)"...";print d,t,m;exit}'); [[ -n "$next" ]] && echo "($next)"
 
-[todoist]
+[app:todoist]
+order = 80
 cmd = terminalist
 desc = Tick things off with terminalist
 width = 80
 height = 70
 
-[hacker news]
+[app:hacker news]
+order = 90
 cmd = hackernews_tui
 desc = The front page of the internet (for nerds)
 
-[reddix]
+[app:reddix]
+order = 100
 cmd = reddix
 desc = Down the rabbit hole
 
 # System submenu
-[system]
+[menu:system]
+order = 0
 status = load=$(cut -d' ' -f1 /proc/loadavg); \
          ram=$(awk '/MemAvailable/{printf "%.0f", $2/1024/1024}' /proc/meminfo); \
          disk=$(df /home --output=avail 2>/dev/null | tail -1 | awk '{printf "%.0f", $1/1024/1024}'); \
@@ -119,54 +130,77 @@ status = load=$(cut -d' ' -f1 /proc/loadavg); \
          wstat=""; [[ -n "$wifi" ]] && wstat="| 󰖩 $wifi "; \
          echo "󰍛 $load | 󰘚 ${ram}GB | 󰋜 ${disk}GB $wstat$bstat"
 
-[system/btop]
+[app:system/btop]
+order = 120
 cmd = ~/.config/tmux/btop-tmux.sh
 desc = Task manager
 
-[system/impala]
+[app:system/impala]
+order = 130
 cmd = impala
 desc = WiFi manager
 
-[system/wiremix]
+[app:system/wiremix]
+order = 140
 cmd = wiremix
 desc = Audio mixer
 
-[system/hyprmon]
+[app:system/hyprmon]
+order = 150
 cmd = hyprmon
 desc = Monitor settings
 
-[system/bluetuith]
+[app:system/bluetuith]
+order = 160
 cmd = bluetuith
 desc = Bluetooth manager
 
-[system/bandwhich]
+[app:system/bandwhich]
+order = 170
 cmd = sudo bandwhich
 desc = Bandwidth by process
 
-[system/duf]
+[app:system/duf]
+order = 180
 cmd = duf -only local | less -R
 desc = Disk usage
 width = 60
 height = 30
 
-[system/journalctl]
+[app:system/journalctl]
+order = 190
 cmd = journalctl -f
 desc = Follow system logs
 
-[system/powertop]
+[app:system/powertop]
+order = 200
 cmd = sudo powertop
 desc = Power consumption
 
-[system/ncdu]
+[app:system/ncdu]
+order = 210
 cmd = ncdu
 desc = Disk usage analyzer
 
-[system/nvtop]
+[app:system/nvtop]
+order = 220
 cmd = nvtop
 desc = GPU monitoring
 
-[failme]
+[app:failme]
+order = 230
 cmd = failme
 desc = Test error handling
+
+[taskrunner:just]
+order = 240
+enabled = true
+
+
+
+# Task runners (enabled during migration)
+
+[taskrunner:just]
+enabled = true
 
 # vim: ft=dosini
