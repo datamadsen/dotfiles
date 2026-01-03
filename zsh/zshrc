@@ -21,6 +21,7 @@ autoload -U promptinit; promptinit
 prompt pure
 
 source ~/.aliases
+source ~/source/nunchux/shell-init.zsh
 
 if [ -x "$(command -v dircolors)" ]; then
   d=~/dotfiles/dircolors/nord.dir_colors
