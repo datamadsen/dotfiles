@@ -13,7 +13,7 @@ max_popup_height = 50
 popup_width = 90%
 max_popup_width = 160
 
-fzf_prompt =
+3 fzf_prompt =
 fzf_pointer = ▶
 fzf_border = rounded
 fzf_border_label = nunchux
@@ -21,6 +21,40 @@ fzf_colors = fg+:white:bold,bg+:-1,hl:cyan,hl+:cyan:bold,pointer:cyan,marker:gre
 cache_ttl = 3600
 primary_key = enter
 secondary_key = tab
+
+pane_horizontal_key = ctrl-h
+pane_vertical_key = ctrl-v
+
+[order]
+config
+system
+calendar
+git
+docker
+files
+todos
+notes
+todoist
+hacker news
+reddix
+system/btop
+system/wiremix
+system/impala
+system/hyprmon
+system/bluetuith
+system/bandwhich
+system/duf
+system/journalctl
+system/powertop
+system/ncdu
+system/nvtop
+system/sleep
+system/reboot
+system/shutdown
+failme
+env
+env-file
+taskrunner:just
 
 [app:env]
 cmd = bash -c 'printenv | sort; echo; echo "Press any key to exit..."; read -n1'
@@ -32,7 +66,6 @@ desc = View saved environment file
 status = f=$(tmux show-environment NUNCHUX_ENV_FILE 2>/dev/null | cut -d= -f2); echo "($f, $(ago $f))"
 
 [app:git]
-order = 10
 cmd = lazygit
 status = cd "$(tmux display-message -p '#{pane_current_path}')"; \
          changed=$(git status -s 2>/dev/null | grep -vc '^??' | tr -d ' '); \
@@ -48,12 +81,10 @@ status = cd "$(tmux display-message -p '#{pane_current_path}')"; \
 shortcut = ctrl-g
 
 [app:docker]
-order = 20
 cmd = lazydocker
 status = n=$(docker ps -q 2>/dev/null | wc -l | tr -d ' '); [[ $n -gt 0 ]] && echo "($n running)"
 
 [app:files]
-order = 30
 cmd = nvim --clean -c 'set laststatus=0 cmdheight=0 noshowmode noruler signcolumn=no nonumber' -c 'terminal yazi --cwd-file={tmp}' -c 'startinsert' -c 'autocmd TermClose * qa!'
 status = echo "($(tmux display-message -p '#{pane_current_path}' | sed "s|$HOME|~|"))"
 height = 50
@@ -66,14 +97,12 @@ on_exit = cwd=$(cat {tmp} 2>/dev/null); \
   rm -f {tmp}
 
 [app:todos]
-order = 40
 cmd = nvim ~/todos.md
 width = 70
 height = 50
 status = echo "(~/todos.md: $(lines ~/todos.md), $(ago ~/todos.md))"
 
 [dirbrowser:config]
-order = 1
 directory = ~/dotfiles
 depth = 2
 sort = modified-folder
@@ -84,7 +113,6 @@ cache_ttl = 300
 shortcut = ctrl-c
 
 [app:notes]
-order = 60
 cmd = bash -c 'f=$(nearest notes.md) && exec nvim "$f" || { echo "No notes.md found"; sleep 2; }'
 width = 80
 height = 60
@@ -93,32 +121,27 @@ on_exit = true
 shortcut = ctrl-n
 
 [app:calendar]
-order = 3
 cmd = calcurse
 width = 80
 height = 70
 status = next=$(calcurse -r7 2>/dev/null | awk '/^[0-9]/{d=$1;getline;if(/->/)t=$2;getline;m=$0;gsub(/^[[:space:]]+/,"",m);if(length(m)>40)m=substr(m,1,40)"...";print d,t,m;exit}'); [[ -n "$next" ]] && echo "($next)"
 
 [app:todoist]
-order = 80
 cmd = terminalist
 desc = Tick things off with terminalist
 width = 80
 height = 70
 
 [app:hacker news]
-order = 90
 cmd = hackernews_tui
 desc = The front page of the internet (for nerds)
 
 [app:reddix]
-order = 100
 cmd = reddix
 desc = Down the rabbit hole
 
 # System submenu
 [menu:system]
-order = 0
 status = load=$(cut -d' ' -f1 /proc/loadavg); \
          ram=$(awk '/MemAvailable/{printf "%.0f", $2/1024/1024}' /proc/meminfo); \
          disk=$(df /home --output=avail 2>/dev/null | tail -1 | awk '{printf "%.0f", $1/1024/1024}'); \
@@ -131,69 +154,68 @@ status = load=$(cut -d' ' -f1 /proc/loadavg); \
          echo "󰍛 $load | 󰘚 ${ram}GB | 󰋜 ${disk}GB $wstat$bstat"
 
 [app:system/btop]
-order = 120
 cmd = ~/.config/tmux/btop-tmux.sh
 desc = Task manager
 
 [app:system/impala]
-order = 130
 cmd = impala
 desc = WiFi manager
 
 [app:system/wiremix]
-order = 140
 cmd = wiremix
 desc = Audio mixer
 
 [app:system/hyprmon]
-order = 150
 cmd = hyprmon
 desc = Monitor settings
 
 [app:system/bluetuith]
-order = 160
 cmd = bluetuith
 desc = Bluetooth manager
 
 [app:system/bandwhich]
-order = 170
 cmd = sudo bandwhich
 desc = Bandwidth by process
 
 [app:system/duf]
-order = 180
 cmd = duf -only local | less -R
 desc = Disk usage
 width = 60
 height = 30
 
 [app:system/journalctl]
-order = 190
 cmd = journalctl -f
 desc = Follow system logs
 
 [app:system/powertop]
-order = 200
 cmd = sudo powertop
 desc = Power consumption
 
 [app:system/ncdu]
-order = 210
 cmd = ncdu
 desc = Disk usage analyzer
 
 [app:system/nvtop]
-order = 220
 cmd = nvtop
 desc = GPU monitoring
 
+[app:system/sleep]
+cmd = systemctl suspend
+desc = Suspend to RAM
+
+[app:system/reboot]
+cmd = systemctl reboot
+desc = Reboot system
+
+[app:system/shutdown]
+cmd = systemctl poweroff
+desc = Power off system
+
 [app:failme]
-order = 230
 cmd = failme
 desc = Test error handling
 
 [taskrunner:just]
-order = 240
 enabled = true
 
 
@@ -202,5 +224,4 @@ enabled = true
 
 [taskrunner:just]
 enabled = true
-
 # vim: ft=dosini
