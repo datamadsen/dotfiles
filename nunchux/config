@@ -1,23 +1,14 @@
 [settings]
 icon_running = ●
 icon_stopped = ○
+toggle_shortcuts_key = ctrl-t
 
-menu_height = 50%
-max_menu_height = 40
+menu_width = 80
+menu_height = 30
 
-menu_width = 60%
-max_menu_width = 90
+max_popup_width = 180
+max_popup_height = 120
 
-popup_height = 90%
-max_popup_height = 50
-popup_width = 90%
-max_popup_width = 160
-
-3 fzf_prompt =
-fzf_pointer = ▶
-fzf_border = rounded
-fzf_border_label = nunchux
-fzf_colors = fg+:white:bold,bg+:-1,hl:cyan,hl+:cyan:bold,pointer:cyan,marker:green,header:gray,border:gray
 cache_ttl = 3600
 primary_key = enter
 secondary_key = tab
@@ -26,8 +17,8 @@ pane_horizontal_key = ctrl-h
 pane_vertical_key = ctrl-v
 
 [order]
-config
 system
+config
 calendar
 git
 docker
@@ -37,6 +28,7 @@ notes
 todoist
 hacker news
 reddix
+nvim
 system/btop
 system/wiremix
 system/impala
@@ -53,17 +45,11 @@ system/reboot
 system/shutdown
 failme
 env
-env-file
 taskrunner:just
 
 [app:env]
 cmd = bash -c 'printenv | sort; echo; echo "Press any key to exit..."; read -n1'
 desc = Show environment variables
-
-[app:env-file]
-cmd = bash -c 'f=$(tmux show-environment NUNCHUX_ENV_FILE 2>/dev/null | cut -d= -f2); nvim -R "$f"'
-desc = View saved environment file
-status = f=$(tmux show-environment NUNCHUX_ENV_FILE 2>/dev/null | cut -d= -f2); echo "($f, $(ago $f))"
 
 [app:git]
 cmd = lazygit
@@ -84,8 +70,14 @@ shortcut = ctrl-g
 cmd = lazydocker
 status = n=$(docker ps -q 2>/dev/null | wc -l | tr -d ' '); [[ $n -gt 0 ]] && echo "($n running)"
 
+[app:nvim]
+cmd = nvim
+desc = Neovim
+
 [app:files]
-cmd = nvim --clean -c 'set laststatus=0 cmdheight=0 noshowmode noruler signcolumn=no nonumber' -c 'terminal yazi --cwd-file={tmp}' -c 'startinsert' -c 'autocmd TermClose * qa!'
+#cmd = nvim --clean -c 'set laststatus=0 cmdheight=0 noshowmode noruler signcolumn=no nonumber' -c 'terminal yazi --cwd-file={tmp}' -c 'startinsert' -c 'autocmd TermClose * qa!'
+# cmd = tmux display-popup -E -w 80% -h 80% 'tmux new-session yazi \; set status off'
+cmd = tmux new-session yazi --cwd-file={tmp} \; set status off
 status = echo "($(tmux display-message -p '#{pane_current_path}' | sed "s|$HOME|~|"))"
 height = 50
 width = 60
@@ -215,13 +207,17 @@ desc = Power off system
 cmd = failme
 desc = Test error handling
 
+[taskrunner]
+[taskrunner]
+icon_running = 
+icon_success = 
+icon_failed = 
+
 [taskrunner:just]
 enabled = true
 
+[app:thanks]
+cmd = bash -c 'echo ""; echo "  _                 "; echo " | |__  _   _  ___  "; echo " | '"'"'_ \\| | | |/ _ \\ "; echo " | |_) | |_| |  __/ "; echo " |_.__/ \\__, |\\___|"; echo "        |___/      "; echo ""; echo "  Thanks for watching"; echo ""; echo "  More info: github.com/datamadsen/nunchux"; echo ""; read -n1'
+desc = Thanks for watching the demo
 
-
-# Task runners (enabled during migration)
-
-[taskrunner:just]
-enabled = true
 # vim: ft=dosini
