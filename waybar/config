@@ -6,9 +6,9 @@
   "modules-left": [
     "hyprland/workspaces"
   ],
-  // "modules-center": [
-  // "clock"
-  // ],
+  "modules-center": [
+    "hyprland/window"
+  ],
   "modules-right": [
     "custom/trackpad",
     // "bluetooth",
@@ -16,7 +16,8 @@
     "pulseaudio",
     "cpu",
     "battery",
-    "clock"
+    "clock",
+    "custom/hostname"
   ],
   "hyprland/workspaces": {
     "on-click": "activate",
@@ -41,14 +42,19 @@
       "5": []
     }
   },
+  "hyprland/window": {
+    "format": "{title}",
+    "max-length": 80,
+    "separate-outputs": true
+  },
   "cpu": {
     "interval": 5,
     "format": "󰍛",
     "on-click": "alacritty -e btop"
   },
   "clock": {
-    "format": "{:%A %H:%M}",
-    "format-alt": "{:%d %B W%V %Y}",
+    "format": "{:%a %b %d %H:%M}",
+    "format-alt": "{:%a %b %d %H:%M · W%V %Y}",
     "tooltip": false
   },
   "network": {
@@ -142,5 +148,10 @@
     "interval": 1,
     "on-click": "~/.config/hypr/scripts/trackpad-toggle.sh",
     "tooltip": true
+  },
+  "custom/hostname": {
+    "exec": "h=$(cat /etc/hostname); case $h in defiant) echo \"󰌢 $h\";; enterprise) echo \"󰒋 $h\";; *) echo \"@$h\";; esac",
+    "format": "{}  ",
+    "interval": "once"
   }
 }
