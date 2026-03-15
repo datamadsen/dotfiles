@@ -3,7 +3,8 @@
 -- Add any additional options here
 
 vim.opt.number = true
-vim.opt.relativenumber = false
+vim.opt.relativenumber = true
 vim.opt.laststatus = 2
+vim.opt.spell = false
 
 vim.g.root_spec = { "cwd" }
