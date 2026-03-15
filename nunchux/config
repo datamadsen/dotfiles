@@ -47,6 +47,10 @@ failme
 env
 taskrunner:just
 
+[switcher]
+preview = true
+prefix = >
+
 [app:env]
 cmd = bash -c 'printenv | sort; echo; echo "Press any key to exit..."; read -n1'
 desc = Show environment variables
