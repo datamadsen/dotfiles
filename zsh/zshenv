@@ -17,6 +17,8 @@ export PATH="$PATH:/usr/local/lib/ruby/gems/2.6.0/bin"
 export PATH="$PATH:/home/tmadsen/.lmstudio/bin"
 # End of LM Studio CLI section
 
+export SSH_AUTH_SOCK=~/.1password/agent.sock
+
 
 # export PATH="$(yarn global bin):$PATH"
 
