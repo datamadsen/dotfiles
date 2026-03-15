@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:wiki.hypr.land)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:forum.hypr.land)",
+      "Bash(curl:*)"
+    ]
+  }
+}
