@@ -166,3 +166,6 @@ compinit
 
 eval "$(zoxide init zsh)"
 source ~/.zsh_functions
+
+# Added by LM Studio CLI tool (lms)
+export PATH="$PATH:/home/tmadsen/.lmstudio/bin"
