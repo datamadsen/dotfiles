@@ -10,4 +10,5 @@ cd ghostty && ./install.sh && cd ..
 cd lazygit && ./install.sh && cd ..
 cd fzf && ./install.sh && cd ..
 cd farv && ./install.sh && cd ..
+cd yazi && ./install.sh && cd ..
 ln -s $(pwd)/vifm ~/.vifm

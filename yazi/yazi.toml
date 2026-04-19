@@ -1,0 +1,42 @@
+# Yazi configuration file
+# Place this file at: ~/.config/yazi/yazi.toml
+
+[manager]
+# Column layout ratios: [parent, current, preview]
+# The numbers represent the relative width of each column
+# Default is [1, 4, 3] - this gives preview column the most space
+ratio = [1, 2, 3]
+
+[mgr]
+# hidden files by default
+show_hidden = false
+
+[preview]
+# Maximum width and height for image previews (in pixels)
+# Increase these values to support larger images
+# Default is usually around 1920x1080
+max_width = 8096
+max_height = 8096
+
+# Image cache size (in bytes)
+# Increase this if you work with many large images
+# Default is typically 128MB
+image_cache = 536870912  # 512MB
+
+# Enable image preview quality
+image_quality = 90
+
+image_bound = [ 90000, 90000 ]
+
+# Tab size for text previews
+tab_size = 2
+
+# Whether to wrap text in previews
+wrap = "no"
+
+[opener]
+# You can customize how files are opened here
+# Example for images:
+# edit = [
+#   { run = 'gimp "$@"', block = true, for = "linux" },
+# ]

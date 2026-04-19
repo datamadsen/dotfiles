@@ -5,7 +5,8 @@
       "WebFetch(domain:wiki.hypr.land)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:forum.hypr.land)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(chmod +x /home/tmadsen/dotfiles/yazi/install.sh)"
     ]
   }
 }
