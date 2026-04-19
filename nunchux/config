@@ -20,6 +20,7 @@ pane_vertical_key = ctrl-v
 system
 config
 calendar
+claude
 git
 docker
 files
@@ -54,6 +55,10 @@ prefix = >
 [app:env]
 cmd = bash -c 'printenv | sort; echo; echo "Press any key to exit..."; read -n1'
 desc = Show environment variables
+
+[app:claude]
+cmd = claude
+status = echo "vibe"
 
 [app:git]
 cmd = lazygit
