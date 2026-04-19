@@ -108,8 +108,8 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':fzf-tab:*' switch-group ',' '.'
 
 # Source fzf-tab theme from current theme
-if [ -f ~/.farv/current/fzf-tab.zsh ]; then
-    source ~/.farv/current/fzf-tab.zsh
+if [ -f ~/.config/farv/current/fzf-tab.zsh ]; then
+    source ~/.config/farv/current/fzf-tab.zsh
 else
     # Fallback if no theme-specific config exists
     zstyle ':fzf-tab:*' fzf-flags --style=full --height=90%
