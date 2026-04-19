@@ -37,4 +37,4 @@ case `uname` in
   ;;
 esac
 
-source ~/.config/tokens.sh
+# source ~/.config/tokens.sh - not on enterprise
