@@ -19,6 +19,7 @@ export PATH="$PATH:/home/tmadsen/.lmstudio/bin"
 
 export SSH_AUTH_SOCK=~/.1password/agent.sock
 
+export PATH="$PATH:$HOME/.dotnet/tools"
 
 # export PATH="$(yarn global bin):$PATH"
 
