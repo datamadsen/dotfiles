@@ -142,12 +142,8 @@ status = load=$(cut -d' ' -f1 /proc/loadavg); \
          ram=$(awk '/MemAvailable/{printf "%.0f", $2/1024/1024}' /proc/meminfo); \
          disk=$(df /home --output=avail 2>/dev/null | tail -1 | awk '{printf "%.0f", $1/1024/1024}'); \
          wifi=$(iwgetid -r 2>/dev/null); \
-         bat=$(acpi -b 2>/dev/null | head -1); \
-         if [[ "$bat" == *Discharging* ]]; then bstat="| 󱊣 $(echo "$bat" | grep -oP '\d+:\d+(?=:\d+)')"; \
-         elif [[ "$bat" == *Charging* ]]; then bstat="| 󱊣 $(echo "$bat" | grep -oP '\d+:\d+(?=:\d+)') ⚡"; \
-         else bstat=''; fi; \
          wstat=""; [[ -n "$wifi" ]] && wstat="| 󰖩 $wifi "; \
-         echo "󰍛 $load | 󰘚 ${ram}GB | 󰋜 ${disk}GB $wstat$bstat"
+         echo "󰍛 $load | 󰘚 ${ram}GB | 󰋜 ${disk}GB $wstat"
 
 [app:system/btop]
 cmd = ~/.config/tmux/btop-tmux.sh
