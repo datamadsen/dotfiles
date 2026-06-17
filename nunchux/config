@@ -52,9 +52,9 @@ taskrunner:just
 preview = true
 prefix = >
 
-[app:env]
-cmd = bash -c 'printenv | sort; echo; echo "Press any key to exit..."; read -n1'
-desc = Show environment variables
+; [app:env]
+; cmd = bash -c 'printenv | sort; echo; echo "Press any key to exit..."; read -n1'
+; desc = Show environment variables
 
 [app:claude]
 cmd = claude
@@ -121,34 +121,41 @@ status = f=$(nearest notes.md) && echo "(${f/#$HOME/\~}: $(lines "$f"), $(ago "$
 on_exit = true
 shortcut = ctrl-n
 
-[app:calendar]
-cmd = calcurse
-width = 80
-height = 70
-status = next=$(calcurse -r7 2>/dev/null | awk '/^[0-9]/{d=$1;getline;if(/->/)t=$2;getline;m=$0;gsub(/^[[:space:]]+/,"",m);if(length(m)>40)m=substr(m,1,40)"...";print d,t,m;exit}'); [[ -n "$next" ]] && echo "($next)"
+; [app:calendar]
+; cmd = calcurse
+; width = 80
+; height = 70
+; status = next=$(calcurse -r7 2>/dev/null | awk '/^[0-9]/{d=$1;getline;if(/->/)t=$2;getline;m=$0;gsub(/^[[:space:]]+/,"",m);if(length(m)>40)m=substr(m,1,40)"...";print d,t,m;exit}'); [[ -n "$next" ]] && echo "($next)"
 
-[app:todoist]
-cmd = terminalist
-desc = Tick things off with terminalist
-width = 80
-height = 70
+; [app:todoist]
+; cmd = terminalist
+; desc = Tick things off with terminalist
+; width = 80
+; height = 70
 
-[app:hacker news]
-cmd = hackernews_tui
-desc = The front page of the internet (for nerds)
+; [app:hacker news]
+; cmd = hackernews_tui
+; desc = The front page of the internet (for nerds)
 
-[app:reddix]
-cmd = reddix
-desc = Down the rabbit hole
+; [app:reddix]
+; cmd = reddix
+; desc = Down the rabbit hole
 
 # System submenu
+; [menu:system]
+; status = load=$(cut -d' ' -f1 /proc/loadavg); \
+;          ram=$(awk '/MemAvailable/{printf "%.0f", $2/1024/1024}' /proc/meminfo); \
+;          disk=$(df /home --output=avail 2>/dev/null | tail -1 | awk '{printf "%.0f", $1/1024/1024}'); \
+;          wifi=$(iwgetid -r 2>/dev/null); \
+;          wstat=""; [[ -n "$wifi" ]] && wstat="| 󰖩 $wifi "; \
+;          echo "󰍛 $load | 󰘚 ${ram}GB | 󰋜 ${disk}GB $wstat"
+
 [menu:system]
-status = load=$(cut -d' ' -f1 /proc/loadavg); \
-         ram=$(awk '/MemAvailable/{printf "%.0f", $2/1024/1024}' /proc/meminfo); \
-         disk=$(df /home --output=avail 2>/dev/null | tail -1 | awk '{printf "%.0f", $1/1024/1024}'); \
-         wifi=$(iwgetid -r 2>/dev/null); \
-         wstat=""; [[ -n "$wifi" ]] && wstat="| 󰖩 $wifi "; \
-         echo "󰍛 $load | 󰘚 ${ram}GB | 󰋜 ${disk}GB $wstat"
+desc = Los Systemos
+; status = load=$(cut -d' ' -f1 /proc/loadavg); \
+;          ram=$(awk '/MemAvailable/{printf "%.0f", $2/1024/1024}' /proc/meminfo); \
+;          disk=$(df /home --output=avail 2>/dev/null | tail -1 | awk '{printf "%.0f", $1/1024/1024}'); \
+;          echo "󰍛 $load | 󰘚 ${ram}GB | 󰋜 ${disk}GB"
 
 [app:system/btop]
 cmd = ~/.config/tmux/btop-tmux.sh
@@ -208,11 +215,10 @@ desc = Reboot system
 cmd = systemctl poweroff
 desc = Power off system
 
-[app:failme]
-cmd = failme
-desc = Test error handling
+; [app:failme]
+; cmd = failme
+; desc = Test error handling
 
-[taskrunner]
 [taskrunner]
 icon_running = 
 icon_success = 
@@ -224,8 +230,8 @@ enabled = true
 [taskrunner:npm]
 enabled = true
 
-[app:thanks]
-cmd = bash -c 'echo ""; echo "  _                 "; echo " | |__  _   _  ___  "; echo " | '"'"'_ \\| | | |/ _ \\ "; echo " | |_) | |_| |  __/ "; echo " |_.__/ \\__, |\\___|"; echo "        |___/      "; echo ""; echo "  Thanks for watching"; echo ""; echo "  More info: github.com/datamadsen/nunchux"; echo ""; read -n1'
-desc = Thanks for watching the demo
+; [app:thanks]
+; cmd = bash -c 'echo ""; echo "  _                 "; echo " | |__  _   _  ___  "; echo " | '"'"'_ \\| | | |/ _ \\ "; echo " | |_) | |_| |  __/ "; echo " |_.__/ \\__, |\\___|"; echo "        |___/      "; echo ""; echo "  Thanks for watching"; echo ""; echo "  More info: github.com/datamadsen/nunchux"; echo ""; read -n1'
+; desc = Thanks for watching the demo
 
 # vim: ft=dosini
