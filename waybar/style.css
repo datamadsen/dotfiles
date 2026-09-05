@@ -40,7 +40,8 @@
 #custom-audio,
 #custom-notification,
 #custom-clock,
-#custom-hostname {
+#custom-hostname,
+#custom-theme {
   min-width: 12px;
   margin-right: 13px;
 }

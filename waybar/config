@@ -21,6 +21,7 @@
     "custom/cpu",
     "battery",
     "custom/notification",
+    "custom/theme",
     "custom/clock",
     "custom/hostname"
   ],
@@ -198,6 +199,19 @@
     "tooltip-format": "{} notifications",
     "on-click": "swaync-client -t -sw",
     "on-click-right": "swaync-client -d -sw"
+  },
+  "custom/theme": {
+    "exec": "~/.config/waybar/theme.py",
+    "return-type": "json",
+    "interval": "once",
+    "signal": 10,
+    "format": "{}",
+    "on-click": "~/.config/waybar/theme.py --pick",
+    "on-click-right": "farv next",
+    "on-click-middle": "farv random",
+    "on-scroll-up": "farv background next",
+    "on-scroll-down": "farv background prev",
+    "tooltip": true
   },
   "custom/hostname": {
     "exec": "~/.config/waybar/host.py",
