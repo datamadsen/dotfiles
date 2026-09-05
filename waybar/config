@@ -11,10 +11,12 @@
     "hyprland/window"
   ],
   "modules-right": [
+    "custom/media",
     "custom/trackpad",
     "privacy",
+    "idle_inhibitor",
     // "bluetooth",
-    "network",
+    "custom/network",
     "pulseaudio",
     "custom/cpu",
     "battery",
@@ -48,7 +50,14 @@
   "hyprland/window": {
     "format": "{title}",
     "max-length": 80,
-    "separate-outputs": true
+    "separate-outputs": true,
+    "rewrite": {
+      "(.*) - Chromium": "$1",
+      "(.*) - Google Chrome": "$1",
+      "(.*) — Mozilla Firefox": "$1",
+      "(.*) - Visual Studio Code": "$1",
+      "(.*) - Sublime Text": "$1"
+    }
   },
   "custom/cpu": {
     "exec": "~/.config/waybar/cpu.py",
@@ -68,24 +77,14 @@
     "on-click": "~/.config/waybar/fastmail-calendar.sh",
     "tooltip": true
   },
-  "network": {
-    "format-icons": [
-      "󰤯",
-      "󰤟",
-      "󰤢",
-      "󰤥",
-      "󰤨"
-    ],
-    "format": "{icon}",
-    "format-wifi": "{icon}",
-    "format-ethernet": "󰀂",
-    "format-disconnected": "󰖪",
-    "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
-    "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
-    "tooltip-format-disconnected": "Disconnected",
-    "interval": 3,
-    "nospacing": 1,
-    "on-click": "alacritty --class=Impala -e impala"
+  "custom/network": {
+    "exec": "~/.config/waybar/net.py",
+    "return-type": "json",
+    "format": "{}",
+    "format-alt": "{alt}",
+    "format-alt-click": "click-right",
+    "on-click": "alacritty --class=Impala -e impala",
+    "tooltip": true
   },
   "battery": {
     "format": "{capacity}% {icon}",
@@ -160,6 +159,25 @@
       { "type": "screenshare" },
       { "type": "audio-in" }
     ]
+  },
+  "custom/media": {
+    "exec": "~/.config/waybar/media.py",
+    "return-type": "json",
+    "format": "{}",
+    "on-click": "playerctl play-pause",
+    "on-click-right": "playerctl next",
+    "on-scroll-up": "playerctl volume 0.05+",
+    "on-scroll-down": "playerctl volume 0.05-",
+    "tooltip": true
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "󰅶",
+      "deactivated": "󰛊"
+    },
+    "tooltip-format-activated": "Screen stays awake\nclick to allow idle lock again",
+    "tooltip-format-deactivated": "Idle lock active\nclick to keep the screen awake"
   },
   "custom/trackpad": {
     "exec": "~/.config/waybar/trackpad-status.sh",

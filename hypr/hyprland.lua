@@ -64,7 +64,8 @@ hl.config({
 -- ================================
 
 hl.on("hyprland.start", function()
-  hl.exec_cmd("hypridle & swaync & waybar & fcitx5")
+  -- swaync is started on demand via D-Bus activation (systemd user unit swaync.service)
+  hl.exec_cmd("hypridle & waybar & fcitx5")
   hl.exec_cmd("swaybg -i ~/.config/farv/current/backgrounds/current-background -m fill")
   hl.exec_cmd("farv background random")
   hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")

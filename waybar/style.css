@@ -29,11 +29,13 @@
 }
 
 #window,
+#custom-media,
 #custom-trackpad,
+#idle_inhibitor,
 #privacy,
 #custom-cpu,
 #battery,
-#network,
+#custom-network,
 #bluetooth,
 #pulseaudio,
 #custom-notification,
@@ -44,11 +46,18 @@
 }
 
 #custom-trackpad.disabled,
+#idle_inhibitor.activated,
 #custom-cpu.high,
 #custom-hostname.attention,
+#custom-network.disconnected,
+#custom-network.no-internet,
 #custom-notification.notification,
 #custom-notification.dnd-notification {
   color: @border;
+}
+
+#custom-media.paused {
+  color: @muted;
 }
 
 tooltip {
