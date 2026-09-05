@@ -7,6 +7,11 @@ TRACKPAD="uniw0001:00-093a:0255-touchpad"
 STATE_FILE="/tmp/trackpad_state"
 CURSOR_POS_FILE="/tmp/trackpad_cursor_pos"
 
+# Move the cursor via the Lua dispatcher (Hyprland >= 0.55 with a .lua config)
+move_cursor() {
+    hyprctl dispatch "hl.dsp.cursor.move({ x = $1, y = $2 })" > /dev/null
+}
+
 # Get current state (default to enabled if file doesn't exist)
 if [ -f "$STATE_FILE" ]; then
     current_state=$(cat "$STATE_FILE")
@@ -21,14 +26,14 @@ case "$1" in
         new_state="true"
         if [ -f "$CURSOR_POS_FILE" ]; then
             saved_pos=$(cat "$CURSOR_POS_FILE" | tr -d ',' | awk '{print $1, $2}')
-            hyprctl dispatch movecursor $saved_pos
+            move_cursor $saved_pos
         fi
         ;;
     disable)
         [ "$current_state" = "false" ] && exit 0
         new_state="false"
         hyprctl cursorpos > "$CURSOR_POS_FILE"
-        hyprctl dispatch movecursor 10000 10000
+        move_cursor 10000 10000
         ;;
     *)
         # Toggle behavior (original)
@@ -36,13 +41,13 @@ case "$1" in
             new_state="false"
             notify-send -e -u normal "Trackpad" "Disabled" -t 2000
             hyprctl cursorpos > "$CURSOR_POS_FILE"
-            hyprctl dispatch movecursor 10000 10000
+            move_cursor 10000 10000
         else
             new_state="true"
             notify-send -e -u normal "Trackpad" "Enabled" -t 2000
             if [ -f "$CURSOR_POS_FILE" ]; then
                 saved_pos=$(cat "$CURSOR_POS_FILE" | tr -d ',' | awk '{print $1, $2}')
-                hyprctl dispatch movecursor $saved_pos
+                move_cursor $saved_pos
             fi
         fi
         ;;

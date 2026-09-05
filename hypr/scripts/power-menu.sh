@@ -23,6 +23,6 @@ case $chosen in
         hyprlock
         ;;
     "󰍃 Logout")
-        hyprctl dispatch exit
+        hyprctl dispatch 'hl.dsp.exit()'
         ;;
 esac
