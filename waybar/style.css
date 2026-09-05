@@ -25,29 +25,37 @@
 }
 
 #workspaces button.urgent {
-  border-top: 2px solid @border;
+  border-bottom: 2px solid @border;
 }
 
 #window,
-#custom-dropbox,
 #custom-trackpad,
-#cpu,
+#privacy,
+#custom-cpu,
 #battery,
 #network,
 #bluetooth,
 #pulseaudio,
-#clock,
-#custom-power-menu {
+#custom-notification,
+#custom-clock,
+#custom-hostname {
   min-width: 12px;
   margin-right: 13px;
 }
 
+#custom-trackpad.disabled,
+#custom-cpu.high,
+#custom-hostname.attention,
+#custom-notification.notification,
+#custom-notification.dnd-notification {
+  color: @border;
+}
+
 tooltip {
-  padding: 2px;
+  border: 1px solid @border;
+  padding: 4px;
 }
 
 tooltip label {
-  padding: 2px;
+  padding: 4px;
 }
-
-

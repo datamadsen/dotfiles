@@ -3,6 +3,7 @@
   "position": "top",
   "spacing": 0,
   "height": 36,
+  "reload_style_on_change": true,
   "modules-left": [
     "hyprland/workspaces"
   ],
@@ -11,12 +12,14 @@
   ],
   "modules-right": [
     "custom/trackpad",
+    "privacy",
     // "bluetooth",
     "network",
     "pulseaudio",
-    "cpu",
+    "custom/cpu",
     "battery",
-    "clock",
+    "custom/notification",
+    "custom/clock",
     "custom/hostname"
   ],
   "hyprland/workspaces": {
@@ -47,15 +50,23 @@
     "max-length": 80,
     "separate-outputs": true
   },
-  "cpu": {
-    "interval": 5,
-    "format": "󰍛",
-    "on-click": "alacritty -e btop"
+  "custom/cpu": {
+    "exec": "~/.config/waybar/cpu.py",
+    "return-type": "json",
+    "format": "{}",
+    "format-alt": "{alt}",
+    "format-alt-click": "click-right",
+    "on-click": "alacritty -e btop",
+    "tooltip": true
   },
-  "clock": {
-    "format": "{:%a %b %d %H:%M}",
-    "format-alt": "{:%a %b %d %H:%M · W%V %Y}",
-    "tooltip": false
+  "custom/clock": {
+    "exec": "~/.config/waybar/clock.py",
+    "return-type": "json",
+    "format": "{}",
+    "format-alt": "{alt}",
+    "format-alt-click": "click-right",
+    "on-click": "~/.config/waybar/fastmail-calendar.sh",
+    "tooltip": true
   },
   "network": {
     "format-icons": [
@@ -121,16 +132,15 @@
     "format-disabled": "󰂲",
     "format-connected": "",
     "tooltip-format": "Devices connected: {num_connections}",
-    "on-click": "blueberry"
+    "on-click": "alacritty --class=Bluetooth -e bluetoothctl"
   },
   "pulseaudio": {
-    // "format": "",
     "format": "{icon}",
     "format-muted": "󰝟",
     "scroll-step": 5,
     "on-click": "alacritty --class=Wiremix -e wiremix",
     "tooltip-format": "Playing at {volume}%",
-    "on-click-right": "pamixer -t",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
     "ignored-sinks": [
       "Easy Effects Sink"
     ],
@@ -142,16 +152,47 @@
       ]
     }
   },
+  "privacy": {
+    "icon-spacing": 4,
+    "icon-size": 14,
+    "transition-duration": 250,
+    "modules": [
+      { "type": "screenshare" },
+      { "type": "audio-in" }
+    ]
+  },
   "custom/trackpad": {
     "exec": "~/.config/waybar/trackpad-status.sh",
     "return-type": "json",
-    "interval": 1,
+    "interval": "once",
+    "signal": 1,
     "on-click": "~/.config/hypr/scripts/trackpad-toggle.sh",
     "tooltip": true
   },
+  "custom/notification": {
+    "exec": "swaync-client -swb",
+    "return-type": "json",
+    "escape": true,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "󱅫",
+      "none": "",
+      "dnd-notification": "󰂛",
+      "dnd-none": "󰂛",
+      "inhibited-notification": "󱅫",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "󰂛",
+      "dnd-inhibited-none": "󰂛"
+    },
+    "tooltip-format": "{} notifications",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw"
+  },
   "custom/hostname": {
-    "exec": "h=$(cat /etc/hostname); case $h in defiant) echo \"󰌢 $h\";; enterprise) echo \"󰒋 $h\";; *) echo \"@$h\";; esac",
-    "format": "{}  ",
-    "interval": "once"
+    "exec": "~/.config/waybar/host.py",
+    "return-type": "json",
+    "format": "{}",
+    "on-click": "~/.config/waybar/host.py --click",
+    "tooltip": true
   }
 }
