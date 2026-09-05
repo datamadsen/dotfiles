@@ -37,7 +37,7 @@
 #battery,
 #custom-network,
 #bluetooth,
-#pulseaudio,
+#custom-audio,
 #custom-notification,
 #custom-clock,
 #custom-hostname {
@@ -49,6 +49,7 @@
 #idle_inhibitor.activated,
 #custom-cpu.high,
 #custom-hostname.attention,
+#custom-audio.muted,
 #custom-network.disconnected,
 #custom-network.no-internet,
 #custom-notification.notification,
