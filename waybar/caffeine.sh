@@ -32,7 +32,8 @@ status() {
     if active; then
         printf '{"text":"󰅶","alt":"on","class":"activated","tooltip":"Caffeine on: the machine stays awake\\nclick to allow idle lock again"}\n'
     else
-        printf '{"text":"󰛊","alt":"off","class":"deactivated","tooltip":"Idle lock active\\nclick to keep the machine awake"}\n'
+        # hidden while off (empty text); the power menu can turn it on
+        printf '{"text":"","alt":"off","class":"deactivated","tooltip":"Idle lock active\\nclick to keep the machine awake"}\n'
     fi
 }
 

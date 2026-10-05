@@ -31,6 +31,10 @@ SPARK_BUCKETS = 40
 SPARK_MAX_W = 30.0        # draw that fills the tallest block
 LOG_KEEP = 48 * 3600       # seconds of samples to keep
 WARNING, CRITICAL = 20, 10
+# exception-based icon: shown while charging, or while discharging at or below
+# SHOW_BELOW percent / with less than SHOW_UNDER_HOURS left; hidden otherwise
+SHOW_BELOW = 40
+SHOW_UNDER_HOURS = 1.5
 BLOCKS = "▁▂▃▄▅▆▇█"
 
 BAT = Path("/sys/class/power_supply/BAT0")
@@ -313,8 +317,9 @@ def build(samples, events):
     elif s.discharging and s.capacity <= WARNING:
         cls = "warning"
     icon = icon_for(s)
+    show = s.charging or (s.discharging and (s.capacity <= SHOW_BELOW or (left is not None and left < SHOW_UNDER_HOURS)))
     return {
-        "text": icon,
+        "text": icon if show else "",
         "alt": f"{s.capacity}% {icon}",
         "tooltip": "\n".join(lines),
         "class": cls,
@@ -322,9 +327,41 @@ def build(samples, events):
     }
 
 
+def brief():
+    """One line for menus: icon, percent and time left / to full."""
+    s = Sample()
+    parts = [f"{s.capacity}%"]
+    left = s.hours_left()
+    if s.charging:
+        parts.append(f"{duration(left * 3600)} to full" if left else "charging")
+    elif s.discharging and left:
+        parts.append(f"{duration(left * 3600)} left")
+    elif not s.discharging:
+        parts.append("plugged in")
+    print(f"{icon_for(s)} {' · '.join(parts)}")
+
+
+def info():
+    """The tooltip rendered for a terminal (Pango markup -> ANSI)."""
+    import re
+    from html import unescape
+    tip = build(load_samples(), load_events())["tooltip"]
+    tip = re.sub(r"<span alpha='50%'>", "\033[2m", tip).replace("</span>", "\033[22m")
+    tip = tip.replace("<b>", "\033[1m").replace("</b>", "\033[22m")
+    tip = tip.replace("<i>", "\033[3m").replace("</i>", "\033[23m")
+    tip = tip.replace("<tt>", "").replace("</tt>", "")
+    print("\n" + "\n".join("  " + line for line in unescape(tip).splitlines()))
+
+
 def main():
+    if len(sys.argv) >= 2 and sys.argv[1] == "info":
+        info()
+        return
     if len(sys.argv) >= 3 and sys.argv[1] == "mark":
         mark(sys.argv[2])
+        return
+    if len(sys.argv) >= 2 and sys.argv[1] == "brief":
+        brief()
         return
     once = "--once" in sys.argv
     samples = load_samples()

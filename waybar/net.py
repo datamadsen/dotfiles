@@ -30,6 +30,7 @@ INTERVAL = 3
 HISTORY = 40
 PING_INTERVAL = 10
 INTERNET_HOST = "1.1.1.1"
+WEAK_SIGNAL = 40   # percent; the icon is shown below this (and when offline / no internet)
 VPN_PREFIXES = ("wg", "tun", "tailscale", "proton", "nordlynx")
 BLOCKS = "▁▂▃▄▅▆▇█"
 SYS_NET = Path("/sys/class/net")
@@ -277,8 +278,13 @@ def build(state):
     cls = "wifi" if wireless else "ethernet"
     if pi is False:
         cls = "no-internet"
+    weak = wireless and quality is not None and quality < WEAK_SIGNAL
+    if weak:
+        cls += " weak"
+    # exception-based: hide the icon while everything is fine
+    hidden = cls in ("wifi", "ethernet")
     return {
-        "text": icon,
+        "text": "" if hidden else icon,
         "alt": f"{icon} ↓ {human_rate(down)} ↑ {human_rate(up)}",
         "tooltip": "\n".join(lines),
         "class": cls,

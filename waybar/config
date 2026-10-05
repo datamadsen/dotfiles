@@ -18,10 +18,9 @@
     // "bluetooth",
     "custom/network",
     "custom/audio",
-    "custom/cpu",
+    // "custom/cpu",   // hidden for now; config block below is kept
     "custom/battery",
     "custom/notification",
-    "custom/theme",
     "custom/clock",
     "custom/hostname"
   ],
@@ -150,7 +149,7 @@
     "tooltip": true
   },
   "custom/notification": {
-    "exec": "swaync-client -swb",
+    "exec": "~/.config/waybar/notification.sh",
     "return-type": "json",
     "escape": true,
     "format": "{icon}",

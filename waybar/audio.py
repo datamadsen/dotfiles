@@ -162,9 +162,10 @@ def build():
     else:
         pct = round(vol * 100)
         icon = MUTED_ICON if muted else ICONS[min(len(ICONS) - 1, int(vol * len(ICONS)))] if vol > 0 else ICONS[0]
-    text = icon
+    # exception-based: only show when the output or the mic is muted
+    text = icon if (sink is None or muted) else ""
     if source and source[4]:
-        text += f" {MIC_OFF_ICON}"
+        text = (text + " " if text else "") + MIC_OFF_ICON
     return {
         "text": text,
         "alt": f"{icon} {pct}%",

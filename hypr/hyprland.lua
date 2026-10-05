@@ -313,6 +313,15 @@ hl.window_rule({
   opacity = "1 1",
 })
 
+-- Small TUI info panels (battery info from the power menu, etc.)
+hl.window_rule({
+  name = "windowrule-tui-info",
+  match = { class = "^(TUI\\.float\\.info)$" },
+  float = true,
+  center = true,
+  size = { 900, 520 },
+})
+
 -- Large TUI floating windows (btop, etc.)
 hl.window_rule({
   name = "windowrule-16",
