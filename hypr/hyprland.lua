@@ -358,6 +358,13 @@ hl.workspace_rule({ workspace = "1", on_created_empty = "ghostty" })
 hl.workspace_rule({ workspace = "2", on_created_empty = "brave" })
 hl.workspace_rule({ workspace = "4", on_created_empty = "fastmail" })
 hl.workspace_rule({ workspace = "5", on_created_empty = "signal-desktop" })
+-- No border on a tiled window when it is the only one on its workspace
+-- (w[tv1] = one tiled, visible window). Floating windows keep their border.
+hl.window_rule({
+  name = "no-border-when-only",
+  match = { float = false, workspace = "w[tv1]" },
+  border_size = 0,
+})
 
 -- ================================
 -- APPLICATION VARIABLES
