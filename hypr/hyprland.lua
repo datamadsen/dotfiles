@@ -81,8 +81,8 @@ end)
 -- https://wiki.hypr.land/Configuring/Basics/Variables/
 hl.config({
   general = {
-    gaps_in = 5,
-    gaps_out = 10,
+    gaps_in = 0,
+    gaps_out = 0,
 
     border_size = 2,
 
@@ -101,7 +101,7 @@ hl.config({
   },
 
   decoration = {
-    rounding = 10,
+    rounding = 0,
 
     shadow = {
       enabled = true,
@@ -228,7 +228,7 @@ hl.window_rule({
 -- Force chromium into a tile to deal with --app bug
 hl.window_rule({
   name = "windowrule-3",
-  match = { class = "^(Chromium)$" },
+  match = { class = "^(Chromium|brave-browser)$" },
   tile = true,
 })
 
@@ -279,7 +279,7 @@ hl.window_rule({
 -- Just dash of opacity
 hl.window_rule({
   name = "windowrule-10",
-  match = { class = "^(Chromium|chromium|google-chrome|google-chrome-unstable)$" },
+  match = { class = "^(Chromium|chromium|brave-browser|google-chrome|google-chrome-unstable)$" },
   opacity = "1 0.97",
 })
 
@@ -355,7 +355,7 @@ hl.layer_rule({
 -- ================================
 
 hl.workspace_rule({ workspace = "1", on_created_empty = "ghostty" })
-hl.workspace_rule({ workspace = "2", on_created_empty = "chromium" })
+hl.workspace_rule({ workspace = "2", on_created_empty = "brave" })
 hl.workspace_rule({ workspace = "4", on_created_empty = "fastmail" })
 hl.workspace_rule({ workspace = "5", on_created_empty = "signal-desktop" })
 
@@ -364,7 +364,7 @@ hl.workspace_rule({ workspace = "5", on_created_empty = "signal-desktop" })
 -- ================================
 
 local terminal = "ghostty"
-local browser = "chromium --new-window --ozone-platform=wayland"
+local browser = "brave --new-window --ozone-platform=wayland"
 local webapp = browser .. " --app"
 
 -- ================================
