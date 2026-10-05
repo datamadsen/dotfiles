@@ -14,7 +14,7 @@
     "custom/media",
     "custom/trackpad",
     "privacy",
-    "idle_inhibitor",
+    "custom/caffeine",
     // "bluetooth",
     "custom/network",
     "custom/audio",
@@ -132,14 +132,14 @@
     "on-scroll-down": "playerctl volume 0.05-",
     "tooltip": true
   },
-  "idle_inhibitor": {
-    "format": "{icon}",
-    "format-icons": {
-      "activated": "󰅶",
-      "deactivated": "󰛊"
-    },
-    "tooltip-format-activated": "Screen stays awake\nclick to allow idle lock again",
-    "tooltip-format-deactivated": "Idle lock active\nclick to keep the screen awake"
+  "custom/caffeine": {
+    "exec": "~/.config/waybar/caffeine.sh status",
+    "return-type": "json",
+    "interval": 30,
+    "signal": 8,
+    "format": "{}",
+    "on-click": "~/.config/waybar/caffeine.sh toggle",
+    "tooltip": true
   },
   "custom/trackpad": {
     "exec": "~/.config/waybar/trackpad-status.sh",

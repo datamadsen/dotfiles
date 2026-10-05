@@ -31,7 +31,7 @@
 #window,
 #custom-media,
 #custom-trackpad,
-#idle_inhibitor,
+#custom-caffeine,
 #privacy,
 #custom-cpu,
 #custom-battery,
@@ -47,7 +47,7 @@
 }
 
 #custom-trackpad.disabled,
-#idle_inhibitor.activated,
+#custom-caffeine.activated,
 #custom-cpu.high,
 #custom-battery.warning,
 #custom-battery.critical,
