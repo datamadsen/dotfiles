@@ -6,9 +6,10 @@ the sample to a log and prints one JSON line.
   text    - icon only (class "warning"/"critical" when low, "charging" on AC)
   alt     - icon + percent (shown on right-click via format-alt)
   tooltip - state, percent, energy, draw and time left; charge and health bars;
-            a draw sparkline over the last SPARK_HOURS; and an "Away" section:
-            what the machine used since you came back, during the last away
-            period (lock -> activity) and during the last sleep (suspend).
+            a draw sparkline over the last SPARK_HOURS; an "Away" section:
+            what the machine used since you came back and during the last
+            away period (lock -> activity); and a "Sleep" section listing the
+            last SLEEP_ROWS suspends, most recent first.
 
 The away/sleep numbers come from marks written by hypridle:
   battery.py mark away    on the lock listener's on-timeout
@@ -16,10 +17,16 @@ The away/sleep numbers come from marks written by hypridle:
   battery.py mark sleep   in before_sleep_cmd
   battery.py mark wake    in after_sleep_cmd
 
+The wake mark also records what kind of sleep it was (s2idle, hibernate, or
+both for suspend-then-hibernate), read from the systemd-sleep journal lines
+written since the sleep mark.
+
 Run with --once to print a single line and exit (handy for testing).
 """
 import json
 import os
+import re
+import subprocess
 import sys
 import time
 from datetime import datetime
@@ -30,6 +37,8 @@ SPARK_HOURS = 2
 SPARK_BUCKETS = 40
 SPARK_MAX_W = 30.0        # draw that fills the tallest block
 LOG_KEEP = 48 * 3600       # seconds of samples to keep
+SLEEP_ROWS = 10            # suspends to list in the Sleep section
+SLEEP_MIN = 60             # ignore suspends shorter than this (seconds)
 WARNING, CRITICAL = 20, 10
 # exception-based icon: shown while charging, or while discharging at or below
 # SHOW_BELOW percent / with less than SHOW_UNDER_HOURS left; hidden otherwise
@@ -40,7 +49,7 @@ BLOCKS = "▁▂▃▄▅▆▇█"
 BAT = Path("/sys/class/power_supply/BAT0")
 STATE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "waybar-battery"
 SAMPLES = STATE / "samples.log"   # ts charge_uAh power_uW status
-EVENTS = STATE / "events.log"     # ts kind charge_uAh status
+EVENTS = STATE / "events.log"     # ts kind charge_uAh status [sleep_type]
 
 ICONS_DISCHARGING = ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
 ICONS_CHARGING = ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"]
@@ -148,12 +157,14 @@ def trim_samples(samples):
 
 
 def load_events():
+    """(ts, kind, charge_uAh, status, sleep_type) tuples; sleep_type is "" unless kind is wake."""
     out = []
     try:
         for line in EVENTS.read_text().splitlines():
+            parts = line.split()
             try:
-                ts, kind, charge, status = line.split()
-                out.append((int(ts), kind, int(charge), status))
+                ts, kind, charge, status = parts[:4]
+                out.append((int(ts), kind, int(charge), status, parts[4] if len(parts) > 4 else ""))
             except ValueError:
                 continue
     except OSError:
@@ -161,9 +172,35 @@ def load_events():
     return out
 
 
+def sleep_type(since_ts):
+    """What systemd-sleep did since since_ts: "s2idle", "hibernate", "s2idle+hibernate" or ""."""
+    try:
+        out = subprocess.run(
+            ["journalctl", "-q", "-o", "cat", "--since", f"@{since_ts}", "_COMM=systemd-sleep"],
+            capture_output=True, text=True, timeout=10).stdout
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    ops = re.findall(r"Performing sleep operation '([\w-]+)'", out)
+    mem = re.search(r"\[(\w+)\]", Path("/sys/power/mem_sleep").read_text()) if Path("/sys/power/mem_sleep").exists() else None
+    mem = mem.group(1) if mem else "suspend"
+    seen = []
+    for op in ops:
+        name = {"suspend": mem}.get(op, op)
+        if name not in seen:
+            seen.append(name)
+    return "+".join(seen)
+
+
 def mark(kind):
     s = Sample()
-    append_line(EVENTS, f"{s.ts} {kind} {s.charge} {s.status[:1]}")
+    line = f"{s.ts} {kind} {s.charge} {s.status[:1]}"
+    if kind == "wake":
+        sleeps = [e for e in load_events() if e[1] == "sleep"]
+        since = sleeps[-1][0] if sleeps else s.ts - 3 * 86400
+        kind_of_sleep = sleep_type(since)
+        if kind_of_sleep:
+            line += f" {kind_of_sleep}"
+    append_line(EVENTS, line)
 
 
 # ---------------------------------------------------------------- formatting
@@ -203,8 +240,8 @@ def icon_for(s):
 
 # ---------------------------------------------------------------- periods
 
-def period_line(label, start, end, charge0, charge1, samples, s, now_ts=None):
-    """One <tt> row: label, duration, energy used, percent, average draw."""
+def period_line(label, start, end, charge0, charge1, samples, s, now_ts=None, note=""):
+    """One <tt> row: label, duration, energy used, percent, average draw, when [, note]."""
     secs = end - start
     if secs <= 0:
         return None
@@ -212,23 +249,30 @@ def period_line(label, start, end, charge0, charge1, samples, s, now_ts=None):
     used_wh = s.wh(charge0 - charge1)
     pct = (charge0 - charge1) / s.full * 100 if s.full else 0
     when = dim(span(start, end) if now_ts is None else f"since {clock(start)}")
+    tail = f"  {when}" + (f"  {dim(note)}" if note else "")
     if on_ac or used_wh < 0:
-        return f"<tt>{label} {duration(secs):>7}   {dim('on charger')}</tt>  {when}"
+        return f"<tt>{label} {duration(secs):>7}   {dim('on charger')}</tt>{tail}"
     avg_w = used_wh / (secs / 3600)
-    return (f"<tt>{label} {duration(secs):>7}   {used_wh:5.1f} Wh  {pct:3.0f}%  {avg_w:4.1f} W</tt>  {when}")
+    return (f"<tt>{label} {duration(secs):>7}   {used_wh:5.1f} Wh  {pct:3.0f}%  {avg_w:4.1f} W</tt>{tail}")
 
 
-def last_pair(events, start_kind, end_kind):
-    """Most recent (start, end) event pair of the given kinds, or None."""
+def pairs(events, start_kind, end_kind):
+    """All (start, end) event pairs of the given kinds, oldest first."""
     start = None
-    best = None
+    out = []
     for ev in events:
         if ev[1] == start_kind:
             start = ev
         elif ev[1] == end_kind and start is not None:
-            best = (start, ev)
+            out.append((start, ev))
             start = None
-    return best
+    return out
+
+
+def last_pair(events, start_kind, end_kind):
+    """Most recent (start, end) event pair of the given kinds, or None."""
+    found = pairs(events, start_kind, end_kind)
+    return found[-1] if found else None
 
 
 def away_section(s, samples, events):
@@ -236,24 +280,32 @@ def away_section(s, samples, events):
     label_w = 11
     returns = [e for e in events if e[1] in ("back", "wake")]
     if returns:
-        ts, _, charge, _ = returns[-1]
+        ts, _, charge, _, _ = returns[-1]
         line = period_line(dim("since back".ljust(label_w)), ts, s.ts, charge, s.charge, samples, s, now_ts=s.ts)
         if line:
             lines.append(line)
     away = last_pair(events, "away", "back")
     if away:
-        (t0, _, c0, _), (t1, _, c1, _) = away
+        (t0, _, c0, _, _), (t1, _, c1, _, _) = away
         line = period_line(dim("last away".ljust(label_w)), t0, t1, c0, c1, samples, s)
         if line:
             lines.append(line)
-    sleep = last_pair(events, "sleep", "wake")
-    if sleep:
-        (t0, _, c0, _), (t1, _, c1, _) = sleep
-        line = period_line(dim("last sleep".ljust(label_w)), t0, t1, c0, c1, samples, s)
+    if len(lines) == 1:
+        lines.append(dim("no away periods recorded yet"))
+    return lines
+
+
+def sleep_section(s, samples, events):
+    """The last SLEEP_ROWS suspends, most recent first."""
+    lines = ["<b>Sleep</b>"]
+    label_w = 11
+    sleeps = [p for p in pairs(events, "sleep", "wake") if p[1][0] - p[0][0] >= SLEEP_MIN]
+    for (t0, _, c0, _, _), (t1, _, c1, _, kind) in reversed(sleeps[-SLEEP_ROWS:]):
+        line = period_line(" " * label_w, t0, t1, c0, c1, samples, s, note=kind)
         if line:
             lines.append(line)
     if len(lines) == 1:
-        lines.append(dim("no away or sleep periods recorded yet"))
+        lines.append(dim("no sleeps recorded yet"))
     return lines
 
 
@@ -308,6 +360,8 @@ def build(samples, events):
     lines += spark_section(s, samples)
     lines.append("")
     lines += away_section(s, samples, events)
+    lines.append("")
+    lines += sleep_section(s, samples, events)
 
     cls = "normal"
     if s.charging:

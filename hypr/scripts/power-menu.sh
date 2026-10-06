@@ -75,7 +75,8 @@ fi
 
 # ---------------------------------------------------------------- power
 add "󰌾 Lock"                       "hyprlock"
-add "⏾ Suspend"                    "systemctl suspend"
+add "⏾ Suspend"                    "systemctl suspend-then-hibernate"   # s2idle, hibernates after 2h on battery (see arch/hibernation)
+add "󰒲 Hibernate"                  "systemctl hibernate"
 add "⏼ Reboot"                     "systemctl reboot"
 add "⏻ Shutdown"                   "systemctl poweroff"
 add "󰍃 Logout"                     "hyprctl dispatch 'hl.dsp.exit()'"
