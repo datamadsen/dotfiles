@@ -392,7 +392,7 @@ def brief():
         parts.append(f"{duration(left * 3600)} left")
     elif not s.discharging:
         parts.append("plugged in")
-    print(f"{icon_for(s)} {' · '.join(parts)}")
+    print(f"{icon_for(s)} Battery: {' · '.join(parts)}")
 
 
 def info():

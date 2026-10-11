@@ -52,7 +52,7 @@ fi
 add "󰏘 Theme: $(farv current 2>/dev/null || echo '?')"   "setsid -f $WB/theme.py --pick"
 
 # ---------------------------------------------------------------- status
-add "$("$WB/battery.py" brief 2>/dev/null || echo '󰁹 battery')"   "setsid -f ghostty --class=TUI.float.info -e bash -c '$WB/battery.py info; read -rsn1'"
+add "$("$WB/battery.py" brief 2>/dev/null || echo '󰁹 Battery')"   "setsid -f ghostty --class=TUI.float.info -e bash -c '$WB/battery.py info; read -rsn1'"
 
 dev=$(ip -j route show default 2>/dev/null | python3 -c 'import json,sys; r=json.load(sys.stdin); print(min(r, key=lambda x: x.get("metric",0))["dev"] if r else "")' 2>/dev/null)
 if [ -z "$dev" ]; then
