@@ -500,6 +500,10 @@ hl.bind("CTRL + ALT + SUPER + S", hl.dsp.exec_cmd("~/.local/bin/smiley-menu"))
 
 -- Power menu
 hl.bind("XF86PowerOff", hl.dsp.exec_cmd("~/.config/hypr/scripts/power-menu.sh"), { locked = true })
+hl.bind("SUPER + Escape", hl.dsp.exec_cmd("~/.config/hypr/scripts/power-menu.sh"))
+
+-- Lock (through logind, so hypridle starts hyprlock the same way as on lid close / idle)
+hl.bind("SUPER + L", hl.dsp.exec_cmd("loginctl lock-session"))
 
 -- ================================
 -- THEME OVERRIDES (farv)
