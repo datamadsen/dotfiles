@@ -92,7 +92,11 @@ needs a real terminal for the passphrase prompt).
 ### 5. systemd sleep + callers
 - [x] /etc/systemd/sleep.conf.d/hibernate.conf:
       `[Sleep]` / `HibernateDelaySec=2h` / `HibernateOnACPower=no`
-- [x] /etc/systemd/logind.conf.d/lid.conf: `HandleLidSwitch=suspend-then-hibernate`
+- [x] /etc/systemd/logind.conf.d/lid.conf: `HandleLidSwitch=hibernate` and
+      `HandleLidSwitchExternalPower=hibernate` (was suspend-then-hibernate
+      until 2026-10-06 midday; changed after the lid-closed s2idle hang).
+      Docked (external display) stays `ignore`. Applied with
+      `systemctl reload systemd-logind`.
 - [x] /etc/systemd/system/systemd-logind.service.d/hibernate-swapfile.conf:
       `ProtectHome=tmpfs` + `BindReadOnlyPaths=/home/swapfile`. Found during
       testing: logind's unit has ProtectHome=yes, so it cannot open a swapfile
@@ -109,6 +113,45 @@ logs "Performing sleep operation '<op>'" for each phase.
       (s2idle) and keeps the rest, giving "s2idle", "hibernate" or
       "s2idle+hibernate". Stored as a 5th field on the wake event; the Sleep
       section shows it per row. Tested against the live journal: "s2idle".
+
+### 7. s2idle hang workaround (added after the 08:34 lid-close hang)
+- [x] /usr/lib/systemd/system-sleep/eno1-down (source: eno1-sleep-hook.sh): on
+      `pre`, if eno1 is admin-up, take it down and remember that in /run; on
+      `post`, bring it back. The YT6801 NIC's interrupts can keep the SoC
+      busy in s2idle (hot, black screen, unwakeable). Installed by setup.sh.
+      First attempt went to /etc/systemd/system-sleep, which systemd 262
+      ignores (only /usr/lib/systemd/system-sleep is compiled in); the hook
+      never ran during the 11:05 and 11:27 sleeps, which resumed fine anyway.
+      Verified 11:55-12:14: "eno1 down for suspend" before the sleep,
+      networkd Link DOWN; "eno1 up again after suspend" + Link UP after.
+- [x] Lid-closed s2idle: 10:36-10:54 and 11:05-11:06 (both
+      suspend-then-hibernate, before the hook was active) resumed fine.
+- [-] Hibernate handover test skipped: lid now hibernates directly. The
+      idle-on-battery action (hypridle, 30 min) and the power menu Suspend
+      entry still use suspend-then-hibernate with the 2 h delay.
+- [ ] If it hangs again anyway: lid + idle actions -> plain `systemctl hibernate`.
+
+### 8. No double password after hibernate
+- [x] hypr/scripts/unlock-after-hibernate.sh in hypridle's after_sleep_cmd:
+      if the last "Performing sleep operation" journal line of this boot is
+      'hibernate', send hyprlock SIGUSR1 (its built-in unlock signal).
+      s2idle resumes stay locked. First version used `loginctl
+      unlock-session`, which never reached hyprlock: Hyprland runs as a user
+      service (hyprland.service), so hypridle/hyprlock are not in the tty
+      session's cgroup and logind's per-session Unlock does not find them.
+      Verified live 16:26: lock-session -> hyprlock up -> script -> gone.
+
+### 9. Hibernate hangs too (16:13 and 16:53): find the device
+- [ ] Diagnostic sleep hook pm-trace-sleep-hook.sh -> /usr/lib/systemd/
+      system-sleep/pm-trace: `echo 1 > /sys/power/pm_trace` before every
+      sleep (CONFIG_PM_TRACE_RTC=y). After the next hang + hard reset the
+      kernel log of the new boot says "hash matches device ...". Side
+      effect: RTC clock garbage after each sleep until timesyncd fixes it.
+      Remove with `setup.sh --no-pm-trace` once the culprit is known.
+- [ ] Suspect list: Bluetooth (AX210 btusb; the Adv360 Pro keyboard was
+      connected at all three hangs, but also at three good hibernates),
+      xhci ("invalid context state" warnings after every hibernate resume),
+      amdgpu, tuxedo-drivers-dkms modules.
 
 ## Testing
 Results 2026-10-06: 1 passed (08:16), 2 passed (hibernate 08:27:00, back at
@@ -159,3 +202,20 @@ recorded the wake as "hibernate"). 3 not run yet (optional, see below).
   suspend-then-hibernate test; remove the rollback entry (linux-old.conf,
   vmlinuz-linux-old, initramfs-linux-old.img) once the setup is trusted;
   the stale s2idle-regression comment in linux-lts.conf.
+- 2026-10-06 08:34 Lid closed -> suspend-then-hibernate -> s2idle entry is
+  the last journal line. Machine got hot, could not be woken, forced off at
+  ~09:40. Hibernate never ran (alarm was due 10:34; fresh boot found no
+  image). Same symptom as the Arch BBS 314219 s2idle hang (YT6801 NIC
+  interrupts); intermittent, 13 earlier s2idle cycles on 7.2.8 were fine.
+  New factors this time: first sleep after a hibernate/resume in the same
+  boot, first lid close via suspend-then-hibernate. Nothing logged, so
+  unproven. Added step 7 (eno1 sleep hook) as the known workaround.
+- 2026-10-06 ~16:40 Lid close -> hibernate -> LUKS prompt -> desktop, lock
+  screen dropped automatically. Confirmed by the user.
+- 2026-10-06 16:53 Power menu -> Hibernate: "PM: hibernation: hibernation
+  entry" is the last line, machine hot, hard reset at ~16:58, fresh boot
+  found no image. Same for the 16:13 lid close (systemd had even written
+  the EFI HibernateLocation; kernel never wrote the image). Tally today:
+  hibernate 6 attempts / 2 hangs, s2idle ~20 / 1 hang. All hangs stop in
+  the device-suspend phase, nothing reaches the journal. Added the pm_trace
+  diagnostic hook (step 9).

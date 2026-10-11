@@ -7,7 +7,15 @@
 #
 # Run as root:  sudo ./setup.sh
 set -euo pipefail
-REBUILD=${1:-}            # pass --rebuild to force mkinitcpio -P
+REBUILD=              # --rebuild forces mkinitcpio -P
+PM_TRACE=install      # --no-pm-trace removes the diagnostic pm_trace sleep hook
+for arg in "$@"; do
+    case "$arg" in
+        --rebuild) REBUILD=--rebuild ;;
+        --no-pm-trace) PM_TRACE=remove ;;
+        *) echo "unknown option: $arg" >&2; exit 2 ;;
+    esac
+done
 
 SWAPFILE=/home/swapfile
 SWAPSIZE=32G
@@ -34,11 +42,15 @@ mountpoint -q /home || die "/home is not a mount point"
 
 # ---------------------------------------------------------------- 1. passphrase on home
 say "1. Passphrase on home"
-echo "   The initramfs retries the passphrase typed for root on home. Type your ROOT passphrase:"
-if cryptsetup open --test-passphrase "/dev/disk/by-uuid/$HOME_UUID"; then
-    ok "home accepts the root passphrase (one prompt at boot)"
+if grep -qE "^home .*UUID=$HOME_UUID .*x-initrd.attach" /etc/crypttab; then
+    skip "crypttab already migrated, passphrase was verified then"
 else
-    die "home does not accept it. Add it first:  cryptsetup luksAddKey /dev/disk/by-uuid/$HOME_UUID   (then re-run)"
+    echo "   The initramfs retries the passphrase typed for root on home. Type your ROOT passphrase:"
+    if cryptsetup open --test-passphrase "/dev/disk/by-uuid/$HOME_UUID"; then
+        ok "home accepts the root passphrase (one prompt at boot)"
+    else
+        die "home does not accept it. Add it first:  cryptsetup luksAddKey /dev/disk/by-uuid/$HOME_UUID   (then re-run)"
+    fi
 fi
 
 # ---------------------------------------------------------------- 2. swapfile
@@ -178,7 +190,7 @@ for entry in "$LINUX_ENTRY" "$LTS_ENTRY" "$FALLBACK_ENTRY"; do
         ok "$(basename "$entry")"
     fi
 done
-if [ "$(grep '^default' /boot/loader/loader.conf | awk '{print $2}')" = "$(basename "$LINUX_ENTRY")" ]; then
+if [ "$(bootctl status 2>/dev/null | awk '/Default Entry:/ {print $3}')" = "$(basename "$LINUX_ENTRY")" ]; then
     skip "default entry"
 else
     bootctl set-default "$(basename "$LINUX_ENTRY")"
@@ -202,13 +214,18 @@ else
 fi
 LID_CONF=/etc/systemd/logind.conf.d/lid.conf
 LID_CONTENT="[Login]
-HandleLidSwitch=suspend-then-hibernate
-HandleLidSwitchExternalPower=suspend-then-hibernate"
+# Hibernate straight away on lid close (chosen 2026-10-06 after an s2idle hang
+# with the lid closed: hot, unwakeable). Resume takes ~1 min via the passphrase
+# prompt; draw while closed is zero. HandleLidSwitchDocked stays at the default
+# 'ignore', so with an external display or dock the lid does nothing.
+HandleLidSwitch=hibernate
+HandleLidSwitchExternalPower=hibernate"
 if [ -f "$LID_CONF" ] && [ "$(cat "$LID_CONF")" = "$LID_CONTENT" ]; then
     skip "$LID_CONF"
 else
     echo "$LID_CONTENT" > "$LID_CONF"
-    ok "$LID_CONF (applies after reboot; logind is not restarted here)"
+    systemctl reload systemd-logind
+    ok "$LID_CONF (logind reloaded, active now)"
 fi
 
 LOGIND_DIR=/etc/systemd/system/systemd-logind.service.d
@@ -229,6 +246,34 @@ else
     ok "$LOGIND_CONF (takes effect when logind restarts: reboot)"
 fi
 
-say "Done. Next: reboot, expect ONE passphrase prompt, then verify with:"
-echo "   swapon --show; cat /sys/power/resume /sys/power/resume_offset; journalctl -b -u systemd-hibernate-resume.service"
-echo "   Rollback entry in the boot menu: 'Arch Linux (linux, old initramfs)'."
+# ---------------------------------------------------------------- 6. s2idle workaround
+say "6. Sleep hook: eno1 down during sleep"
+HOOK_SRC=$(dirname "$(readlink -f "$0")")/eno1-sleep-hook.sh
+# systemd 262 only runs hooks from /usr/lib/systemd/system-sleep (checked with
+# strings on the binary); /etc/systemd/system-sleep is silently ignored.
+HOOK_DST=/usr/lib/systemd/system-sleep/eno1-down
+mkdir -p /usr/lib/systemd/system-sleep
+[ -f /etc/systemd/system-sleep/eno1-down ] && rm /etc/systemd/system-sleep/eno1-down && ok "removed ignored copy in /etc/systemd/system-sleep"
+if [ -f "$HOOK_DST" ] && cmp -s "$HOOK_SRC" "$HOOK_DST"; then
+    skip "$HOOK_DST"
+else
+    install -m 755 "$HOOK_SRC" "$HOOK_DST"
+    ok "$HOOK_DST (active for the next sleep, no restart needed)"
+fi
+
+# ---------------------------------------------------------------- 7. diagnostic: PM trace
+say "7. Sleep hook: PM trace (diagnostic, names the device a sleep hangs on)"
+TRACE_SRC=$(dirname "$(readlink -f "$0")")/pm-trace-sleep-hook.sh
+TRACE_DST=/usr/lib/systemd/system-sleep/pm-trace
+if [ "$PM_TRACE" = remove ]; then
+    if [ -f "$TRACE_DST" ]; then rm "$TRACE_DST"; ok "removed $TRACE_DST"; else skip "not installed"; fi
+elif [ -f "$TRACE_DST" ] && cmp -s "$TRACE_SRC" "$TRACE_DST"; then
+    skip "$TRACE_DST"
+else
+    install -m 755 "$TRACE_SRC" "$TRACE_DST"
+    ok "$TRACE_DST (after a hang + hard reset: journalctl -b -k | grep -A2 'Magic number')"
+fi
+
+say "Done."
+echo "   First run: reboot (expect ONE passphrase prompt), then: swapon --show; cat /sys/power/resume"
+echo "   Rollback entry in the boot menu: 'Arch Linux (linux, old initramfs)'. See PLAN.md for the tests."
