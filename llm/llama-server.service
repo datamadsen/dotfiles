@@ -1,0 +1,35 @@
+# Local LLM inference server (llama.cpp, Vulkan backend on the Radeon iGPU).
+#
+# Runs llama-server in "router" mode: no model on the command line, so it
+# serves every GGUF in ~/.cache/llama.cpp plus the presets in models.ini and
+# loads them on demand. OpenAI-compatible API on http://172.17.0.1:8012/v1
+#
+# It binds to the docker0 bridge address rather than 127.0.0.1 so the
+# Odysseus container can reach it as host.docker.internal (which Docker maps
+# to that same address). The bridge is not routable from the LAN, so this
+# stays private without an API key. From the host use http://172.17.0.1:8012.
+# Odysseus auto-discovers ports 8000-8020 on host.docker.internal.
+#
+# Installed by llm/install.sh as ~/.config/systemd/user/llama-server.service
+
+[Unit]
+Description=llama.cpp inference server (router mode)
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/llama-server \
+  --host 172.17.0.1 \
+  --port 8012 \
+  --models-preset %h/.config/llm/models.ini \
+  --models-max 1
+# Where -hf downloads land and where the router looks for cached models.
+Environment=LLAMA_CACHE=%h/.cache/llama.cpp
+# The bridge address only exists once the Docker daemon is up; retry until then.
+Restart=on-failure
+RestartSec=5
+# Loading a 60 GB model from disk can take a while; don't kill it early.
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target
