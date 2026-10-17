@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 #
-# Local LLM stack: llama-server (llama.cpp + Vulkan) as a user service, and
-# Odysseus as the web UI in Docker.
+# Local LLM stack: llama-server (llama.cpp + Vulkan) as a user service,
+# Odysseus as the web UI in Docker, and the pi coding agent (llm/pi).
 #
 # Prerequisites (from arch/packages): llama-cpp ggml-vulkan docker docker-compose
+#                                     nodejs npm ripgrep fd docker-buildx (for pi)
 #
 set -euo pipefail
 
@@ -17,8 +18,15 @@ if ! command -v llama-server >/dev/null; then
   echo "[llm]     sudo pacman -S --needed llama-cpp ggml-vulkan"
   exit 1
 fi
+# Model presets are per host: models.<hostname>.ini (GPU memory differs).
+PRESETS="$SCRIPT_DIR/models.$(cat /etc/hostname).ini"
+if [[ ! -f "$PRESETS" ]]; then
+  echo "[llm]   no presets for this host: $PRESETS"
+  echo "[llm]   copy models.defiant.ini or models.enterprise.ini and adjust the hardware notes."
+  exit 1
+fi
 mkdir -p ~/.config/llm ~/.config/systemd/user ~/.cache/llama.cpp
-ln -sf "$SCRIPT_DIR/models.ini" ~/.config/llm/models.ini
+ln -sf "$PRESETS" ~/.config/llm/models.ini
 ln -sf "$SCRIPT_DIR/llama-server.service" ~/.config/systemd/user/llama-server.service
 systemctl --user daemon-reload
 systemctl --user enable --now llama-server.service
@@ -40,5 +48,8 @@ docker compose --project-directory "$ODYSSEUS_DIR" up -d
 echo "[llm]   Odysseus is at http://localhost:7000"
 echo "[llm]   first-boot admin password:"
 echo "[llm]     docker compose --project-directory $ODYSSEUS_DIR logs odysseus | grep -i password"
+
+echo "[llm] pi"
+"$SCRIPT_DIR/pi/install.sh"
 
 echo "[llm] Done."
