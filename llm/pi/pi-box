@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+#
+# Run pi inside Docker with only the current directory mounted.
+# Installed by llm/pi/install.sh as ~/.local/bin/pi-box
+#
+#   pi-box                 # interactive, in the current project
+#   pi-box -p "run tests"  # any pi arguments pass through
+#
+# What the container can touch:
+#   - the current directory (read-write, at the same path as on the host)
+#   - ~/.local/share/pi-box (its own sessions and state; not ~/.pi/agent,
+#     so host credentials in auth.json stay out)
+#   - settings.json, AGENTS.md and ~/.gitconfig (read-only)
+#   - the network: default bridge, which reaches llama-server and the internet.
+#     Set PI_BOX_NETWORK to use another Docker network.
+# It runs as your uid with no capabilities and no-new-privileges.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+PI_VERSION="$(cat "$SCRIPT_DIR/version")"
+IMAGE="pi-box:$PI_VERSION"
+STATE="$HOME/.local/share/pi-box"
+
+if [[ "$PWD" == "$HOME" || "$PWD" == "/" ]]; then
+  echo "pi-box: refusing to mount $PWD; cd into a project first." >&2
+  exit 1
+fi
+if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
+  echo "pi-box: image $IMAGE not found; run llm/pi/install.sh" >&2
+  exit 1
+fi
+
+mkdir -p "$STATE/agent" "$STATE/home"
+
+args=(
+  --rm --interactive --init
+  --user "$(id -u):$(id -g)"
+  --cap-drop ALL --security-opt no-new-privileges
+  --network "${PI_BOX_NETWORK:-bridge}"
+  --hostname pi-box
+  -e TERM -e COLORTERM
+  -v "$STATE:/pi"
+  -v "$SCRIPT_DIR/settings.json:/pi/agent/settings.json:ro"
+  -v "$SCRIPT_DIR/AGENTS.md:/pi/agent/AGENTS.md:ro"
+  -v "$PWD:$PWD"
+  -w "$PWD"
+)
+[[ -t 0 && -t 1 ]] && args+=(--tty)
+[[ -f "$HOME/.gitconfig" ]] && args+=(-v "$(readlink -f "$HOME/.gitconfig"):/pi/home/.gitconfig:ro")
+
+exec docker run "${args[@]}" "$IMAGE" "$@"

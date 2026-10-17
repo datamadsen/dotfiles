@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# pi on the host, pointed at the local llama-server.
+# Installed by llm/pi/install.sh as ~/.local/bin/pi; the real binary lives in
+# ~/.local/lib/pi so this wrapper can set the environment without touching
+# the shell config.
+#
+# pi runs with your user's full permissions and does not ask before running
+# commands. For untrusted repos or unattended work, use pi-box instead.
+
+# llama-server router (llm/llama-server.service). pi's built-in llama.cpp
+# provider lists the presets from models.ini and loads them on demand.
+export LLAMA_BASE_URL="${LLAMA_BASE_URL:-http://172.17.0.1:8012}"
+# Local only: no version check against pi.dev, no install/update telemetry.
+export PI_SKIP_VERSION_CHECK=1
+export PI_TELEMETRY=0
+
+exec "$HOME/.local/lib/pi/bin/pi" "$@"
