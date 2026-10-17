@@ -151,8 +151,6 @@ if [ -f ~/dotfiles/api_keys ]; then
     source ~/dotfiles/api_keys
 fi
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/tmadsen/.cache/lm-studio/bin"
 # alias claude="/Users/tmadsen/.claude/local/claude"
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/tmadsen/.docker/completions $fpath)
@@ -167,5 +165,3 @@ compinit
 eval "$(zoxide init zsh)"
 source ~/.zsh_functions
 
-# Added by LM Studio CLI tool (lms)
-export PATH="$PATH:/home/tmadsen/.lmstudio/bin"
