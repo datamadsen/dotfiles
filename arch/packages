@@ -16,13 +16,16 @@ cliphist
 cmatrix
 cups
 docker
+docker-buildx
 docker-compose
 dotnet-sdk
 efibootmgr
 eza
 fastmail
 fcitx5
+fd
 fzf
+ggml-vulkan
 ghostty
 git
 github-cli
@@ -49,7 +52,7 @@ libpulse
 libreoffice-fresh
 linux
 linux-firmware
-lmstudio
+llama-cpp
 loupe
 mako
 mandoc
@@ -72,6 +75,7 @@ pipewire-alsa
 pipewire-jack
 pipewire-pulse
 plymouth
+ripgrep
 rmtrash
 satty
 signal-desktop
