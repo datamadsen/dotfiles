@@ -381,7 +381,6 @@ hl.window_rule({
 
 local terminal = "ghostty"
 local browser = "brave --new-window --ozone-platform=wayland"
-local webapp = browser .. " --app"
 
 -- ================================
 -- KEYBINDINGS - APPLICATIONS
@@ -398,7 +397,7 @@ hl.bind("SUPER + D", hl.dsp.exec_cmd(terminal .. " -e lazydocker"))
 hl.bind("SUPER + G", hl.dsp.exec_cmd("signal-desktop"))
 hl.bind("SUPER + slash", hl.dsp.exec_cmd("1password"))
 
-hl.bind("SUPER + X", hl.dsp.exec_cmd(webapp .. '="https://claude.ai"'))
+hl.bind("SUPER + X", hl.dsp.exec_cmd("claude-desktop"))
 
 -- ================================
 -- KEYBINDINGS - MEDIA CONTROLS
