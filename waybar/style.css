@@ -29,7 +29,6 @@
 }
 
 #window,
-#custom-media,
 #custom-trackpad,
 #custom-caffeine,
 #privacy,
@@ -58,10 +57,6 @@
 #custom-notification.notification,
 #custom-notification.dnd-notification {
   color: @border;
-}
-
-#custom-media.paused {
-  color: @muted;
 }
 
 tooltip {

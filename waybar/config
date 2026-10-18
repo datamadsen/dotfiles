@@ -11,7 +11,6 @@
     "hyprland/window"
   ],
   "modules-right": [
-    "custom/media",
     "custom/trackpad",
     "privacy",
     "custom/caffeine",
@@ -120,16 +119,6 @@
       { "type": "screenshare" },
       { "type": "audio-in" }
     ]
-  },
-  "custom/media": {
-    "exec": "~/.config/waybar/media.py",
-    "return-type": "json",
-    "format": "{}",
-    "on-click": "playerctl play-pause",
-    "on-click-right": "playerctl next",
-    "on-scroll-up": "playerctl volume 0.05+",
-    "on-scroll-down": "playerctl volume 0.05-",
-    "tooltip": true
   },
   "custom/caffeine": {
     "exec": "~/.config/waybar/caffeine.sh status",
