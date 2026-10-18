@@ -34,3 +34,14 @@ case `uname` in
 esac
 
 # source ~/.config/tokens.sh - not on enterprise
+
+# Local LLM stack (~/source/llm/). Clients find the Server through these; the key
+# lives in ~/.config/llm/env (created by ~/source/llm/install.sh, never in the repo).
+case "$(cat /etc/hostname 2>/dev/null)" in
+  enterprise) export LLM_BASE_URL=http://127.0.0.1:8012; export LLM_SEARCH_URL=http://127.0.0.1:8013 ;;
+  # Other hosts reach enterprise over tailscale once `tailscale serve` is set up:
+  # *) export LLM_BASE_URL=https://enterprise.<tailnet>.ts.net:8012; export LLM_SEARCH_URL=https://enterprise.<tailnet>.ts.net:8013 ;;
+esac
+if [[ -r ~/.config/llm/env ]]; then
+  set -a; source ~/.config/llm/env; set +a
+fi

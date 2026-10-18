@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Open WebUI
+Comment=Local LLM chat (~/source/llm/)
+Exec=brave --new-window --ozone-platform=wayland --app="http://127.0.0.1:8010" --name="Open WebUI" --class="Open WebUI"
+Terminal=false
+Type=Application
+Icon=/home/tmadsen/.local/share/applications/icons/Open WebUI.png
+StartupNotify=true
