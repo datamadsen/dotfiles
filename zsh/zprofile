@@ -1,0 +1,9 @@
+# Start Hyprland on the tty1 autologin. Runs from the login shell, so the
+# logind session already exists when Hyprland asks for a seat. (A systemd
+# user service hooked to default.target starts before the tty session when
+# lingering is on, and Hyprland then dies with "CBackend::create() failed".)
+# `exec` replaces the shell: when Hyprland exits, the tty logs out and agetty
+# autologs in again, which restarts Hyprland.
+if [[ -z $WAYLAND_DISPLAY && $XDG_VTNR -eq 1 && -z $SSH_CONNECTION && -z $TMUX ]]; then
+  exec start-hyprland
+fi

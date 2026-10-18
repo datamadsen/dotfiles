@@ -1,56 +1,37 @@
 # Hyprland Autostart Setup
 
-Hyprland is automatically started on login via a **systemd user service**.
+Hyprland is started by the **login shell on tty1**. agetty autologs `tmadsen` in on tty1 (`/etc/systemd/system/getty@tty1.service.d/autologin.conf`), zsh runs `~/.zprofile`, and that `exec`s `start-hyprland`.
 
-## Service Location
+## Files
 
 ```
-~/.config/systemd/user/hyprland.service
+~/.zprofile -> ~/dotfiles/zsh/zprofile
+```
+
+```zsh
+if [[ -z $WAYLAND_DISPLAY && $XDG_VTNR -eq 1 && -z $SSH_CONNECTION && -z $TMUX ]]; then
+  exec start-hyprland
+fi
 ```
 
 ## How It Works
 
-1. The service is enabled for the `default.target`, meaning it starts automatically when you log in to a TTY
-2. It runs `start-hyprland` which handles the Hyprland startup process
-3. If Hyprland crashes, systemd will automatically restart it after 1 second
+1. The shell only runs after logind has registered the tty1 session, so Hyprland always finds a seat.
+2. `exec` replaces the shell with Hyprland. When Hyprland exits (or crashes), the tty logs out, agetty autologs in again, and Hyprland restarts. This replaces the old service's `Restart=on-failure`.
+3. The guards keep it from firing inside an existing Wayland session, over SSH, in tmux, or on another VT.
 
-## Service Configuration
+## History
 
-```ini
-[Unit]
-Description=Hyprland Wayland Compositor
-After=graphical-session-pre.target
-PartOf=graphical-session.target
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/start-hyprland
-Restart=on-failure
-RestartSec=1
-TimeoutStopSec=10
-
-[Install]
-WantedBy=default.target
-```
+Until 2026-10-18 Hyprland was started by a systemd user service, `~/.config/systemd/user/hyprland.service`, hooked to `default.target`. After `loginctl enable-linger tmadsen` (2026-10-17) the user manager started at boot, before the tty1 login, and Hyprland aborted with `CBackend::create() failed!` because no seat session existed yet. `start-hyprland` exits 0 even when Hyprland dumps core, so the service never restarted it. The unit file is still there but **disabled**; do not re-enable it while lingering is on.
 
 ## Useful Commands
 
 ```bash
-# Check service status
-systemctl --user status hyprland.service
+# Hyprland log of the running instance
+cat "$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/hyprland.log"
 
-# View service logs
-journalctl --user -u hyprland.service
+# Crash dumps
+coredumpctl list Hyprland
 
-# Restart the service (will restart Hyprland)
-systemctl --user restart hyprland.service
-
-# Disable autostart
-systemctl --user disable hyprland.service
-
-# Re-enable autostart
-systemctl --user enable hyprland.service
-
-# Reload after editing the service file
-systemctl --user daemon-reload
+# Stop autostart temporarily: log in on tty2 instead, or comment out the exec line.
 ```
