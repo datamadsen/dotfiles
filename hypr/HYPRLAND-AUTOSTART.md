@@ -22,6 +22,10 @@ fi
 
 ## History
 
+Both machines (enterprise and defiant) use this setup. On defiant the service
+stayed enabled and running until 2026-10-24, when it was disabled and
+`~/.zprofile` linked; the switch takes effect at the next login.
+
 Until 2026-10-18 Hyprland was started by a systemd user service, `~/.config/systemd/user/hyprland.service`, hooked to `default.target`. After `loginctl enable-linger tmadsen` (2026-10-17) the user manager started at boot, before the tty1 login, and Hyprland aborted with `CBackend::create() failed!` because no seat session existed yet. `start-hyprland` exits 0 even when Hyprland dumps core, so the service never restarted it. The unit file is still there but **disabled**; do not re-enable it while lingering is on.
 
 ## Useful Commands

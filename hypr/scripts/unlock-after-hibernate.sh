@@ -13,10 +13,10 @@ last=$(journalctl -b -q -o cat _COMM=systemd-sleep 2>/dev/null \
        | sed -n "s/.*Performing sleep operation '\([a-z-]*\)'.*/\1/p" | tail -1)
 [ "$last" = hibernate ] || exit 0
 # hyprlock unlocks on SIGUSR1 ("Unlocking with a SIGUSR1" in its log). That is
-# independent of logind session bookkeeping, which is unreliable here because
-# Hyprland (and so hypridle and hyprlock) run under the user manager's
-# hyprland.service, not inside the tty session's scope, so logind's Unlock
-# signal for session 1 never reached hyprlock.
+# independent of logind session bookkeeping, which proved unreliable: when
+# Hyprland ran under the user manager's hyprland.service (until 2026-10-24),
+# logind's Unlock signal for the tty session never reached hyprlock. The signal
+# works no matter how Hyprland was started.
 for _ in $(seq 1 20); do           # hyprlock may still be starting up
     if pkill -USR1 -x hyprlock; then exit 0; fi
     sleep 0.25

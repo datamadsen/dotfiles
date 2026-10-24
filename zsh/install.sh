@@ -3,6 +3,7 @@ chsh --shell $(which zsh)
 
 # Remove symlink
 echo "[zsh] Remove symlinks"
+rm ~/.zprofile
 rm ~/.zlogin
 rm ~/.zshenv
 rm ~/.zshrc
@@ -16,6 +17,7 @@ rm ~/.utilities/keys.sh
 
 # Create symlink
 echo "[zsh] Create symlinks"
+ln -s "$(pwd)/zprofile" ~/.zprofile
 ln -s "$(pwd)/zlogin" ~/.zlogin
 ln -s "$(pwd)/zshenv" ~/.zshenv
 ln -s "$(pwd)/zshrc" ~/.zshrc
