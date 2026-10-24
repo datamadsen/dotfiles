@@ -19,7 +19,7 @@ else
     current_state="true"
 fi
 
-# Handle explicit enable/disable arguments (used by workspace daemon)
+# Handle explicit enable/disable arguments (for scripting)
 case "$1" in
     enable)
         [ "$current_state" = "true" ] && exit 0

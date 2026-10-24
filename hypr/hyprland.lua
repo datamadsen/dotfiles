@@ -1,5 +1,40 @@
 -- Learn how to configure Hyprland: https://wiki.hypr.land/Configuring/Start/
--- Converted from hyprland.conf (hyprlang) to the Lua config format.
+-- Hyprland reads this Lua file directly (the old hyprlang hyprland.conf was removed).
+
+-- ================================
+-- PER-HOST SETTINGS
+-- ================================
+-- The same config runs on the laptop (defiant) and the desktop (enterprise).
+-- Anything that should only apply to one machine is keyed by hostname here
+-- and read as `host.<setting>` further down; everything else is shared.
+
+local function hostname()
+  local f = io.open("/etc/hostname")
+  if f then
+    local name = f:read("l")
+    f:close()
+    if name and name ~= "" then
+      return (name:gsub("%s+$", ""))
+    end
+  end
+  return os.getenv("HOSTNAME") or "unknown"
+end
+
+local hosts = {
+  defiant = {    -- laptop, AMD Radeon 890M (amdgpu)
+    nvidia = false,
+  },
+  enterprise = { -- desktop, NVIDIA
+    nvidia = true,
+  },
+}
+
+local HOST = hostname()
+local host = hosts[HOST]
+if not host then
+  print("hyprland.lua: unknown host '" .. HOST .. "', using shared settings only")
+  host = {}
+end
 
 -- ================================
 -- ENVIRONMENT VARIABLES
@@ -30,10 +65,13 @@ hl.env("XDG_DATA_DIRS", "/usr/share:/usr/local/share:" .. os.getenv("HOME") .. "
 -- Use XCompose file
 hl.env("XCOMPOSEFILE", os.getenv("HOME") .. "/.XCompose")
 
--- NVIDIA environment variables
-hl.env("NVD_BACKEND", "direct")
-hl.env("LIBVA_DRIVER_NAME", "nvidia")
-hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
+-- NVIDIA environment variables (desktop only). On the AMD laptop these would
+-- break VA-API video decoding and GLX in XWayland apps.
+if host.nvidia then
+  hl.env("NVD_BACKEND", "direct")
+  hl.env("LIBVA_DRIVER_NAME", "nvidia")
+  hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
+end
 
 -- ================================
 -- MONITOR CONFIGURATION
@@ -116,7 +154,10 @@ hl.config({
       passes = 1,
 
       vibrancy = 0.1696,
+      special = true, -- blur what is behind the scratch workspace
     },
+
+    dim_special = 0.5, -- and darken it (0 = none, 1 = black)
   },
 
   animations = {
@@ -164,6 +205,13 @@ hl.animation({ leaf = "layersOut",     enabled = true,  speed = 1.5,  bezier = "
 hl.animation({ leaf = "fadeLayersIn",  enabled = true,  speed = 1.79, bezier = "almostLinear" })
 hl.animation({ leaf = "fadeLayersOut", enabled = true,  speed = 1.39, bezier = "almostLinear" })
 hl.animation({ leaf = "workspaces",    enabled = false })
+-- The scratch workspace inherits from "workspaces", so give it its own animation:
+-- slide down from the top edge when it opens, and back up when it closes.
+-- ("slidevert" alone comes from the bottom; "top"/"bottom" name the edge the
+-- workspace starts from when sliding in, or the edge it heads away from when sliding out.)
+hl.animation({ leaf = "specialWorkspace",    enabled = true, speed = 4, bezier = "easeOutQuint", style = "slidevert top" })
+hl.animation({ leaf = "specialWorkspaceIn",  enabled = true, speed = 4, bezier = "easeOutQuint", style = "slidevert top" })
+hl.animation({ leaf = "specialWorkspaceOut", enabled = true, speed = 4, bezier = "easeOutQuint", style = "slidevert bottom" })
 
 -- ================================
 -- INPUT CONFIGURATION
@@ -203,6 +251,36 @@ hl.config({
 
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 hl.gesture({ fingers = 3, direction = "down", mods = "ALT", action = "close" })
+-- Scratch (special) workspace: three-finger swipe down pulls it in, swipe up
+-- puts it away. Lua callbacks instead of the native "special" action because
+-- that one toggles no matter which way you swipe.
+local SCRATCH = "scratch"
+
+local function scratch_visible()
+  local ws = hl.get_active_special_workspace()
+  return ws ~= nil and (ws.name == "special:" .. SCRATCH or ws.name == SCRATCH)
+end
+
+local function scratch_gesture(direction, want_visible)
+  local travel = 0
+  hl.gesture({
+    fingers = 3,
+    direction = direction,
+    action = {
+      start  = function() travel = 0 end,
+      update = function(e) travel = travel + e.delta.y end,
+      finish = function(e)
+        if e.cancelled or math.abs(travel) < 60 then return end -- too short, ignore
+        if scratch_visible() ~= want_visible then
+          hl.dispatch(hl.dsp.workspace.toggle_special(SCRATCH))
+        end
+      end,
+    },
+  })
+end
+
+scratch_gesture("down", true)
+scratch_gesture("up", false)
 hl.gesture({ fingers = 3, direction = "up", mods = "SUPER", scale = 1.5, action = "fullscreen" })
 
 -- ================================
@@ -243,7 +321,7 @@ hl.window_rule({
 
 hl.window_rule({
   name = "windowrule-5",
-  match = { class = "(blueberry.py|Impala|Wiremix|org.gnome.NautilusPreviewer|com.gabm.satty|TUI.float)" },
+  match = { class = "(blueberry.py|Impala|Wiremix|org.gnome.NautilusPreviewer|com.gabm.satty|^TUI\\.float$)" },
   tag = "+floating-window",
 })
 
@@ -251,16 +329,9 @@ hl.window_rule({
   name = "windowrule-6",
   match = {
     class = "(xdg-desktop-portal-gtk|sublime_text|DesktopEditors|org.gnome.Nautilus)",
-    title = "^(Open.*Files?|Open [F|f]older.*|Save.*Files?|Save.*As|Save|All Files)",
+    title = "^(Open.*Files?|Open [Ff]older.*|Save.*Files?|Save.*As|Save|All Files)",
   },
   tag = "+floating-window",
-})
-
--- No transparency on media windows
-hl.window_rule({
-  name = "windowrule-7",
-  match = { class = "^(zoom|vlc|mpv|org.kde.kdenlive|com.obsproject.Studio|com.github.PintaProject.Pinta|imv|org.gnome.NautilusPreviewer)$" },
-  opacity = "1 1",
 })
 
 -- Float Steam, fullscreen RetroArch
@@ -276,7 +347,8 @@ hl.window_rule({
   fullscreen = true,
 })
 
--- Just dash of opacity
+-- Just a dash of opacity on browsers (everything else is opaque via windowrule-1),
+-- undone again for video sites below.
 hl.window_rule({
   name = "windowrule-10",
   match = { class = "^(Chromium|chromium|brave-browser|google-chrome|google-chrome-unstable)$" },
@@ -298,18 +370,6 @@ hl.window_rule({
 hl.window_rule({
   name = "windowrule-13",
   match = { title = ".*Prime.*$" },
-  opacity = "1 1",
-})
-
-hl.window_rule({
-  name = "windowrule-14",
-  match = { class = "^(zoom|vlc|mpv|org.kde.kdenlive|com.obsproject.Studio|com.github.PintaProject.Pinta|imv)$" },
-  opacity = "1 1",
-})
-
-hl.window_rule({
-  name = "windowrule-15",
-  match = { class = "^(com.libretro.RetroArch|steam)$" },
   opacity = "1 1",
 })
 
@@ -348,7 +408,7 @@ hl.window_rule({
 -- Scroll faster in the terminal
 hl.window_rule({
   name = "windowrule-18",
-  match = { class = "Alacritty" },
+  match = { class = "^(Alacritty|com\\.mitchellh\\.ghostty)$" },
   scroll_touchpad = 1.5,
 })
 
@@ -427,9 +487,19 @@ hl.bind("SUPER + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 hl.bind("SUPER + Q", hl.dsp.window.close())
 hl.bind("SUPER + W", hl.dsp.send_shortcut({ mods = "CTRL", key = "W" }))
 
+-- Scratch (special) workspace: toggle it, or send the active window there
+hl.bind("SUPER + S",         hl.dsp.workspace.toggle_special(SCRATCH))
+hl.bind("SUPER + SHIFT + S", hl.dsp.window.move({ workspace = "special:" .. SCRATCH }))
+
 -- Control tiling
-hl.bind("SUPER + J", hl.dsp.layout("togglesplit")) -- dwindle
-hl.bind("SUPER + P", hl.dsp.window.pseudo()) -- dwindle
+hl.bind("SUPER + J",         hl.dsp.layout("togglesplit")) -- dwindle: flip the split between side-by-side and stacked
+hl.bind("SUPER + SHIFT + J", hl.dsp.layout("swapsplit"))   -- dwindle: swap the two sides of the current split
+hl.bind("SUPER + P",         hl.dsp.window.pseudo())       -- dwindle
+
+-- Rotate the active window through the layout: swap it with the next/previous window
+-- (SUPER+SHIFT+arrows still swap with a neighbour in a direction)
+hl.bind("SUPER + R",         hl.dsp.window.swap({ next = true }))
+hl.bind("SUPER + SHIFT + R", hl.dsp.window.swap({ prev = true }))
 
 -- Move focus with mainMod + arrow keys
 hl.bind("SUPER + left",  hl.dsp.focus({ direction = "left" }))
