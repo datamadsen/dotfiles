@@ -555,13 +555,8 @@ hl.bind("SUPER + SHIFT + space", hl.dsp.exec_cmd("pkill -SIGUSR1 waybar"))
 hl.bind("SUPER + comma", hl.dsp.exec_cmd("swaync-client --toggle-panel"))
 
 -- Screenshots
--- Note: both SUPER + Print binds below fire on the same key (top to bottom),
--- same as the original config's SUPER, Print / SUPER, PRINT pair.
 hl.bind("Print", hl.dsp.exec_cmd("grimblast save area - | satty -f -"))
 hl.bind("SUPER + Print", hl.dsp.exec_cmd("grimblast save area - | satty -f - --copy-command /home/tmadsen/.local/bin/screenshot-base64-html"))
-
--- Color picker
-hl.bind("SUPER + Print", hl.dsp.exec_cmd("hyprpicker -a"))
 
 -- Smiley menu
 hl.bind("CTRL + ALT + SUPER + S", hl.dsp.exec_cmd("~/.local/bin/smiley-menu"))
