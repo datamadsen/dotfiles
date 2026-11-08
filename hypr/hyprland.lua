@@ -422,10 +422,23 @@ hl.layer_rule({
 -- WORKSPACE AUTO-START
 -- ================================
 
-hl.workspace_rule({ workspace = "1", on_created_empty = "ghostty" })
-hl.workspace_rule({ workspace = "2", on_created_empty = "brave" })
-hl.workspace_rule({ workspace = "4", on_created_empty = "fastmail" })
-hl.workspace_rule({ workspace = "5", on_created_empty = "signal-desktop" })
+-- Launch an app when a workspace is created empty (e.g. by switching to it).
+-- Replaces the deprecated `on_created_empty` workspace rule. The exec rule
+-- pins the new window to that workspace, like the old rule did.
+local workspace_autostart = {
+  ["1"] = "ghostty",
+  ["2"] = "brave",
+  ["4"] = "fastmail",
+  ["5"] = "signal-desktop",
+}
+
+hl.on("workspace.created", function(ws)
+  if not ws.is_empty then return end
+  local cmd = workspace_autostart[ws.name]
+  if cmd then
+    hl.exec_cmd(cmd, { workspace = ws.name })
+  end
+end)
 -- No border on a tiled window when it is the only one on its workspace
 -- (w[tv1] = one tiled, visible window). Floating windows keep their border.
 hl.window_rule({
